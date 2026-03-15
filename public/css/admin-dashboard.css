@@ -513,6 +513,24 @@
   top: 20px;
   z-index: 20;
   overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.stream-canvas-wrapper video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  min-height: clamp(300px, 46vh, 560px);
+}
+
+.stream-canvas-wrapper canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .zone-controls-dock { display: grid; gap: 10px; align-content: start; }
