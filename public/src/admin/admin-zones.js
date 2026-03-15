@@ -266,6 +266,29 @@ export const AdminZones = (() => {
           const [x, y] = toPixel(p.rx, p.ry);
           if (i === 0) drawCtx.moveTo(x, y); else drawCtx.lineTo(x, y);
         });
+        // Close back to start for polygon preview
+        if (!lineMode && draftPts.length >= 3) drawCtx.closePath();
+        drawCtx.stroke();
+        drawCtx.setLineDash([]);
+      }
+
+      // Filled polygon preview for ROI/queue (≥3 points)
+      if (!lineMode && draftPts.length >= 3) {
+        drawCtx.beginPath();
+        draftPts.forEach((p, i) => {
+          const [x, y] = toPixel(p.rx, p.ry);
+          if (i === 0) drawCtx.moveTo(x, y); else drawCtx.lineTo(x, y);
+        });
+        drawCtx.closePath();
+        drawCtx.fillStyle = color + "33"; // ~20% opacity
+        drawCtx.fill();
+        // Ring on first vertex to show close-point
+        const [fx, fy] = toPixel(draftPts[0].rx, draftPts[0].ry);
+        drawCtx.beginPath();
+        drawCtx.arc(fx, fy, 10, 0, Math.PI * 2);
+        drawCtx.strokeStyle = "#fff";
+        drawCtx.lineWidth   = 1.5;
+        drawCtx.setLineDash([3, 3]);
         drawCtx.stroke();
         drawCtx.setLineDash([]);
       }
