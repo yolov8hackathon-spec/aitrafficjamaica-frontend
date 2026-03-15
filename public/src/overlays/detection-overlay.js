@@ -780,35 +780,65 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
     ctx.save();
     for (const zone of _analyticsZones) {
       const pts = zone.points || [];
-      if (pts.length < 3) continue;
-      const px = pts.map(p => contentToPixel(p.x, p.y, bounds));
+      if (pts.length < 2) continue;
+      const px  = pts.map(p => contentToPixel(p.x, p.y, bounds));
       const col = zone.color || _ZONE_TYPE_COLOR[zone.zone_type] || "#64748b";
 
-      // filled polygon
-      ctx.beginPath();
-      ctx.moveTo(px[0].x, px[0].y);
-      for (let i = 1; i < px.length; i++) ctx.lineTo(px[i].x, px[i].y);
-      ctx.closePath();
-      ctx.fillStyle   = hexToRgba(col, 0.07);
-      ctx.fill();
-      ctx.strokeStyle = hexToRgba(col, 0.60);
-      ctx.lineWidth   = 1.2;
-      ctx.setLineDash([5, 4]);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // name label at centroid
-      const cx = px.reduce((s, p) => s + p.x, 0) / px.length;
-      const cy = px.reduce((s, p) => s + p.y, 0) / px.length;
-      const label = zone.name || zone.zone_type;
-      ctx.font = "700 9px 'JetBrains Mono', monospace";
-      ctx.textAlign    = "center";
-      ctx.textBaseline = "middle";
-      const tw = ctx.measureText(label).width;
-      ctx.fillStyle = "rgba(0,0,0,0.65)";
-      ctx.fillRect(cx - tw / 2 - 3, cy - 7, tw + 6, 14);
-      ctx.fillStyle = col;
-      ctx.fillText(label, cx, cy);
+      if (pts.length === 2) {
+        // Line zone (entry/exit/speed trap) — draw as a labeled line with ticks
+        const [a, b] = px;
+        ctx.strokeStyle = hexToRgba(col, 0.85);
+        ctx.lineWidth   = 2;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+        // Perpendicular tick marks
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const len = Math.hypot(dx, dy) || 1;
+        const nx = -dy / len * 6, ny = dx / len * 6;
+        [[a.x, a.y], [b.x, b.y]].forEach(([px2, py2]) => {
+          ctx.beginPath();
+          ctx.moveTo(px2 + nx, py2 + ny);
+          ctx.lineTo(px2 - nx, py2 - ny);
+          ctx.stroke();
+        });
+        // Midpoint label
+        const cx = (a.x + b.x) / 2, cy = (a.y + b.y) / 2;
+        const label = zone.name || zone.zone_type;
+        ctx.font = "700 9px 'JetBrains Mono', monospace";
+        ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        const tw = ctx.measureText(label).width;
+        ctx.fillStyle = "rgba(0,0,0,0.65)";
+        ctx.fillRect(cx - tw / 2 - 3, cy - 7, tw + 6, 14);
+        ctx.fillStyle = col;
+        ctx.fillText(label, cx, cy);
+      } else {
+        // Polygon zone (queue/roi)
+        ctx.beginPath();
+        ctx.moveTo(px[0].x, px[0].y);
+        for (let i = 1; i < px.length; i++) ctx.lineTo(px[i].x, px[i].y);
+        ctx.closePath();
+        ctx.fillStyle   = hexToRgba(col, 0.07);
+        ctx.fill();
+        ctx.strokeStyle = hexToRgba(col, 0.60);
+        ctx.lineWidth   = 1.2;
+        ctx.setLineDash([5, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        // Centroid label
+        const cx = px.reduce((s, p) => s + p.x, 0) / px.length;
+        const cy = px.reduce((s, p) => s + p.y, 0) / px.length;
+        const label = zone.name || zone.zone_type;
+        ctx.font = "700 9px 'JetBrains Mono', monospace";
+        ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        const tw = ctx.measureText(label).width;
+        ctx.fillStyle = "rgba(0,0,0,0.65)";
+        ctx.fillRect(cx - tw / 2 - 3, cy - 7, tw + 6, 14);
+        ctx.fillStyle = col;
+        ctx.fillText(label, cx, cy);
+      }
     }
     ctx.restore();
   }
@@ -817,7 +847,7 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
     if (!_analyticsZones.length) return;
     for (const zone of _analyticsZones) {
       const pts = zone.points || [];
-      if (pts.length < 3) continue;
+      if (pts.length < 2) continue;
       const px   = pts.map(p => contentToPixel(p.x, p.y, bounds));
       const col  = zone.color || _ZONE_TYPE_COLOR[zone.zone_type] || "#64748b";
       const colN = hexToPixi(col);
@@ -825,24 +855,46 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
       const g = getPixiGraphic();
       g.clear();
       g.visible = true;
-      g.lineStyle(1.2, colN, 0.65, 0.5, false);
-      g.beginFill(colN, 0.07);
-      g.drawPolygon(px.flatMap(p => [p.x, p.y]));
-      g.endFill();
 
-      // label
-      const cx = px.reduce((s, p) => s + p.x, 0) / px.length;
-      const cy = px.reduce((s, p) => s + p.y, 0) / px.length;
-      const t  = getPixiText();
-      t.text   = zone.name || zone.zone_type;
-      t.style.fill     = col;
-      t.style.fontSize = 9;
-      t.style.fontFamily = "JetBrains Mono, monospace";
-      t.style.fontWeight = "700";
-      t.anchor.set(0.5);
-      t.x = cx;
-      t.y = cy;
-      t.visible = true;
+      if (pts.length === 2) {
+        // Line zone
+        const [a, b] = px;
+        g.lineStyle(2, colN, 0.85);
+        g.moveTo(a.x, a.y);
+        g.lineTo(b.x, b.y);
+        // Tick marks
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const len = Math.hypot(dx, dy) || 1;
+        const nx = -dy / len * 6, ny = dx / len * 6;
+        [[a.x, a.y], [b.x, b.y]].forEach(([px2, py2]) => {
+          g.moveTo(px2 + nx, py2 + ny);
+          g.lineTo(px2 - nx, py2 - ny);
+        });
+        // Label at midpoint
+        const cx = (a.x + b.x) / 2, cy = (a.y + b.y) / 2;
+        const t  = getPixiText();
+        t.text = zone.name || zone.zone_type;
+        t.style.fill = col; t.style.fontSize = 9;
+        t.style.fontFamily = "JetBrains Mono, monospace";
+        t.style.fontWeight = "700";
+        t.anchor.set(0.5);
+        t.x = cx; t.y = cy; t.visible = true;
+      } else {
+        // Polygon zone
+        g.lineStyle(1.2, colN, 0.65, 0.5, false);
+        g.beginFill(colN, 0.07);
+        g.drawPolygon(px.flatMap(p => [p.x, p.y]));
+        g.endFill();
+        const cx = px.reduce((s, p) => s + p.x, 0) / px.length;
+        const cy = px.reduce((s, p) => s + p.y, 0) / px.length;
+        const t  = getPixiText();
+        t.text = zone.name || zone.zone_type;
+        t.style.fill = col; t.style.fontSize = 9;
+        t.style.fontFamily = "JetBrains Mono, monospace";
+        t.style.fontWeight = "700";
+        t.anchor.set(0.5);
+        t.x = cx; t.y = cy; t.visible = true;
+      }
     }
   }
 
@@ -998,6 +1050,10 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
       else drawGroundOverlayCanvas(bounds, detections);
     }
 
+    // Draw analytics zones overlay (entry/exit/queue lines defined in admin)
+    if (pixiEnabled) _drawZonesPixi(bounds);
+    else _drawZonesCanvas(bounds);
+
     if (!detections.length) {
       if (pixiEnabled) { endPixiFrame(); pixiApp?.renderer?.render(pixiApp.stage); }
       forceRender = false;
@@ -1055,7 +1111,7 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
           lineWidth: 1.0,
           alpha: 0,
           fill: false,
-          showLabels: true,
+          showLabels: false,  // unconfirmed vehicles — no label clutter
         });
       }
     }
