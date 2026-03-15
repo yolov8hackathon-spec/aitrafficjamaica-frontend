@@ -301,10 +301,8 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
   function _drawDetectionLabel(ctx2, det, p1, accentColor, fs = 10, bgAlpha = 0.82) {
     const CLS_NAME = { car: 'Car', truck: 'Truck', bus: 'Bus', motorcycle: 'Moto' };
     const clsStr  = CLS_NAME[String(det?.cls || '').toLowerCase()] || String(det?.cls || 'Vehicle');
-    const tidStr  = (det?.tracker_id != null && det.tracker_id >= 0) ? `#${det.tracker_id} ` : '';
-    const colStr  = (det?.color && det.color !== 'unknown') ? ` · ${det.color}` : '';
     const confStr = (det?.conf != null) ? ` ${Math.round(Number(det.conf) * 100)}%` : '';
-    const label   = `${tidStr}${clsStr}${colStr}${confStr}`;
+    const label   = `${clsStr}${confStr}`;
     const px = 4, py = 2;
     ctx2.font = `700 ${fs}px "JetBrains Mono", monospace`;
     ctx2.textAlign    = 'left';
@@ -667,10 +665,8 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
 
     const CLS_NAME = { car: 'Car', truck: 'Truck', bus: 'Bus', motorcycle: 'Moto' };
     const clsBase  = labelText || CLS_NAME[String(det?.cls || '').toLowerCase()] || String(det?.cls || 'Vehicle');
-    const tidStr   = (!labelText && det?.tracker_id != null && det.tracker_id >= 0) ? `#${det.tracker_id} ` : '';
-    const colStr   = (!labelText && det?.color && det.color !== 'unknown') ? ` · ${det.color}` : '';
     const confStr  = (!labelText && det?.conf != null) ? ` ${Math.round(Number(det.conf) * 100)}%` : '';
-    const labelStr = `${tidStr}${clsBase}${colStr}${confStr}`;
+    const labelStr = `${clsBase}${confStr}`;
 
     const fs = 10;
     const px = 4, py = 2;
