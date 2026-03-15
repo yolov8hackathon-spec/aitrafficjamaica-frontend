@@ -1,0 +1,26 @@
+{
+  "name": "AI Traffic Jamaica",
+  "short_name": "WHITELINEZ",
+  "description": "Live CCTV vehicle detection & traffic prediction game — Jamaica",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080C14",
+  "theme_color": "#080C14",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/img/gfdaw-removebg-preview.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/img/gfdaw-removebg-preview.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "news"],
+  "lang": "en-JM"
+}

@@ -1,0 +1,880 @@
+/* ── Design token overrides (v2 — merged into base above) ───────── */
+/* No overrides needed — base :root now uses the final design system */
+
+/* ── Scrollbar — cyan tinted ─────────────────────────────────────── */
+* {
+  scrollbar-color: rgba(0,212,255,0.2) #09090f;
+}
+*::-webkit-scrollbar-track { background: #09090f; }
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(0,212,255,0.3), rgba(0,212,255,0.1));
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(0,212,255,0.5), rgba(0,212,255,0.22));
+}
+
+/* ── Header v2 — additional cyber glass effects ─────────────────── */
+.site-header {
+  border-bottom: 1px solid rgba(0,212,255,0.18);
+  box-shadow: 0 1px 0 rgba(0,212,255,0.07), 0 6px 28px rgba(0,0,0,0.55);
+  position: relative;
+}
+
+/* Animated scan-line on header bottom edge */
+.site-header::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0,212,255,0.55) 30%,
+    rgba(0,212,255,0.95) 50%,
+    rgba(0,212,255,0.55) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+  animation: hdr-scan 7s ease-in-out infinite;
+  z-index: 1;
+}
+@keyframes hdr-scan {
+  0%, 100% { opacity: 0.25; }
+  50%       { opacity: 0.72; }
+}
+
+/* ── Stream panel — right boundary ──────────────────────────────── */
+.stream-panel {
+  border-right: 1px solid rgba(0,212,255,0.1);
+}
+
+/* ── Sidebar — terminal panel ───────────────────────────────────── */
+.sidebar {
+  border-left: 1px solid rgba(0,212,255,0.14);
+  background: linear-gradient(
+    180deg,
+    rgba(0,212,255,0.025) 0%,
+    rgba(0,212,255,0.005) 60%,
+    transparent 100%
+  ), var(--bg2);
+}
+
+/* ── Sidebar tabs bar ───────────────────────────────────────────── */
+.sidebar-tabs {
+  display: flex;
+  flex-shrink: 0;
+  position: relative;
+  background: rgba(5, 7, 13, 0.88);
+  border-bottom: 1px solid rgba(0,212,255,0.12);
+  overflow: visible;
+}
+.sidebar-tabs::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.35), transparent);
+  pointer-events: none;
+}
+
+.tab-btn:hover {
+  color: rgba(190,220,240,0.9);
+  background: rgba(0,212,255,0.04);
+}
+.tab-btn.active {
+  color: var(--cyan);
+  border-bottom-color: transparent;
+  background: rgba(0,212,255,0.06);
+  text-shadow: 0 0 10px rgba(0,212,255,0.25);
+}
+/* Cyan glow underline replaces default border-bottom */
+.tab-btn.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 12%;
+  right: 12%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  box-shadow: 0 0 8px rgba(0,212,255,0.55);
+  border-radius: 1px;
+}
+
+/* Tab badge indicator — cyan */
+.tab-indicator {
+  background: rgba(0,212,255,0.12);
+  border: 1px solid rgba(0,212,255,0.28);
+  color: var(--cyan);
+}
+
+/* ── Market cards ────────────────────────────────────────────────── */
+.market-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.025) 0%,
+    rgba(255,255,255,0.008) 100%
+  ), var(--bg3);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  transition: border-color .18s, box-shadow .18s, transform .14s;
+}
+.market-card:hover {
+  border-color: rgba(0,212,255,0.3);
+  box-shadow: 0 0 18px rgba(0,212,255,0.09), 0 4px 16px rgba(0,0,0,0.28);
+  transform: translateY(-1px);
+}
+.market-label {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* ── Pills (bet type / direction) — cyan active ──────────────────── */
+.pill.active {
+  background: rgba(0,212,255,0.12);
+  border-color: rgba(0,212,255,0.5);
+  color: var(--cyan);
+  box-shadow: 0 0 10px rgba(0,212,255,0.14);
+}
+.pill:hover {
+  border-color: rgba(0,212,255,0.28);
+  color: rgba(190,220,240,0.9);
+  background: rgba(0,212,255,0.05);
+}
+
+/* ── Bet panel ───────────────────────────────────────────────────── */
+.bet-panel {
+  background: linear-gradient(180deg, rgba(0,212,255,0.018) 0%, transparent 35%), var(--bg2);
+}
+
+/* Bet field labels → uppercase monospace */
+.bp-field label {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  color: rgba(0,212,255,0.55);
+}
+
+/* Count input — cyber style */
+.bp-count-row input {
+  background: rgba(7,10,18,0.85);
+  border: 1px solid rgba(0,212,255,0.22);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: border-color .18s, box-shadow .18s;
+}
+.bp-count-row input:focus {
+  outline: none;
+  border-color: rgba(0,212,255,0.5);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.08), 0 0 14px rgba(0,212,255,0.1);
+}
+
+/* Generic bet input */
+.bp-input {
+  background: rgba(7,10,18,0.85);
+  border: 1px solid rgba(0,212,255,0.2);
+  transition: border-color .18s, box-shadow .18s;
+}
+.bp-input:focus {
+  outline: none;
+  border-color: rgba(0,212,255,0.48);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.08);
+}
+
+/* Count adj buttons — cyan */
+.btn-count-adj {
+  background: rgba(0,212,255,0.06);
+  border: 1px solid rgba(0,212,255,0.2);
+  color: rgba(0,212,255,0.75);
+  border-radius: 7px;
+  transition: background .16s, border-color .16s, color .16s;
+}
+.btn-count-adj:hover {
+  background: rgba(0,212,255,0.14);
+  border-color: rgba(0,212,255,0.42);
+  color: var(--cyan);
+}
+
+/* ── Bet receipt ─────────────────────────────────────────────────── */
+.bet-receipt {
+  border: 1px solid rgba(0,212,255,0.18);
+  background: linear-gradient(
+    135deg,
+    rgba(0,212,255,0.04) 0%,
+    transparent 60%
+  ), rgba(8,12,22,0.65);
+}
+
+/* ── Live-bet quick buttons ──────────────────────────────────────── */
+.btn-live-bet {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: #0f1c2e;
+  border-radius: 8px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+  padding: 6px;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+}
+.btn-live-bet:hover {
+  background: #ffd740;
+  border-color: #ffd740;
+  box-shadow: 0 0 18px rgba(255,184,0,0.35);
+  transform: translateY(-1px);
+}
+.btn-live-bet:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* ── Nav balance chip ────────────────────────────────────────────── */
+.nav-balance {
+  background: rgba(0,212,255,0.06);
+  border: 1px solid rgba(0,212,255,0.22);
+  color: var(--text);
+  font-weight: 700;
+  gap: 4px;
+  transition: background .16s, border-color .16s;
+}
+.nav-balance:hover {
+  background: rgba(0,212,255,0.11);
+  border-color: rgba(0,212,255,0.4);
+}
+.nav-balance-label {
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(0,212,255,0.55);
+  align-self: center;
+}
+
+/* ── Secondary button — unified with theme ───────────────────────── */
+.btn-secondary {
+  background: rgba(0,212,255,0.05);
+  border: 1px solid rgba(0,212,255,0.2);
+  color: rgba(160,210,235,0.85);
+  transition: background .16s, border-color .16s, color .16s;
+}
+.btn-secondary:hover {
+  background: rgba(0,212,255,0.1);
+  border-color: rgba(0,212,255,0.38);
+  color: var(--cyan);
+}
+
+/* ── Leaderboard rows ────────────────────────────────────────────── */
+.lb-header {
+  border-bottom: 1px solid rgba(0,212,255,0.1);
+  color: rgba(0,212,255,0.45);
+  letter-spacing: 0.06em;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.66rem;
+}
+.lb-row {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: border-color .15s, background .15s;
+}
+.lb-row:hover {
+  background: rgba(0,212,255,0.04);
+  border-color: rgba(0,212,255,0.2);
+}
+.lb-rank-num {
+  font-family: "JetBrains Mono", monospace;
+  color: rgba(0,212,255,0.45);
+}
+
+/* ── Chat section ────────────────────────────────────────────────── */
+.chat-section {
+  background: linear-gradient(180deg, rgba(0,212,255,0.015) 0%, transparent 25%);
+}
+.chat-input-row {
+  border-top: 1px solid rgba(0,212,255,0.1);
+  background: rgba(5,7,14,0.65);
+}
+.chat-input-row input {
+  background: rgba(8,11,20,0.88);
+  border: 1px solid rgba(0,212,255,0.18);
+  border-radius: 7px;
+  transition: border-color .18s, box-shadow .18s;
+}
+.chat-input-row input:focus {
+  border-color: rgba(0,212,255,0.45);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.07);
+  outline: none;
+}
+/* System messages — terminal look */
+.chat-msg.system {
+  background: rgba(0,212,255,0.03);
+  border: 1px solid rgba(0,212,255,0.1);
+  color: rgba(0,212,255,0.55);
+  font-family: "JetBrains Mono", monospace;
+  border-radius: 6px;
+  font-size: 0.74rem;
+}
+
+/* ── Auth card ───────────────────────────────────────────────────── */
+.auth-card {
+  background: rgba(8,10,18,0.94);
+  border: 1px solid rgba(0,212,255,0.2);
+  box-shadow:
+    0 8px 64px rgba(0,0,0,0.7),
+    0 0 0 1px rgba(0,212,255,0.06),
+    0 0 50px rgba(0,212,255,0.07);
+}
+.field input:focus,
+.field select:focus {
+  border-color: rgba(0,212,255,0.5);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.08);
+}
+
+/* ── ML showcase stat cards ──────────────────────────────────────── */
+.mls-card {
+  background: linear-gradient(135deg, rgba(0,212,255,0.04) 0%, transparent 65%), var(--bg3);
+  border: 1px solid rgba(0,212,255,0.1);
+}
+.mls-value {
+  color: var(--cyan);
+  text-shadow: 0 0 12px rgba(0,212,255,0.28);
+}
+.mls-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(0,212,255,0.45);
+}
+
+/* ── Banner tiles ────────────────────────────────────────────────── */
+.banners-section {
+  border-bottom: 1px solid rgba(0,212,255,0.07);
+}
+.bnr-tile {
+  background: linear-gradient(135deg, rgba(0,212,255,0.03) 0%, rgba(255,255,255,0.01) 100%), var(--bg3);
+  border: 1px solid rgba(0,212,255,0.1);
+  transition: border-color .18s, box-shadow .18s;
+}
+.bnr-tile:hover {
+  border-color: rgba(0,212,255,0.26);
+  box-shadow: 0 0 16px rgba(0,212,255,0.08);
+}
+
+/* ── Stream overlays — unified border language ───────────────────── */
+.fps-overlay {
+  border: 1px solid rgba(0,212,255,0.16);
+  background: rgba(5,8,16,0.85);
+}
+/* .count-widget border/bg — in banners-v2.css canonical */
+
+/* ── Admin sections ─────────────────────────────────────────────── */
+.admin-section {
+  border: 1px solid rgba(0,212,255,0.1);
+  background: linear-gradient(180deg, rgba(0,212,255,0.018) 0%, transparent 40%), var(--bg2);
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+}
+.admin-section h2 {
+  color: rgba(0,212,255,0.5);
+  font-family: "JetBrains Mono", monospace;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid rgba(0,212,255,0.1);
+}
+.stat-card {
+  background: linear-gradient(135deg, rgba(0,212,255,0.04) 0%, transparent 65%), var(--bg3);
+  border: 1px solid rgba(0,212,255,0.1);
+  border-radius: var(--radius);
+  padding: 10px;
+  text-align: left;
+}
+.stat-card .stat-val {
+  color: var(--cyan);
+  text-shadow: 0 0 14px rgba(0,212,255,0.25);
+}
+
+/* ── Round rows (admin) ─────────────────────────────────────────── */
+.round-row {
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: border-color .15s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.02);
+}
+.round-row:hover {
+  border-color: rgba(0,212,255,0.2);
+}
+
+/* ── Payout row ─────────────────────────────────────────────────── */
+.bp-payout-row {
+  border-top: 1px solid rgba(0,212,255,0.1);
+}
+
+/* ── Section label style (shared) ──────────────────────────────── */
+.bp-field label,
+.lb-header,
+.bet-panel h3 {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+}
+
+/* ── Round strip scan-line border ───────────────────────────────── */
+.round-strip {
+  background: rgba(6,9,18,0.9);
+  border: 1px solid rgba(0,212,255,0.25);
+  box-shadow: 0 0 18px rgba(0,212,255,0.1), inset 0 0 8px rgba(0,212,255,0.03);
+}
+
+/* ── Sidebar tab content area ───────────────────────────────────── */
+.tab-content {
+  display: none;
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  background: linear-gradient(180deg, rgba(0,212,255,0.01) 0%, transparent 20%);
+}
+
+/* ── Activity feed — cyber row lines ───────────────────────────── */
+.af-event {
+  border-bottom: 1px solid rgba(0,212,255,0.05);
+  transition: background .14s;
+}
+.af-event:hover {
+  background: rgba(0,212,255,0.025);
+}
+
+/* ── Skeleton shimmer — cyan tint ──────────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg3) 25%,
+    rgba(0,212,255,0.06) 50%,
+    var(--bg3) 75%
+  );
+  background-size: 200% 100%;
+}
+
+/* ── Toast — unified border ────────────────────────────────────── */
+.toast-info {
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.3);
+  color: var(--cyan);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   DEFAULT "NO ROUND" TILE — Cyber terminal, yellow AI theme
+   ══════════════════════════════════════════════════════════════ */
+.bnr-tile-default {
+  height: 72px;
+  opacity: 1;
+  border: 1px solid rgba(255,214,0,0.28);
+  box-shadow: 0 0 20px rgba(255,214,0,0.07), inset 0 0 24px rgba(0,0,0,0.3);
+  cursor: default;
+}
+.bnr-tile-default:hover {
+  border-color: rgba(255,214,0,0.48);
+  box-shadow: 0 0 24px rgba(255,214,0,0.12), inset 0 0 24px rgba(0,0,0,0.3);
+  transform: none;
+}
+
+/* Background gradient — dark with subtle yellow tint top-left */
+.bnr-tile-default .bnr-tile-bg-empty {
+  background:
+    radial-gradient(ellipse at 10% 50%, rgba(255,214,0,0.06) 0%, transparent 55%),
+    linear-gradient(135deg, #080b10 0%, #0e1319 100%);
+}
+
+/* Tint layer — faint yellow diagonal wash */
+.bnr-tile-default .bnr-tile-tint {
+  background: linear-gradient(
+    135deg,
+    rgba(255,214,0,0.04) 0%,
+    transparent 55%,
+    rgba(0,0,0,0.25) 100%
+  );
+}
+
+/* Hide legacy content + footer elements for this tile */
+.bnr-tile-default .bnr-tile-content,
+.bnr-tile-default .bnr-tile-footer { display: none; }
+
+/* ── Inner body: icon + copy ─────────────────────────── */
+.bnr-default-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px 0 5px;
+}
+
+.bnr-ai-scan-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+}
+
+/* Two-icon pair for default tile */
+.bnr-icon-pair {
+  width: auto;
+  gap: 5px;
+}
+
+/* Tile img icons — colorized via CSS filter */
+.bnr-tile-img {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Yellow: targets var(--cls-moto) */
+.bnr-tile-img-yellow {
+  filter: brightness(0) saturate(100%) invert(90%) sepia(100%) saturate(600%) hue-rotate(2deg) brightness(1.05);
+  opacity: 0.9;
+}
+
+/* White: pure white icon */
+.bnr-tile-img-white {
+  filter: brightness(0) invert(1);
+  opacity: 0.75;
+}
+
+/* Info / HIW icon button on play tile */
+.bnr-hiw-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.14s, border-color 0.14s, background 0.14s;
+  margin-left: 4px;
+}
+.bnr-hiw-icon:hover {
+  color: #fff;
+  border-color: rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.12);
+}
+
+/* Cyan: targets var(--cyan) */
+.bnr-tile-img-cyan {
+  filter: brightness(0) saturate(100%) invert(1) sepia(1) saturate(4) hue-rotate(163deg) brightness(1.1);
+  opacity: 0.88;
+}
+
+/* Green: targets var(--ag) — used on play tile when round is live */
+.bnr-lbanner-img-green {
+  filter: brightness(0) saturate(100%) invert(60%) sepia(80%) saturate(400%) hue-rotate(95deg) brightness(1.1);
+  opacity: 0.92;
+}
+
+/* Ensure img inside lbanner-icon is centered */
+.bnr-lbanner-icon-img {
+  display: block;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.bnr-tile-play:hover .bnr-lbanner-icon-img {
+  transform: scale(1.12);
+  opacity: 1;
+}
+
+/* Scan line animation on the SVG line element */
+.bnr-detect-scan {
+  animation: bnr-scan-sweep 2.4s ease-in-out infinite;
+}
+@keyframes bnr-scan-sweep {
+  0%, 100% { opacity: 0; }
+  35%, 65%  { opacity: 0.65; }
+}
+
+/* Copy text */
+.bnr-default-copy {
+  flex: 1;
+  min-width: 0;
+}
+.bnr-tile-default .bnr-tile-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--cls-moto);
+  letter-spacing: 0.02em;
+  margin-bottom: 2px;
+  text-shadow: 0 0 10px rgba(255,214,0,0.3);
+}
+.bnr-tile-default .bnr-tile-info {
+  font-size: 9px;
+  color: rgba(190,215,235,0.6);
+  line-height: 1.4;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Status bar at bottom ───────────────────────────── */
+.bnr-default-status-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 8px;
+  background: rgba(255,214,0,0.05);
+  border-top: 1px solid rgba(255,214,0,0.14);
+}
+
+/* Pulsing yellow dot */
+.bnr-ai-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cls-moto);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 0 rgba(255,214,0,0.55);
+  animation: bnr-ai-pulse 1.5s ease-in-out infinite;
+}
+@keyframes bnr-ai-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255,214,0,0.55); }
+  70%  { box-shadow: 0 0 0 5px rgba(255,214,0,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,214,0,0); }
+}
+
+.bnr-ai-label {
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cls-moto);
+  opacity: 0.82;
+}
+
+.bnr-standby-label {
+  margin-left: auto;
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+  font-size: 7.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(0,212,255,0.45);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CHAT TAB — Cyber terminal aesthetic
+   ══════════════════════════════════════════════════════════════ */
+
+/* Meta row — terminal header bar */
+.chat-meta-row {
+  background: rgba(0,212,255,0.03);
+  border-bottom: 1px solid rgba(0,212,255,0.1);
+  padding: 7px 14px;
+}
+
+/* Online count with live green dot */
+.chat-online-count {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.7rem;
+  color: rgba(0,212,255,0.6);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.chat-online-count::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ag);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 0 rgba(34,197,94,0.5);
+  animation: chat-live-pulse 1.7s ease-in-out infinite;
+}
+@keyframes chat-live-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(34,197,94,0.5); }
+  70%  { box-shadow: 0 0 0 5px rgba(34,197,94,0); }
+  100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+}
+
+/* Online user chips — cyber squared */
+.chat-online-user {
+  border: 1px solid rgba(0,212,255,0.22);
+  background: rgba(0,212,255,0.06);
+  color: rgba(0,212,255,0.7);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.03em;
+  padding: 3px 7px;
+  border-radius: 4px;
+  transition: background .14s, border-color .14s, color .14s;
+}
+.chat-online-user:hover {
+  background: rgba(0,212,255,0.12);
+  border-color: rgba(0,212,255,0.4);
+  color: var(--cyan);
+}
+
+/* Avatars — cyber rounded square */
+.chat-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,212,255,0.25);
+  box-shadow: 0 0 0 2px rgba(0,212,255,0.07);
+  background: var(--bg3);
+}
+
+/* Username — cyan instead of yellow */
+.chat-msg .chat-user {
+  color: var(--cyan);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+/* Timestamp */
+.chat-msg .chat-time {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.63rem;
+  color: rgba(100,116,139,0.55);
+  letter-spacing: 0.02em;
+}
+
+/* Message text */
+.chat-msg .chat-text {
+  font-size: 0.83rem;
+  line-height: 1.45;
+  color: rgba(220,232,245,0.88);
+}
+
+/* System messages — terminal output line */
+.chat-msg.system {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0,212,255,0.03);
+  border: 1px solid rgba(0,212,255,0.1);
+  border-radius: 5px;
+  padding: 5px 9px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  color: rgba(0,212,255,0.5);
+}
+.chat-msg.system > span:first-child::before {
+  content: "> ";
+  color: rgba(0,212,255,0.35);
+  font-weight: 700;
+}
+
+/* Activity items — bet events, gold tinted */
+.chat-activity-item {
+  background: rgba(255,214,0,0.04);
+  border: 1px solid rgba(255,214,0,0.14);
+  border-radius: 6px;
+}
+.chat-activity-item .ca-icon {
+  color: rgba(255,214,0,0.7);
+}
+.chat-activity-item .ca-text {
+  font-size: 0.77rem;
+  color: rgba(200,215,230,0.75);
+}
+.chat-activity-item .ca-text strong {
+  color: var(--cls-moto);
+}
+.chat-activity-item .ca-time {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.63rem;
+  color: rgba(100,116,139,0.55);
+}
+
+/* Input area */
+.chat-input-row input::placeholder {
+  color: rgba(100,116,139,0.45);
+  font-size: 0.84rem;
+}
+
+/* Send button — cyan ghost */
+#chat-send {
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.26);
+  color: var(--cyan);
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 8px 14px;
+  border-radius: 7px;
+  transition: background .16s, border-color .16s, box-shadow .16s;
+}
+#chat-send:hover {
+  background: rgba(0,212,255,0.16);
+  border-color: rgba(0,212,255,0.46);
+  box-shadow: 0 0 10px rgba(0,212,255,0.14);
+}
+
+/* Login hint — terminal style */
+.chat-login-hint {
+  background: rgba(0,212,255,0.025);
+  border-top: 1px solid rgba(0,212,255,0.1);
+  color: rgba(100,116,139,0.65);
+  font-size: 0.78rem;
+  font-family: "JetBrains Mono", monospace;
+  padding: 10px 16px;
+}
+.chat-login-hint a,
+.chat-login-link {
+  color: var(--cyan);
+  font-weight: 700;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+}
+.chat-login-hint a:hover,
+.chat-login-link:hover {
+  color: #7de8ff;
+  text-decoration: underline;
+}
+
+/* Mentions */
+.chat-mention {
+  color: var(--cyan);
+  font-weight: 700;
+  background: rgba(0,212,255,0.09);
+  border-radius: 3px;
+  padding: 0 3px;
+}
+.chat-mention-self {
+  color: var(--cls-moto);
+  font-weight: 700;
+  background: rgba(255,214,0,0.1);
+  border-radius: 3px;
+  padding: 0 3px;
+}
+

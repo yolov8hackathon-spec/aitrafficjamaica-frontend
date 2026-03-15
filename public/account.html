@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Account — AI Traffic Jamaica</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" href="/img/gfdaw-removebg-preview.png" />
+  <link rel="shortcut icon" href="/img/gfdaw-removebg-preview.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=JetBrains+Mono:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="/src/css/index.css" />
+  <script type="module" src="/src/utils/vercel-analytics-init.js"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body class="dark account-page">
+
+  <header class="site-header">
+    <a href="/" class="logo" id="site-logo">
+      <span class="logo-img-wrap">
+        <img class="logo-icon" src="/img/iconinframes.png" alt="TRAFFIC.AI JAMAICA" />
+        <img class="logo-ai-frame" src="/img/aiframes.png" alt="" aria-hidden="true" />
+      </span>
+      <span class="logo-title-block">
+        <span class="logo-part-main">AI TRAFFIC</span>
+        <span class="logo-part-loc">JAMAICA</span>
+      </span>
+    </a>
+    <nav class="header-nav">
+      <a id="account-nav-admin" href="/admin" class="nav-dd-item hidden">Admin</a>
+      <a href="/" class="nav-login-btn">Live</a>
+      <span id="nav-user">
+        <div class="nav-user-menu">
+          <span class="nav-avatar-trigger" title="Profile">
+            <img id="account-header-avatar" class="nav-avatar" alt="Profile" />
+          </span>
+        </div>
+      </span>
+      <button id="btn-logout" class="nav-login-btn">Sign out</button>
+    </nav>
+  </header>
+
+  <main class="account-main">
+
+    <!-- ── Hero card ─────────────────────────────────────────── -->
+    <div class="acc-hero-card">
+
+      <!-- Avatar (click to upload) -->
+      <div class="acc-avatar-wrap" id="acc-avatar-wrap" title="Change avatar">
+        <img id="profile-avatar-img" class="acc-avatar" alt="Avatar" />
+        <div class="acc-avatar-overlay" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <input id="profile-avatar-input" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" class="hidden" />
+      </div>
+
+      <!-- Identity + balance -->
+      <div class="acc-hero-info">
+        <div class="acc-username-view" id="acc-username-view">
+          <span id="acc-username-display" class="acc-username-display" title="Click to edit">—</span>
+          <button class="acc-edit-btn" id="acc-edit-username-btn" title="Edit username">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11" aria-hidden="true">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+          </button>
+        </div>
+        <div id="acc-username-edit" class="acc-username-edit hidden">
+          <input id="profile-username" type="text" maxlength="32" placeholder="Username" class="acc-username-input" />
+          <button id="btn-save-profile" class="btn-primary acc-save-btn">Save</button>
+          <button id="acc-cancel-edit-btn" class="btn-secondary acc-save-btn">✕</button>
+          <span id="profile-msg" class="muted acc-save-msg"></span>
+        </div>
+        <div class="acc-balance-row">
+          <span id="balance-display" class="acc-balance-val">—</span>
+          <span class="acc-balance-unit">PTS</span>
+          <span id="account-ws-status" class="acc-ws-dot" title="Connecting…"></span>
+        </div>
+      </div>
+
+      <!-- Stat tiles -->
+      <div class="acc-stat-tiles">
+        <div class="acc-stat-tile">
+          <span id="stat-total" class="acc-stat-val">—</span>
+          <span class="acc-stat-label">Guesses</span>
+        </div>
+        <div class="acc-stat-tile">
+          <span id="stat-wins" class="acc-stat-val">—</span>
+          <span class="acc-stat-label">Won</span>
+        </div>
+        <div class="acc-stat-tile">
+          <span id="stat-rate" class="acc-stat-val">—</span>
+          <span class="acc-stat-label">Win Rate</span>
+        </div>
+        <div class="acc-stat-tile">
+          <span id="stat-exact" class="acc-stat-val">—</span>
+          <span class="acc-stat-label">Exact</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Tabs ───────────────────────────────────────────────── -->
+    <div class="acc-tabs">
+      <button class="acc-tab-btn active" data-acctab="history">Guess History</button>
+      <button class="acc-tab-btn" data-acctab="pending">Pending</button>
+      <button class="acc-tab-btn" data-acctab="settings">Settings</button>
+    </div>
+
+    <!-- ── Tab: History ──────────────────────────────────────── -->
+    <div id="acc-tab-history" class="acc-tab-panel">
+      <div id="history-container"><p class="loading">Loading…</p></div>
+    </div>
+
+    <!-- ── Tab: Pending ──────────────────────────────────────── -->
+    <div id="acc-tab-pending" class="acc-tab-panel hidden">
+      <div id="pending-container"><p class="loading">Loading…</p></div>
+    </div>
+
+    <!-- ── Tab: Settings ─────────────────────────────────────── -->
+    <div id="acc-tab-settings" class="acc-tab-panel hidden">
+      <div class="acc-settings-section">
+        <div class="acc-settings-title">Account Info</div>
+        <div class="acc-settings-row">
+          <span class="acc-settings-key">Email</span>
+          <span id="acc-settings-email" class="acc-settings-val">—</span>
+        </div>
+        <div class="acc-settings-row">
+          <span class="acc-settings-key">Member since</span>
+          <span id="acc-settings-since" class="acc-settings-val">—</span>
+        </div>
+        <div class="acc-settings-row">
+          <span class="acc-settings-key">User ID</span>
+          <span id="acc-settings-uid" class="acc-settings-val acc-uid-mono">—</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script type="module" src="/src/account-main.js"></script>
+</body>
+</html>

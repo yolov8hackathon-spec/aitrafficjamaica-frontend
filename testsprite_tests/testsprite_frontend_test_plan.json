@@ -1,0 +1,2334 @@
+[
+  {
+    "id": "TC001",
+    "title": "FPS badge overlay is visible on the stream",
+    "description": "Verifies the FPS badge overlay appears on top of the live stream.",
+    "category": "Live Stream",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"live stream video\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"FPS badge\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"FPS\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"SIGNAL LOST\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Detection zone overlay is drawn on the stream",
+    "description": "Verifies the detection zone overlay is visible on the stream when the dashboard loads.",
+    "category": "Live Stream",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"live stream video\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"detection zone overlay\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"FPS badge\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"SIGNAL LOST\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "FPS overlay remains visible after waiting on the page",
+    "description": "Verifies the FPS badge does not disappear after the page has been open briefly.",
+    "category": "Live Stream",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"FPS badge\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Wait for 10 seconds"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"FPS badge\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"live stream video\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Floating vehicle count widget is visible on the main dashboard",
+    "description": "Verifies the floating vehicle count widget renders on the main dashboard and shows an initial count label/value.",
+    "category": "Vehicle Count Widget",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"floating vehicle count widget\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Vehicles\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"vehicle count value\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Vehicle count value updates over time (realtime WebSocket feed)",
+    "description": "Verifies the vehicle count changes over time, indicating realtime updates are being received.",
+    "category": "Vehicle Count Widget",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"vehicle count value\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Wait for 10 seconds"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"vehicle count value\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Wait for 10 seconds"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"vehicle count value\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Mobile-style expand: tapping the widget expands to show additional details/controls",
+    "description": "Verifies the widget can be expanded via tap/click and reveals its expanded content.",
+    "category": "Vehicle Count Widget",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"floating vehicle count widget\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"floating vehicle count widget\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"expanded vehicle count panel\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"vehicle count value\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Mobile-style collapse: tapping the widget again collapses the expanded panel",
+    "description": "Verifies the expanded widget can be collapsed back to its compact state.",
+    "category": "Vehicle Count Widget",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"floating vehicle count widget\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"expanded vehicle count panel\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"floating vehicle count widget\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"expanded vehicle count panel\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Guess mode progress display appears when entering guess mode",
+    "description": "Verifies the widget shows a progress-style display (X/Y vehicles) when the page is in guess mode.",
+    "category": "Vehicle Count Widget",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"floating vehicle count widget\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Guess\" or \"Start Guess\" control on the dashboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"guess mode progress bar\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"/\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Guess mode progress increments while the round is active",
+    "description": "Verifies that the guess-mode progress display updates over time during an active round.",
+    "category": "Vehicle Count Widget",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Guess\" or \"Start Guess\" control on the dashboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"guess mode progress bar\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Wait for 15 seconds"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"guess mode progress bar\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"progress count text (X/Y)\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Widget remains present and readable after interacting with other dashboard panels",
+    "description": "Verifies the floating widget stays visible and continues to present the count while opening/closing other UI areas (non-stream dependent).",
+    "category": "Vehicle Count Widget",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"floating vehicle count widget\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Leaderboard\" panel/tab on the dashboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"floating vehicle count widget\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Chat\" panel/tab on the dashboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"floating vehicle count widget\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Place a valid guess during an active round and see an active receipt",
+    "description": "Verifies a logged-in user can submit a numeric vehicle-count guess during an active round and immediately sees an active guess receipt.",
+    "category": "Guess Panel (Live Bet)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"avatar\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Time remaining\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"25\" into the vehicle count guess input field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Submit Guess button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Active\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Scorecard appears after round resolves for a submitted guess",
+    "description": "Verifies that after placing a guess, the UI shows a scoring card (EXACT/CLOSE/MISS) once the round resolves.",
+    "category": "Guess Panel (Live Bet)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Time remaining\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"12\" into the vehicle count guess input field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Submit Guess button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Active\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Wait for text \"EXACT\" to be visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"EXACT\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Non-numeric guess input shows validation error and blocks submission",
+    "description": "Verifies entering a non-numeric value results in a visible validation error and does not create an active guess receipt.",
+    "category": "Guess Panel (Live Bet)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Time remaining\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"abc\" into the vehicle count guess input field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Submit Guess button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Please enter a valid number\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Empty guess input shows validation error on submit",
+    "description": "Verifies submitting with an empty guess input shows a visible validation message and prevents creating a receipt.",
+    "category": "Guess Panel (Live Bet)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Time remaining\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the Submit Guess button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Guess is required\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Decimal guess input is rejected with validation error",
+    "description": "Verifies that a decimal vehicle-count guess is treated as invalid and shows a validation error.",
+    "category": "Guess Panel (Live Bet)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Time remaining\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"12.5\" into the vehicle count guess input field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Submit Guess button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Please enter a whole number\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Negative guess input is rejected with validation error",
+    "description": "Verifies that a negative number guess shows a visible validation error and does not submit.",
+    "category": "Guess Panel (Live Bet)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Time remaining\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"-1\" into the vehicle count guess input field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Submit Guess button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Must be 0 or greater\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Leading/trailing spaces in guess are accepted and submission succeeds",
+    "description": "Verifies that a numeric guess with surrounding whitespace is handled gracefully and results in an active receipt.",
+    "category": "Guess Panel (Live Bet)",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Time remaining\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"  30  \" into the vehicle count guess input field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Submit Guess button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Active\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC018",
+    "title": "Submit guess button remains disabled or shows error when no active round is present",
+    "description": "Verifies the UI prevents submitting a guess when there is no active round visible in the guess panel.",
+    "category": "Guess Panel (Live Bet)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "action",
+        "description": "Wait for text \"No active round\" to be visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"No active round\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"10\" into the vehicle count guess input field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Submit Guess button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Round is not active\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC019",
+    "title": "Open Leaderboard and view default ranked list",
+    "description": "Verifies the leaderboard panel opens from the main dashboard and shows a ranked list with user names and points.",
+    "category": "Leaderboard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Leaderboard\" tab to open"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Leaderboard\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Ranked list\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Points\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC020",
+    "title": "Switch to 3MIN leaderboard tab and see updated list",
+    "description": "Verifies switching the time-window tab to 3MIN updates the visible leaderboard state.",
+    "category": "Leaderboard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Leaderboard\" tab to open"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"3MIN\" tab"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"3MIN tab\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Ranked list\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC021",
+    "title": "Switch across 1MIN, 3MIN, and 5MIN tabs",
+    "description": "Verifies all leaderboard time-window tabs are selectable and each shows a ranked list.",
+    "category": "Leaderboard",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Leaderboard\" tab to open"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"1MIN\" tab"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Ranked list\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"5MIN\" tab"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Ranked list\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"3MIN\" tab"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Ranked list\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC022",
+    "title": "Manual refresh reloads scores on 3MIN tab",
+    "description": "Verifies the refresh button reloads leaderboard scores while staying on the selected time-window tab.",
+    "category": "Leaderboard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Leaderboard\" tab to open"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"3MIN\" tab"
+      },
+      {
+        "type": "action",
+        "description": "Click on the refresh button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Ranked list\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"3MIN tab\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC023",
+    "title": "Leaderboard shows users with points in the ranked list",
+    "description": "Verifies the ranked list presents user rows containing a user identifier and a points value.",
+    "category": "Leaderboard",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Leaderboard\" tab to open"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Ranked list\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Points\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Rank 1 row\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC024",
+    "title": "Leaderboard lazy-load: list appears after opening tab",
+    "description": "Verifies the leaderboard content is not required until the tab is opened and loads upon opening.",
+    "category": "Leaderboard",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Leaderboard panel\" is not visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Leaderboard\" tab to open"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Ranked list\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Points\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC025",
+    "title": "Send a chat message with Enter and see it appear in chat panel",
+    "description": "Verifies a user can post a message via Enter and it appears in the chat list in real time.",
+    "category": "Public Chat",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Chat\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Hello chat - Enter send\" into the chat input"
+      },
+      {
+        "type": "action",
+        "description": "Press Enter"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Hello chat - Enter send\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC026",
+    "title": "Send a chat message with the Send button and see it appear",
+    "description": "Verifies a user can post a message via the Send button and it appears in the chat list.",
+    "category": "Public Chat",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Chat\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Hello chat - button send\" into the chat input"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Send\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Hello chat - button send\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC027",
+    "title": "Posting a message creates an activity feed overlay entry",
+    "description": "Verifies that after sending a message, an activity feed item appears over the stream area.",
+    "category": "Public Chat",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Chat\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Activity\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Overlay check message\" into the chat input"
+      },
+      {
+        "type": "action",
+        "description": "Press Enter"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Overlay check message\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC028",
+    "title": "Empty message is not sent",
+    "description": "Verifies that attempting to send an empty message does not create a new visible message in chat.",
+    "category": "Public Chat",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Chat\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the chat input"
+      },
+      {
+        "type": "action",
+        "description": "Press Enter"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Send\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC029",
+    "title": "Whitespace-only message is not sent",
+    "description": "Verifies that a whitespace-only message does not appear as a new message in the chat list.",
+    "category": "Public Chat",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Chat\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"     \" into the chat input"
+      },
+      {
+        "type": "action",
+        "description": "Press Enter"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Chat\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC030",
+    "title": "Message persists in the chat panel after a page refresh",
+    "description": "Verifies that after sending a message, refreshing the page still shows the message in the chat history (if history is loaded).",
+    "category": "Public Chat",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Chat\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Refresh persistence message\" into the chat input"
+      },
+      {
+        "type": "action",
+        "description": "Press Enter"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Refresh persistence message\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Refresh persistence message\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC031",
+    "title": "Register a new account from the auth modal and see avatar + balance in the nav",
+    "description": "Verifies a user can register successfully and the UI updates to show the logged-in state (avatar and balance).",
+    "category": "User Authentication",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the LOGIN button in the navigation bar"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Register tab in the auth modal"
+      },
+      {
+        "type": "action",
+        "description": "Type \"wlz_testuser_{{UNIQUE}}@example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"ValidPass123!\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Register button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"avatar\" is visible in the navigation bar"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Balance\" is visible in the navigation bar"
+      }
+    ]
+  },
+  {
+    "id": "TC032",
+    "title": "Show an error message for invalid login credentials",
+    "description": "Verifies the login form rejects invalid credentials and shows a visible error message.",
+    "category": "User Authentication",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the LOGIN button in the navigation bar"
+      },
+      {
+        "type": "action",
+        "description": "Type \"nonexistent_user_999@example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"WrongPassword!\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Invalid\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"auth modal\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC033",
+    "title": "Login with valid credentials and see avatar + balance in the nav",
+    "description": "Verifies a registered user can log in successfully and the UI shows the authenticated state.",
+    "category": "User Authentication",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the LOGIN button in the navigation bar"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"avatar\" is visible in the navigation bar"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Balance\" is visible in the navigation bar"
+      }
+    ]
+  },
+  {
+    "id": "TC034",
+    "title": "Register with mismatched passwords and verify inline validation error is shown",
+    "description": "Verifies the registration form blocks submission when password confirmation does not match and shows a visible validation message.",
+    "category": "User Authentication",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the LOGIN button in the navigation bar"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Register tab in the auth modal"
+      },
+      {
+        "type": "action",
+        "description": "Type \"wlz_mismatch_{{UNIQUE}}@example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"ValidPass123!\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"DifferentPass123!\" into the confirm password field"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"match\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC035",
+    "title": "Attempt login with empty required fields and verify required-field messaging",
+    "description": "Verifies the login form enforces required fields and shows a visible error/required indicator when submitting without inputs.",
+    "category": "User Authentication",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the LOGIN button in the navigation bar"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"required\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"auth modal\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC036",
+    "title": "Zone polygon overlay is visible on the main dashboard",
+    "description": "Verifies the detection zone polygon is drawn over the stream overlay on the main dashboard.",
+    "category": "Detection Zone Overlay",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify page title contains \"WHITELINEZ\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Live stream\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Zone overlay canvas\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Detection zone polygon\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC037",
+    "title": "Detection boxes render on top of the stream when live detections are present",
+    "description": "Verifies that at least one detection box can appear on the overlay during live detections.",
+    "category": "Detection Zone Overlay",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Detection overlay canvas\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Wait for element \"Detection box\" to be visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Detection box\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Detection label\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC038",
+    "title": "Overlay canvases remain visible after stream load state changes",
+    "description": "Verifies the zone and detection overlays remain present even as the stream area transitions through loading/ready states.",
+    "category": "Detection Zone Overlay",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Stream container\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Zone overlay canvas\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Detection overlay canvas\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Wait for element \"Stream is playing\" to be visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Zone overlay canvas\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Detection overlay canvas\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC039",
+    "title": "Camera switch attempts to load a new zone overlay",
+    "description": "Verifies that switching cameras triggers a visible change in the overlay area (zone redraw attempt for the new camera).",
+    "category": "Detection Zone Overlay",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Camera switcher\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Detection zone polygon\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Camera switcher\""
+      },
+      {
+        "type": "action",
+        "description": "Select \"Next camera\" from dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Loading zone\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Zone overlay canvas\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC040",
+    "title": "If zone fails to load after camera switch, show empty overlay and reload affordance",
+    "description": "Verifies the UI provides an empty overlay area and a reload affordance when the zone does not load for a newly selected camera.",
+    "category": "Detection Zone Overlay",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Camera switcher\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Camera switcher\""
+      },
+      {
+        "type": "action",
+        "description": "Select \"Camera with missing zone\" from dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Wait for element \"Zone failed to load\" to be visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Empty overlay area\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Reload zone\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC041",
+    "title": "Reload affordance re-attempts loading the zone overlay after failure",
+    "description": "Verifies the reload control is actionable and attempts to restore the polygon overlay after a zone-load failure.",
+    "category": "Detection Zone Overlay",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Camera switcher\""
+      },
+      {
+        "type": "action",
+        "description": "Select \"Camera with missing zone\" from dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Reload zone\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Reload zone\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Loading zone\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Detection zone polygon\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC042",
+    "title": "Open Gov Analytics overlay and see charts rendered",
+    "description": "Verifies an authenticated user can open the Gov Analytics overlay and see Chart.js charts in the Analytics tab.",
+    "category": "Gov Analytics Overlay",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Gov Analytics\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Analytics\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Analytics chart\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC043",
+    "title": "Switch to Live Data tab and see live data section visible",
+    "description": "Verifies an authenticated user can navigate to the Live Data tab within the Gov Analytics overlay and see live data UI.",
+    "category": "Gov Analytics Overlay",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Gov Analytics\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Live Data\" tab"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Live Data\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC044",
+    "title": "Browse Agencies tab and see agencies content rendered",
+    "description": "Verifies an authenticated user can open the Agencies tab in the overlay and see agency-related UI content.",
+    "category": "Gov Analytics Overlay",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Gov Analytics\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Agencies\" tab"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Agencies\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC045",
+    "title": "Close Gov Analytics overlay from the overlay UI",
+    "description": "Verifies an authenticated user can close the Gov Analytics overlay and return to the main dashboard view.",
+    "category": "Gov Analytics Overlay",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Gov Analytics\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Analytics\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Close\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Analytics\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC046",
+    "title": "Lazy-load recovery: charts blank on first open, then render after reopen",
+    "description": "Verifies the known Chart.js first-open issue can be recovered by closing and reopening the overlay, resulting in charts being visible.",
+    "category": "Gov Analytics Overlay",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Gov Analytics\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Analytics\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Analytics chart\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC047",
+    "title": "Account Page shows bet/guess history list section header",
+    "description": "Verifies the Account page contains a clearly labeled bet/guess history section for an authenticated user.",
+    "category": "Account Page",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Account\" link or menu item"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/account.html\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"History\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC048",
+    "title": "Account Page shows profile/account details section",
+    "description": "Verifies the Account page displays a profile or account information area after login.",
+    "category": "Account Page",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Log in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Account\" link or menu item"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/account.html\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Profile\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC049",
+    "title": "Admin can log in and view system health panel",
+    "description": "Verifies an admin user can access /admin.html and see system health statuses on the page.",
+    "category": "Admin Dashboard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin.html\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"System Health\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"AI loop\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Round resolver\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC050",
+    "title": "Admin sees bet round management controls",
+    "description": "Verifies the admin dashboard exposes controls/sections for creating and managing bet rounds.",
+    "category": "Admin Dashboard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin.html\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Rounds\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Manage\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC051",
+    "title": "Admin can create a new bet round (happy path)",
+    "description": "Verifies an admin can create a bet round from the admin dashboard and sees a visible success state.",
+    "category": "Admin Dashboard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Create round\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Round created\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Active\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Round\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC052",
+    "title": "Admin can manage an existing round (stop/end/resolve control visible)",
+    "description": "Verifies round management actions are visible for an existing round on the admin dashboard.",
+    "category": "Admin Dashboard",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin.html\""
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the \"Rounds\" section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"End round\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Resolve\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC053",
+    "title": "Admin can view and access camera stream configuration section",
+    "description": "Verifies camera stream configuration controls/section are visible to admin users.",
+    "category": "Admin Dashboard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin.html\""
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the \"Cameras\" section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Camera\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Stream\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC054",
+    "title": "Admin can open detection zone configuration section",
+    "description": "Verifies detection zone configuration is present and accessible on the admin dashboard.",
+    "category": "Admin Dashboard",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin.html\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Zones\" tab or section link"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Detection zone\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Zone\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC055",
+    "title": "Admin can trigger an ML training job from the dashboard",
+    "description": "Verifies the admin can initiate an ML training job and receives visible confirmation.",
+    "category": "Admin Dashboard",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the \"ML Jobs\" section"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Start training\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Training\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Job\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC056",
+    "title": "Admin can access banner and promotion management section",
+    "description": "Verifies banner/promotions management controls are visible to admin users.",
+    "category": "Admin Dashboard",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin.html\""
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Banners\" tab or section link"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Banners\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Promotion\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC057",
+    "title": "Non-admin user is denied admin access (access denied message)",
+    "description": "Verifies a non-admin user cannot see admin controls and instead sees an access denied message.",
+    "category": "Admin Dashboard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"nonadmin_user@example.com\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"wrongpassword123\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /admin.html"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Access denied\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Admin\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"You do not have permission\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC058",
+    "title": "Open How It Works modal from a Play banner tile and close it",
+    "description": "Verifies a user can open the How It Works modal from a Play tile on the main page and dismiss it.",
+    "category": "Banner System & How It Works Modal",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Play\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Play\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"How It Works\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"game\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Close\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"How It Works\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC059",
+    "title": "Open How It Works modal from an Info banner tile and close it",
+    "description": "Verifies a user can open the How It Works modal from an Info tile on the main page and dismiss it.",
+    "category": "Banner System & How It Works Modal",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Info\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Info\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"How It Works\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"points\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Close\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"How It Works\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC060",
+    "title": "How It Works modal can be dismissed with the Escape key",
+    "description": "Verifies the How It Works modal supports keyboard dismissal via Escape.",
+    "category": "Banner System & How It Works Modal",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Play\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Play\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"How It Works\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Press Escape"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"How It Works\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC061",
+    "title": "How It Works modal content remains readable after scrolling",
+    "description": "Verifies the How It Works modal shows explanatory content and remains usable when scrolling.",
+    "category": "Banner System & How It Works Modal",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Play\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Play\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"How It Works\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the bottom of the modal content"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Close\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Close\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"How It Works\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC062",
+    "title": "Banner tiles are visible on initial load of the main page",
+    "description": "Verifies promotional banner tiles render on the main dashboard page.",
+    "category": "Banner System & How It Works Modal",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Promotional banners\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Play\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Info\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC063",
+    "title": "Realtime banner update does not reach client and shows stale content with an update indicator",
+    "description": "Verifies that when realtime banner updates fail to reach clients, the main page shows stale banner content and an update indicator.",
+    "category": "Banner System & How It Works Modal",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Promotional banners\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Banner update indicator\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Update\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC064",
+    "title": "How It Works modal can be opened and closed repeatedly without getting stuck",
+    "description": "Verifies repeated open/close cycles of the How It Works modal work from the same banner tile.",
+    "category": "Banner System & How It Works Modal",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Play\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Play\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"How It Works\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Close\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"How It Works\" is not visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Play\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"How It Works\" is visible"
+      }
+    ]
+  }
+]

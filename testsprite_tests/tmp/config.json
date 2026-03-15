@@ -1,0 +1,18 @@
+{
+  "status": "init",
+  "scope": "codebase",
+  "type": "frontend",
+  "localEndpoint": "http://localhost:5173/",
+  "serverPort": 45831,
+  "executionArgs": {
+    "projectName": "whitelinez-frontend",
+    "projectPath": "/tmp/whitelinez-frontend",
+    "testIds": [],
+    "additionalInstruction": "",
+    "serverMode": "development",
+    "envs": {
+      "API_KEY": "sk-user-SXT1yGHWVcQCTKEhXynmr3CwMhTE046G0ziYU6pYyFx6qS_ZCKWXdPsAFt7jlHsuIxg6Wc6f1mKe3fLu6ndn5H0MK46-Pc153XzFNbW8GhhzPOoAW-m_1yaeCoyQaqS22TM"
+    }
+  },
+  "proxy": "http://231413cd-3a32-4c7e-b707-3e3c63f6c840:MwMRa7AoqCM3eY1WdkLDWPwEOwDtgoSK@tun.testsprite.com:8080"
+}

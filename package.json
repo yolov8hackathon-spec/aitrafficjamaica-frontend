@@ -1,0 +1,39 @@
+{
+  "name": "whitelinez-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/postbuild.js",
+    "preview": "vite preview",
+    "lint": "echo 'No linter configured'",
+    "purge": "node scripts/purge-cf.js"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.1",
+    "@playwright/test": "^1.58.2",
+    "terser": "^5.46.0",
+    "vercel": "^37.0.0",
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.98.0",
+    "chart.js": "^4.5.1",
+    "hls.js": "^1.6.15",
+    "pixi.js": "^7.4.3"
+  },
+  "type": "module",
+  "description": "",
+  "main": "vite.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whitelinez/ai-traffic-jamaica.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/whitelinez/whitelinez/issues"
+  },
+  "homepage": "https://github.com/whitelinez/whitelinez#readme"
+}

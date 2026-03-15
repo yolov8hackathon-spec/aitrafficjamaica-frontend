@@ -1,0 +1,214 @@
+version: "2"
+type: frontend
+tech_stack:
+  - language: JavaScript (ES Modules, Vanilla JS)
+  - framework: Vite 7 (build tool, no UI framework)
+  - ui_library: Custom CSS (main.css 11k+ lines), HLS.js, Supabase JS SDK v2
+  - other: Chart.js (lazy-loaded), YOLO WebSocket detection feed
+
+routes:
+  - path: /
+    file: public/index.html
+    auth_required: false
+    description: Main dashboard — live stream, vehicle count widget, guess panel, leaderboard, chat
+  - path: /account.html
+    file: public/account.html
+    auth_required: true
+    description: User account page — profile, balance, bet history
+  - path: /admin.html
+    file: public/admin.html
+    auth_required: true
+    description: Admin dashboard — camera management, round control, ML jobs, banners, zones
+
+features:
+  - name: Live Stream
+    description: HLS video stream of a live traffic camera feed with offline overlay
+    files:
+      - public/src/services/stream.js
+      - public/src/overlays/fps-overlay.js
+    entry_route: /
+    user_interactions:
+      - View live HLS video stream auto-playing on page load
+      - See FPS badge overlay on stream
+      - See "SIGNAL LOST" overlay when stream is offline
+    api_calls:
+      - method: GET
+        endpoint: /api/stream
+      - method: GET
+        endpoint: /api/token
+    auth_required: false
+
+  - name: Vehicle Count Widget
+    description: Floating count widget showing real-time vehicle counts from WebSocket
+    files:
+      - public/src/overlays/floating-count.js
+      - public/src/services/counter.js
+    entry_route: /
+    user_interactions:
+      - See live vehicle count updating in real-time
+      - Tap widget on mobile to expand/collapse
+      - See progress bar in guess mode (X/Y vehicles)
+    api_calls:
+      - method: WS
+        endpoint: /ws/live
+    auth_required: false
+
+  - name: Guess Panel (Live Bet)
+    description: Users guess how many vehicles will pass in a 1/3/5 minute window
+    files:
+      - public/src/ui/live-bet.js
+      - public/src/services/markets.js
+    entry_route: /
+    user_interactions:
+      - View current active round with time remaining
+      - Enter a vehicle count guess in the input field
+      - Click Submit Guess button
+      - See EXACT / CLOSE / MISS scoring card
+      - View active guess receipt with status
+    api_calls:
+      - method: POST
+        endpoint: /api/bets/place
+      - method: GET
+        endpoint: /api/bets/history
+    auth_required: true
+
+  - name: Leaderboard
+    description: Public leaderboard showing top guessers per time window
+    files:
+      - public/src/ui/activity.js
+    entry_route: /
+    user_interactions:
+      - Click Leaderboard tab to open
+      - Switch between 1MIN / 3MIN / 5MIN window tabs
+      - Click refresh button to reload scores
+      - See ranked list of users with points
+    api_calls:
+      - method: GET
+        endpoint: https://zaxycvrbdzkptjzrcxel.supabase.co/rest/v1/bets
+    auth_required: false
+
+  - name: Public Chat
+    description: Real-time public chat with stream activity overlay
+    files:
+      - public/src/ui/chat.js
+    entry_route: /
+    user_interactions:
+      - Type a message in the chat input
+      - Press Enter or click Send to post
+      - See messages appear in real-time from other users
+      - See activity feed overlaid on stream
+    api_calls:
+      - method: WS
+        endpoint: supabase realtime channel
+    auth_required: false
+
+  - name: Camera Switcher
+    description: Switch between multiple AI traffic cameras
+    files:
+      - public/src/ui/camera-switcher.js
+    entry_route: /
+    user_interactions:
+      - Click camera tile/icon to open camera selection modal
+      - See list of available cameras with FPS badges
+      - Click a camera to switch the stream
+      - See stream switching overlay animation
+    api_calls:
+      - method: GET
+        endpoint: https://zaxycvrbdzkptjzrcxel.supabase.co/rest/v1/cameras
+    auth_required: false
+
+  - name: User Authentication
+    description: Login, register, guest access via Supabase Auth
+    files:
+      - public/src/services/auth.js
+      - public/src/main.js
+    entry_route: /
+    user_interactions:
+      - Click LOGIN button in nav to open auth modal
+      - Enter email and password to log in
+      - Click Register tab to create an account
+      - Click Continue as Guest for anonymous access
+      - See avatar and balance appear in nav on login
+      - Click logout to sign out
+    api_calls:
+      - method: POST
+        endpoint: https://zaxycvrbdzkptjzrcxel.supabase.co/auth/v1/token
+    auth_required: false
+
+  - name: Detection Zone Overlay
+    description: Canvas polygon overlay showing AI detection zones on the stream
+    files:
+      - public/src/overlays/zone-overlay.js
+      - public/src/overlays/detection-overlay.js
+    entry_route: /
+    user_interactions:
+      - See polygon zone drawn over stream canvas
+      - Hover over zone to see glow highlight and crosshair
+      - See detection boxes drawn around detected vehicles
+    api_calls:
+      - method: WS
+        endpoint: /ws/live
+    auth_required: false
+
+  - name: Gov Analytics Overlay
+    description: Government/agency analytics panel with charts and data export
+    files:
+      - public/src/main.js
+    entry_route: /
+    user_interactions:
+      - Click Gov Analytics button to open overlay
+      - View analytics tab with Chart.js charts
+      - View live data tab
+      - Click export to download CSV
+      - Browse agencies tab
+    api_calls:
+      - method: GET
+        endpoint: https://zaxycvrbdzkptjzrcxel.supabase.co/rest/v1/count_snapshots
+    auth_required: true
+
+  - name: Account Page
+    description: User profile, balance history, and guess history
+    files:
+      - public/src/account-main.js
+      - public/account.html
+    entry_route: /account.html
+    user_interactions:
+      - View current balance
+      - See bet/guess history list
+      - View win/loss breakdown
+    api_calls:
+      - method: GET
+        endpoint: https://zaxycvrbdzkptjzrcxel.supabase.co/rest/v1/bets
+    auth_required: true
+
+  - name: Admin Dashboard
+    description: Admin-only panel for managing cameras, rounds, ML jobs, banners
+    files:
+      - public/src/admin/admin-init.js
+      - public/src/admin-main.js
+      - public/admin.html
+    entry_route: /admin.html
+    user_interactions:
+      - View system health (AI loop, round resolver, bet resolver status)
+      - Create/manage bet rounds
+      - Configure camera streams and zones
+      - Manage banners and promotions
+      - Trigger ML training jobs
+      - Assign user roles
+    api_calls:
+      - method: GET
+        endpoint: /api/admin/health
+      - method: POST
+        endpoint: /api/admin/rounds
+    auth_required: true
+
+known_limitations:
+  - issue: Stream requires Railway backend to be live; if /api/token fails the stream won't load (non-fatal after fix)
+    location: public/src/services/stream.js
+    impact: Stream video unavailable when backend is down; rest of page still loads
+  - issue: Gov analytics overlay uses Chart.js lazy-loaded; may show blank on first open
+    location: public/src/main.js
+    impact: User may need to close and reopen panel
+  - issue: Dev server limits TestSprite to 15 concurrent tests
+    location: vite.config.js
+    impact: Full test suite runs sequentially

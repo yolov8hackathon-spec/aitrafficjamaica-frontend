@@ -1,0 +1,323 @@
+/* ── Nav icon buttons — compact Apple-style icon row ───────────────────────────── */
+.nav-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  color: rgba(160,190,220,0.55);
+  background: rgba(10,18,28,0.5);
+  border: 1px solid rgba(0,212,255,0.14);
+  transition: color .16s, border-color .16s, box-shadow .16s, background .16s;
+  text-decoration: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.nav-icon-btn:hover {
+  color: var(--cyan);
+  border-color: rgba(0,212,255,0.44);
+  background: rgba(0,212,255,0.06);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.07);
+  text-decoration: none;
+}
+
+/* Admin — AI scan box: always accented cyan, matches logo */
+.nav-icon-admin {
+  color: var(--cyan);
+  border-color: rgba(0,212,255,0.28);
+  background: rgba(0,212,255,0.05);
+}
+.nav-icon-admin:hover {
+  color: #e0f8ff;
+  border-color: rgba(0,212,255,0.58);
+  background: rgba(0,212,255,0.11);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.09), inset 0 0 10px rgba(0,212,255,0.07);
+}
+
+/* Register — cyan tint CTA */
+.nav-icon-register {
+  color: var(--cyan);
+  border-color: rgba(0,212,255,0.24);
+}
+.nav-icon-register:hover {
+  color: #e0f8ff;
+  border-color: rgba(0,212,255,0.52);
+  background: rgba(0,212,255,0.09);
+}
+
+/* Logout — neutral, red on hover */
+.nav-icon-logout:hover {
+  color: var(--red);
+  border-color: rgba(239,68,68,0.42);
+  background: rgba(239,68,68,0.05);
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.07);
+}
+
+/* Avatar button — cyan scan-box corners like the logo */
+.nav-avatar-btn {
+  position: relative;
+  border-color: rgba(0,212,255,0.22);
+}
+.nav-avatar-btn::before,
+.nav-avatar-btn::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-color: var(--cyan);
+  border-style: solid;
+  opacity: 0.42;
+  pointer-events: none;
+  transition: opacity .16s;
+}
+.nav-avatar-btn::before {
+  top: 1px; left: 1px;
+  border-width: 1.5px 0 0 1.5px;
+}
+.nav-avatar-btn::after {
+  bottom: 1px; right: 1px;
+  border-width: 0 1.5px 1.5px 0;
+}
+.nav-avatar-btn:hover::before,
+.nav-avatar-btn:hover::after { opacity: 0.85; }
+.nav-avatar-btn:hover { border-color: rgba(0,212,255,0.44); }
+
+.nav-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+/* nav-link kept for any remaining text-link usages */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--muted);
+  font-size: 0.88rem;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  line-height: 1;
+  transition: color .15s;
+}
+.nav-link:hover { color: var(--text); text-decoration: none; }
+
+/* â”€â”€ Auth pages â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% 40%, rgba(0,212,255,0.07) 0%, transparent 65%),
+              linear-gradient(160deg, #080b12 0%, #0d111a 50%, #07090f 100%);
+}
+
+.auth-card {
+  background: rgba(13,15,22,0.82);
+  border: 1px solid rgba(0,212,255,0.14);
+  border-radius: 12px;
+  padding: 28px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,212,255,0.06);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* ── Login Modal ─────────────────────────────────────────────── */
+.auth-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.auth-modal.hidden { display: none; }
+.auth-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.12);
+  cursor: pointer;
+}
+.auth-modal-card {
+  position: relative;
+  z-index: 1;
+  animation: modalIn 0.22s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(-14px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.auth-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 0;
+  transition: color 0.15s, background 0.15s;
+}
+.auth-modal-close:hover {
+  color: var(--text);
+  background: rgba(255,255,255,0.07);
+}
+
+.auth-card .logo { display: inline-flex; justify-content: center; margin-bottom: 16px; }
+.auth-card h1 { font-size: 1.2rem; margin-bottom: 14px; }
+
+.field { margin-bottom: 12px; display: flex; flex-direction: column; gap: 5px; }
+.field label { font-size: 0.8rem; color: var(--muted); }
+.field input, .field select {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+.field input:focus, .field select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.field .hint { font-size: 0.78rem; color: var(--muted); }
+
+.auth-error   { color: var(--red);   font-size: 0.85rem; min-height: 20px; margin-bottom: 8px; }
+.auth-success { color: var(--green); font-size: 0.9rem;  margin-bottom: 8px; }
+.auth-switch  { margin-top: 14px; font-size: 0.85rem; color: var(--muted); text-align: center; }
+
+/* â”€â”€ Account page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.account-main {
+  max-width: 960px;
+  margin: 32px auto;
+  padding: 0 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.account-balance-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+}
+
+.balance-label    { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.balance-value    { font-size: 4rem; font-weight: 900; color: var(--accent); line-height: 1.1; margin: 8px 0; }
+.balance-currency { font-size: 0.9rem; color: var(--muted); }
+
+.account-history h2 { font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+
+.history-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.history-table th {
+  text-align: left;
+  color: var(--muted);
+  font-size: 0.8rem;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.history-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.history-table tr:hover td { background: var(--bg3); }
+
+.badge { font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; }
+.badge-pending   { background: rgba(59,130,246,0.2);  color: var(--blue); }
+.badge-won       { background: rgba(34,197,94,0.2);   color: var(--green); }
+.badge-lost      { background: rgba(239,68,68,0.2);   color: var(--red); }
+.badge-cancelled { background: rgba(100,116,139,0.2); color: var(--muted); }
+
+/* ── Dev banner ──────────────────────────────────────────────────────────── */
+.dev-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 4px 16px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255,184,0,0.07) 0px,
+    rgba(255,184,0,0.07) 12px,
+    transparent 12px,
+    transparent 24px
+  );
+  border-bottom: 1px solid rgba(255,184,0,0.22);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: "JetBrains Mono", monospace;
+}
+.dev-banner-icon {
+  flex-shrink: 0;
+  opacity: 0.8;
+  animation: dev-blink 2.4s ease-in-out infinite;
+}
+@keyframes dev-blink {
+  0%, 100% { opacity: 0.8; }
+  50%       { opacity: 0.35; }
+}
+.dev-banner-text { opacity: 0.9; }
+.dev-banner-short { display: none; }
+.dev-banner-close {
+  margin-left: auto;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--accent);
+  opacity: 0.6;
+  font-size: 12px;
+  line-height: 1;
+  padding: 0;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.dev-banner-close:hover { opacity: 1; }
+
+@media (max-width: 480px) {
+  .dev-banner { font-size: 10px; gap: 6px; padding: 5px 12px; }
+  .dev-banner-full  { display: none; }
+  .dev-banner-short { display: inline; }
+}
+
+/* ── Account page header — mobile ────────────────────────────────────────── */
+@media (max-width: 640px) {
+  /* Keep header on one row: hide logo text, rely on logo image only */
+  .account-page .logo-title-block { display: none; }
+
+  /* Remove wrap — fixed-height header clips wrapped rows */
+  .account-page .site-header .header-nav {
+    flex-wrap: nowrap;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+
+  /* Compact nav buttons */
+  .account-page .header-nav .nav-login-btn {
+    font-size: 10px;
+    padding: 0 8px;
+    min-height: 44px;
+    height: auto;
+    border-radius: 6px;
+  }
+}
+

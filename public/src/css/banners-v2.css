@@ -1,0 +1,2200 @@
+/* =============================================
+   CHAT REFINEMENTS v2 — per-user color identities
+   ============================================= */
+
+/* Tighter rows with breathing room */
+.chat-messages {
+  gap: 1px;
+  padding: 8px 0;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 46px,
+    rgba(0,212,255,0.02) 46px,
+    rgba(0,212,255,0.02) 47px
+  );
+}
+
+/* Regular message row */
+.chat-msg:not(.system):not(.chat-activity-item) {
+  padding: 4px 10px 5px 10px;
+  border-radius: 6px;
+  border-left: 2px solid transparent;
+  transition: background 0.1s, border-color 0.1s;
+}
+.chat-msg:not(.system):not(.chat-activity-item):hover {
+  background: rgba(255,255,255,0.03);
+  border-left-color: rgba(var(--user-accent-rgb, 0,212,255), 0.18);
+}
+
+/* Body column — left accent bar from CSS var injected by JS */
+.chat-body {
+  border-left: 2px solid rgba(0,0,0,0);
+  border-left-color: color-mix(in srgb, var(--user-accent, var(--cyan)) 30%, transparent);
+  padding-left: 8px;
+  min-width: 0;
+}
+
+/* Username — JetBrains Mono, color comes from inline style */
+.chat-msg .chat-user {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 8px currentColor;
+  opacity: 0.95;
+}
+
+/* Timestamp — dimmer, tighter */
+.chat-msg .chat-time {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.58rem;
+  color: rgba(70, 90, 110, 0.55);
+  letter-spacing: 0.05em;
+}
+
+/* Message text — clean, readable */
+.chat-msg .chat-text {
+  font-size: 0.83rem;
+  line-height: 1.52;
+  color: rgba(210, 228, 245, 0.88);
+  word-break: break-word;
+  letter-spacing: 0.008em;
+}
+
+/* Head row — tighter baseline alignment */
+.chat-head {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-bottom: 1px;
+}
+
+/* Avatar — slightly larger, border matches user color via inline style */
+.chat-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  border-width: 1.5px;
+  flex-shrink: 0;
+}
+
+/* Consecutive message grouping — hide avatar/name for follow-ups
+   requires JS class but CSS prep: */
+.chat-msg.chat-continued .chat-avatar {
+  opacity: 0;
+}
+.chat-msg.chat-continued .chat-head {
+  display: none;
+}
+.chat-msg.chat-continued {
+  padding-top: 1px;
+}
+
+/* =============================================
+   PLAY TILE — Yellow HUD AI detect aesthetic
+   ============================================= */
+
+.bnr-tile-play {
+  border: 1px solid rgba(255,214,0,0.28);
+  box-shadow: 0 0 20px rgba(255,214,0,0.06), inset 0 0 24px rgba(0,0,0,0.3);
+  cursor: default;
+  height: 72px;
+  opacity: 1;
+}
+.bnr-tile-play .bnr-tile-content { display: none; }
+
+/* Live state — brighter yellow glow */
+.bnr-tile-live {
+  border-color: rgba(255,214,0,0.55);
+  box-shadow: 0 0 28px rgba(255,214,0,0.16), inset 0 0 24px rgba(0,0,0,0.3);
+  animation: bnr-play-pulse 2.4s ease-in-out infinite;
+}
+@keyframes bnr-play-pulse {
+  0%, 100% { box-shadow: 0 0 28px rgba(255,214,0,0.16), inset 0 0 24px rgba(0,0,0,0.3); }
+  50%       { box-shadow: 0 0 38px rgba(255,214,0,0.28), inset 0 0 24px rgba(0,0,0,0.3); }
+}
+
+/* Live dot variants */
+.bnr-ai-dot-live {
+  background: var(--cls-moto);
+  animation: bnr-ai-pulse 0.85s ease-in-out infinite;
+}
+
+/* "BET NOW" label — glowing yellow */
+.bnr-standby-live {
+  color: var(--cls-moto);
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(255,214,0,0.55);
+  letter-spacing: 0.06em;
+}
+
+/* =============================================
+   NON-AI CAMERA OVERLAY
+   ============================================= */
+
+.non-ai-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 0 0 12px 12px;
+  pointer-events: none;
+}
+.non-ai-overlay.hidden { display: none; }
+
+/* Compact single-row chip — doesn't block stream */
+.non-ai-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  background: rgba(4, 7, 16, 0.72);
+  border: 1px solid rgba(251,146,60,0.25);
+  border-radius: 20px;
+  padding: 5px 10px 5px 8px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: all;
+  max-width: 280px;
+}
+.non-ai-inner svg {
+  color: rgba(251,146,60,0.8);
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
+}
+.non-ai-title {
+  font-family: "Archivo", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: rgba(220, 232, 245, 0.85);
+  letter-spacing: 0;
+  margin: 0;
+  white-space: nowrap;
+}
+/* Hide the subtitle — chip has no room */
+.non-ai-sub { display: none; }
+.non-ai-btn {
+  margin: 0;
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid rgba(0,212,255,0.35);
+  background: rgba(0,212,255,0.1);
+  color: var(--cyan);
+  font-family: "Archivo", sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.non-ai-btn:hover {
+  background: rgba(0,212,255,0.18);
+  border-color: rgba(0,212,255,0.6);
+}
+
+@media (max-width: 640px) {
+  .non-ai-overlay { padding: 0 0 8px 8px; }
+  .non-ai-inner {
+    padding: 4px 8px 4px 7px;
+    gap: 6px;
+    max-width: 220px;
+  }
+  .non-ai-title { font-size: 0.6rem; }
+  .non-ai-btn   { font-size: 0.57rem; padding: 2px 7px; }
+}
+
+/* =============================================
+   STREAM OFFLINE OVERLAY
+   ============================================= */
+
+/* Stream switching overlay */
+.stream-switching-overlay {
+  position: absolute; inset: 0; z-index: 91;
+  background: rgba(4, 6, 14, 0.7);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.stream-switching-overlay.hidden { display: none; }
+.sso-inner {
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.sso-spinner {
+  animation: sso-spin 1s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes sso-spin { to { transform: rotate(360deg); } }
+.sso-steps { display: flex; flex-direction: column; gap: 4px; text-align: center; }
+.sso-step {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(0, 212, 255, 0.35); margin: 0; transition: color 250ms, opacity 250ms;
+}
+.sso-step.active { color: var(--cyan); }
+.sso-step.done   { color: rgba(24, 199, 122, 0.7); }
+
+.stream-offline-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 90;
+  background: rgba(4, 6, 14, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+}
+.stream-offline-overlay.hidden { display: none; }
+
+.stream-offline-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  padding: 28px 24px;
+  border: 1px solid rgba(239,68,68,0.35);
+  border-radius: 10px;
+  background: rgba(8, 10, 22, 0.82);
+  box-shadow: 0 0 40px rgba(239,68,68,0.1), inset 0 0 30px rgba(0,0,0,0.4);
+  min-width: 220px;
+}
+
+.stream-offline-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stream-offline-title {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ef4444;
+  letter-spacing: 0.12em;
+  margin: 0;
+  text-shadow: 0 0 10px rgba(239,68,68,0.4);
+}
+
+.stream-offline-info {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  color: rgba(239,68,68,0.55);
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.stream-offline-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 4px;
+}
+
+.stream-offline-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ef4444;
+  animation: bnr-ai-pulse 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.stream-offline-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.6rem;
+  color: rgba(239,68,68,0.45);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* =============================================
+   CAMERA TILE — cyan HUD style
+   ============================================= */
+
+.bnr-tile-camera {
+  border: 1px solid rgba(0,212,255,0.28);
+  box-shadow: 0 0 20px rgba(0,212,255,0.06), inset 0 0 24px rgba(0,0,0,0.3);
+  cursor: pointer;
+  display: block;
+  height: 72px;
+  opacity: 1;
+  padding: 0;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+}
+.bnr-tile-camera:hover {
+  border-color: rgba(0,212,255,0.55);
+  box-shadow: 0 0 28px rgba(0,212,255,0.14), inset 0 0 24px rgba(0,0,0,0.3);
+  transform: translateY(-1px);
+}
+.bnr-tile-camera:focus-visible {
+  outline: 2px solid rgba(0,212,255,0.6);
+  outline-offset: 2px;
+}
+
+/* =============================================
+   CAMERA SWITCHER MODAL
+   ============================================= */
+
+.cam-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: rgba(4,6,14,0.12);
+}
+.cam-modal-backdrop.hidden { display: none; }
+
+.camera-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1101;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  pointer-events: none;
+}
+.camera-modal.hidden { display: none; }
+
+.cam-modal-inner {
+  pointer-events: all;
+  background: #0c1018;
+  border: 1px solid rgba(0,212,255,0.28);
+  border-radius: 12px;
+  box-shadow: 0 0 60px rgba(0,212,255,0.1), 0 24px 48px rgba(0,0,0,0.55);
+  width: 100%;
+  max-width: 780px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.cam-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid rgba(0,212,255,0.12);
+  background: rgba(0,212,255,0.03);
+  flex-shrink: 0;
+}
+
+.cam-modal-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cam-modal-close {
+  background: transparent;
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 5px;
+  color: rgba(0,212,255,0.6);
+  cursor: pointer;
+  padding: 5px 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, border-color 0.12s;
+}
+.cam-modal-close:hover {
+  background: rgba(0,212,255,0.08);
+  border-color: rgba(0,212,255,0.4);
+  color: var(--cyan);
+}
+
+.cam-modal-hint {
+  font-size: 0.77rem;
+  color: rgba(140,160,185,0.65);
+  padding: 10px 18px 0;
+  margin: 0;
+  flex-shrink: 0;
+}
+.cam-modal-hint strong { color: rgba(0,212,255,0.8); font-weight: 600; }
+
+.cam-modal-body {
+  padding: 14px 16px 16px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+}
+
+.cam-modal-empty {
+  grid-column: 1/-1;
+  text-align: center;
+  color: rgba(100,120,145,0.6);
+  font-size: 0.82rem;
+  padding: 32px 0;
+}
+
+/* Camera card */
+.cam-card {
+  border: 1px solid rgba(0,212,255,0.16);
+  border-radius: 9px;
+  background: rgba(9,13,24,0.85);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.14s, box-shadow 0.14s;
+}
+.cam-card:hover {
+  border-color: rgba(0,212,255,0.38);
+  box-shadow: 0 0 18px rgba(0,212,255,0.08);
+}
+.cam-card-active {
+  border-color: rgba(34,197,94,0.45);
+  box-shadow: 0 0 16px rgba(34,197,94,0.1);
+}
+
+/* Preview area */
+.cam-card-preview {
+  position: relative;
+  aspect-ratio: 16/9;
+  background: #070b14;
+  overflow: hidden;
+}
+.cam-preview-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.cam-preview-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: rgba(0,212,255,0.35);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  background: linear-gradient(160deg, rgba(0,212,255,0.03) 0%, transparent 70%);
+}
+.cam-preview-placeholder.hidden { display: none; }
+
+.cam-active-badge {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  background: rgba(34,197,94,0.85);
+  color: #fff;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+/* Card info row */
+.cam-card-info {
+  padding: 8px 10px 4px;
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+.cam-card-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: rgba(220,235,250,0.9);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cam-card-type {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.6rem;
+  color: rgba(0,212,255,0.45);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+/* Card action buttons */
+.cam-card-actions {
+  display: flex;
+  gap: 6px;
+  padding: 6px 10px 10px;
+}
+.btn-cam-preview,
+.btn-cam-switch {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 6px 8px;
+  border-radius: 5px;
+  border: 1px solid rgba(0,212,255,0.25);
+  background: rgba(0,212,255,0.06);
+  color: rgba(0,212,255,0.8);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+.btn-cam-preview:hover,
+.btn-cam-switch:hover:not([disabled]) {
+  background: rgba(0,212,255,0.14);
+  border-color: rgba(0,212,255,0.45);
+  color: var(--cyan);
+}
+.btn-cam-switch-active {
+  border-color: rgba(34,197,94,0.35);
+  background: rgba(34,197,94,0.07);
+  color: rgba(34,197,94,0.8);
+  cursor: default;
+}
+
+/* =============================================
+   ADMIN — STREAMS PANEL
+   ============================================= */
+
+.streams-msg {
+  font-size: 0.82rem;
+  min-height: 20px;
+  margin-bottom: 8px;
+  display: block;
+}
+.streams-msg-ok  { color: var(--ok, var(--ag)); }
+.streams-msg-err { color: var(--err, #ef4444); }
+
+.stream-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--abr, rgba(255,255,255,0.07));
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: var(--bg2, #12161e);
+  transition: border-color 0.12s;
+}
+.stream-row:hover { border-color: rgba(0,212,255,0.25); }
+
+.stream-row-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.stream-row-label {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text, #dce8f5);
+}
+.stream-row-alias {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  color: rgba(100,130,160,0.7);
+  word-break: break-all;
+}
+.stream-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 5;
+  border: 1px solid rgba(0,212,255,0.2);
+  background: rgba(5,8,16,0.88);
+}
+.stream-badge-active   { background: rgba(34,197,94,0.15);  color: var(--ag); }
+.stream-badge-inactive { background: rgba(100,116,139,0.15); color: rgba(100,116,139,0.8); }
+.stream-type-tag {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.6rem;
+  color: rgba(0,212,255,0.5);
+  background: rgba(0,212,255,0.07);
+  border-radius: 3px;
+  padding: 2px 7px;
+}
+
+/* ipcam inline iframe preview */
+.stream-row-iframe-wrap {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #050810;
+  aspect-ratio: 16/9;
+  max-width: 360px;
+  margin: 4px 0 2px;
+}
+.stream-row-iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.sprv-loaded .stream-row-iframe {
+  opacity: 1;
+}
+.stream-row-iframe-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  transition: opacity 0.3s;
+}
+.sprv-loaded .stream-row-iframe-loader {
+  opacity: 0;
+  pointer-events: none;
+}
+.sprv-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0,212,255,0.15);
+  border-top-color: rgba(0,212,255,0.7);
+  border-radius: 50%;
+  animation: sprv-spin 0.8s linear infinite;
+}
+@keyframes sprv-spin { to { transform: rotate(360deg); } }
+
+.stream-area-tag {
+  font-size: 0.65rem;
+  font-family: "JetBrains Mono", monospace;
+  color: rgba(0,212,255,0.6);
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+/* YouTube thumbnail row in admin streams */
+.stream-row-yt-thumb {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #0f0f0f;
+  aspect-ratio: 16/9;
+  max-width: 240px;
+  margin: 4px 0 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stream-row-yt-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.stream-yt-label {
+  position: absolute;
+  bottom: 6px;
+  left: 8px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255,0,0,0.85);
+  padding: 2px 7px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.stream-type-tag-yt {
+  color: rgba(255,80,80,0.8);
+  background: rgba(255,40,40,0.1);
+}
+.stream-yt-link {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.68rem;
+  color: rgba(255,80,80,0.7);
+  text-decoration: none;
+  word-break: break-all;
+}
+.stream-yt-link:hover { color: rgba(255,80,80,1); text-decoration: underline; }
+
+.stream-row-preview-wrap {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #050810;
+  aspect-ratio: 16/9;
+  max-width: 360px;
+}
+.stream-row-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.stream-prv-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(0,0,0,0.65);
+  border: none;
+  color: #fff;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  padding: 3px 7px;
+  cursor: pointer;
+}
+
+.stream-row-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* All action buttons: consistent icon+text layout */
+.stream-row-actions .btn-sm {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.73rem;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  font-family: inherit;
+  line-height: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  /* Reset browser default button border so color classes take full control */
+  border: 1px solid transparent;
+  background: transparent;
+  transition: background 0.14s, border-color 0.14s, color 0.14s;
+}
+.stream-row-actions .btn-sm svg {
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+/* Preview — neutral outline */
+.stream-btn-preview {
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(200,220,240,0.75);
+  background: rgba(255,255,255,0.04);
+}
+.stream-btn-preview:hover {
+  border-color: rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.08);
+  color: #dce8f5;
+}
+
+/* Edit — cyan accent */
+.stream-btn-edit {
+  border: 1px solid rgba(0,212,255,0.3);
+  color: rgba(0,212,255,0.8);
+  background: rgba(0,212,255,0.06);
+}
+.stream-btn-edit:hover {
+  border-color: rgba(0,212,255,0.55);
+  background: rgba(0,212,255,0.12);
+  color: var(--cyan);
+}
+
+/* Activate — green */
+.stream-btn-activate {
+  border: 1px solid rgba(34,197,94,0.35);
+  color: rgba(34,197,94,0.85);
+  background: rgba(34,197,94,0.08);
+}
+.stream-btn-activate:hover {
+  border-color: rgba(34,197,94,0.6);
+  background: rgba(34,197,94,0.15);
+  color: var(--ag);
+}
+
+/* Deactivate — amber */
+.stream-btn-deactivate {
+  border: 1px solid rgba(251,146,60,0.3);
+  color: rgba(251,146,60,0.8);
+  background: rgba(251,146,60,0.06);
+}
+.stream-btn-deactivate:hover {
+  border-color: rgba(251,146,60,0.55);
+  background: rgba(251,146,60,0.12);
+  color: #fb923c;
+}
+
+/* Set as AI Cam — cyan */
+.stream-btn-set-ai {
+  border: 1px solid rgba(0,212,255,0.35);
+  color: rgba(0,212,255,0.85);
+  background: rgba(0,212,255,0.07);
+}
+.stream-btn-set-ai:hover {
+  border-color: rgba(0,212,255,0.6);
+  background: rgba(0,212,255,0.14);
+  color: var(--cyan);
+}
+
+/* Delete — red */
+.stream-btn-delete {
+  border: 1px solid rgba(239,68,68,0.3);
+  color: rgba(239,68,68,0.8);
+  background: rgba(239,68,68,0.06);
+}
+.stream-btn-delete:hover {
+  border-color: rgba(239,68,68,0.55);
+  background: rgba(239,68,68,0.15);
+  color: #ef4444;
+}
+
+/* Zones — purple/violet accent */
+.stream-btn-zones {
+  border: 1px solid rgba(167,139,250,0.3);
+  color: rgba(167,139,250,0.8);
+  background: rgba(167,139,250,0.06);
+}
+.stream-btn-zones:hover {
+  border-color: rgba(167,139,250,0.55);
+  background: rgba(167,139,250,0.12);
+  color: #a78bfa;
+}
+/* Brighter when zones are already saved */
+.stream-btn-zones-set {
+  border-color: rgba(167,139,250,0.5);
+  color: #a78bfa;
+  background: rgba(167,139,250,0.1);
+}
+
+/* "zones set" info badge in stream row */
+.stream-zones-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.57rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #a78bfa;
+  background: rgba(167,139,250,0.1);
+  border: 1px solid rgba(167,139,250,0.3);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+/* Zone editor "currently editing" label */
+.zone-editor-cam-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #a78bfa;
+  background: rgba(167,139,250,0.12);
+  border: 1px solid rgba(167,139,250,0.3);
+  border-radius: 4px;
+  padding: 2px 10px;
+  margin-left: 10px;
+  vertical-align: middle;
+  font-family: "JetBrains Mono", monospace;
+  letter-spacing: 0.04em;
+}
+.zone-editor-cam-label:empty { display: none; }
+
+/* LIVE ON PUBLIC indicator */
+.stream-row-live {
+  border-color: rgba(0,212,255,0.35);
+  background: linear-gradient(135deg, rgba(0,212,255,0.04) 0%, var(--bg2, #12161e) 60%);
+}
+.stream-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  background: rgba(0,212,255,0.1);
+  border: 1px solid rgba(0,212,255,0.3);
+  border-radius: 3px;
+  padding: 2px 8px;
+}
+.stream-live-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--cyan);
+  animation: stream-live-pulse 1.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes stream-live-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,212,255,0.5); }
+  50%       { opacity: 0.6; box-shadow: 0 0 0 3px rgba(0,212,255,0); }
+}
+
+/* =============================================
+   YOLO Detection Label Tab — shared pattern
+   ============================================= */
+
+.yolo-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 4px 10px;
+  font-family: "Archivo", "JetBrains Mono", sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 2;
+  pointer-events: none;
+}
+/* pointer-events back on lb-header since it has an interactive button */
+.lb-header.yolo-label { pointer-events: auto; }
+
+.yolo-label-cyan   { background: var(--cyan); color: #000c14; }
+.yolo-label-yellow { background: var(--cls-moto); color: #0f0c00; }
+.yolo-label-green  { background: var(--ag); color: #021207; }
+
+/* Banner tile YOLO labels sit above all tile layers */
+.bnr-tile .yolo-label { z-index: 10; pointer-events: none; }
+
+/* =============================================
+   HEADER LOGO — pulse + hover freeze
+   ============================================= */
+
+.logo {
+  transition: opacity 0.15s;
+}
+.logo:hover {
+  opacity: 1;
+  text-decoration: none;
+}
+
+/* Hover: ai frame jumps bigger, icon dims slightly — both stay visible */
+.logo:hover .logo-ai-frame {
+  transform: scale(1.3);
+  opacity: 1;
+  animation: none;
+  filter: sepia(1) saturate(8) hue-rotate(145deg) brightness(1.3)
+          drop-shadow(0 0 12px rgba(34,211,238,0.8));
+  transition: transform 0.2s ease, filter 0.18s ease;
+}
+.logo:hover .logo-icon {
+  opacity: 0.72;
+  transition: opacity 0.22s ease;
+}
+
+/* auth-card logos share same sizing */
+.auth-card .logo-img-wrap,
+.auth-card .logo-icon,
+.auth-card .logo-ai-frame {
+  height: 44px;
+  width: 44px;
+}
+.auth-card .logo-img-wrap { height: 44px; width: 44px; }
+
+/* Login text button */
+.nav-login-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 8px;
+  background: rgba(10,18,28,0.5);
+  border: 1px solid rgba(0,212,255,0.22);
+  color: rgba(160,190,220,0.75);
+  font-family: "Archivo", "Manrope", sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color .16s, border-color .16s, background .16s, box-shadow .16s;
+}
+.nav-login-btn:hover {
+  color: var(--cyan);
+  border-color: rgba(0,212,255,0.44);
+  background: rgba(0,212,255,0.06);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.07);
+}
+
+/* =============================================
+   AUTH DIVIDER + GUEST LOGIN BUTTON
+   ============================================= */
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0 12px;
+  color: rgba(180,200,220,0.3);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.07);
+}
+
+.btn-google-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 16px;
+  border: 1px solid rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.04);
+  color: rgba(220,230,245,0.75);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-family: "JetBrains Mono", monospace;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  margin-bottom: 8px;
+}
+.btn-google-login:hover {
+  background: rgba(66,133,244,0.1);
+  border-color: rgba(66,133,244,0.4);
+  color: rgba(220,230,245,0.95);
+}
+.btn-google-login:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.btn-google-login svg {
+  flex-shrink: 0;
+}
+/* Primary variant — used when Google is the top-level CTA */
+.btn-google-primary {
+  padding: 11px 16px;
+  background: rgba(66,133,244,0.12);
+  border-color: rgba(66,133,244,0.35);
+  color: rgba(220,230,245,0.92);
+  font-size: 0.85rem;
+  margin-bottom: 0;
+}
+.btn-google-primary:hover {
+  background: rgba(66,133,244,0.22);
+  border-color: rgba(66,133,244,0.6);
+  color: #fff;
+}
+
+.btn-guest-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  width: 100%;
+  padding: 9px 16px;
+  border: 1px solid rgba(255,214,0,0.22);
+  background: rgba(255,214,0,0.04);
+  color: rgba(255,214,0,0.65);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-family: "JetBrains Mono", monospace;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+.btn-guest-login:hover {
+  background: rgba(255,214,0,0.09);
+  border-color: rgba(255,214,0,0.4);
+  color: rgba(255,214,0,0.92);
+}
+.btn-guest-login:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.btn-guest-login svg {
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+/* =============================================
+   COUNT WIDGET — HUD REDESIGN
+   ============================================= */
+
+/* Count widget — canonical HUD overlay definition */
+.count-widget {
+  position: absolute;
+  top: var(--cw-top);
+  left: var(--cw-left);
+  width: max-content;
+  padding: 8px 10px 9px 10px;
+  z-index: 6;
+  border: 1px solid rgba(255,214,0,0.42);
+  border-radius: 0;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+/* HUD top-left label */
+.count-widget::before {
+  content: "LIVE COUNT";
+  display: block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  color: rgba(255,214,0,0.45);
+  margin-bottom: 4px;
+}
+
+/* Total number */
+.count-widget-total {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  margin-bottom: 7px;
+  line-height: 1;
+}
+.count-widget-total span:first-child {
+  font-size: 2rem;
+  font-weight: 900;
+  font-family: "JetBrains Mono", monospace;
+  color: var(--cls-moto);
+  line-height: 1;
+  text-shadow: 0 0 14px rgba(255,214,0,0.4), 0 2px 8px rgba(0,0,0,0.6);
+  letter-spacing: -0.02em;
+}
+
+/* Separator line */
+.count-widget-total::after {
+  display: none;
+}
+.count-widget .cw-label {
+  font-size: 0.58rem;
+  color: rgba(255,220,100,0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  align-self: flex-end;
+  padding-bottom: 3px;
+}
+
+/* Breakdown row */
+.count-widget-breakdown {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 6px;
+}
+.cw-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  color: rgba(210,228,245,0.78);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+}
+.cw-item strong {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  color: #e8f4ff;
+  text-shadow: 0 0 6px rgba(200,230,255,0.2);
+  min-width: 18px;
+}
+
+/* WS dot — repositioned */
+.cw-ws-dot {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  width: 5px;
+  height: 5px;
+}
+
+/* HUD vehicle icons — themed */
+.vehicle-icon {
+  width: 15px;
+  height: 11px;
+  stroke: currentColor;
+  fill: none;
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+.vehicle-icon.car   { color: var(--cyan); }
+.vehicle-icon.truck { color: #fb923c; }
+.vehicle-icon.bus   { color: #a78bfa; }
+.vehicle-icon.moto  { color: var(--cls-moto); }
+
+/* =============================================
+   BANNER GRID — 1-column stacked landscape
+   ============================================= */
+
+/* Override 2-col grid → single column flex */
+.bnr-grid {
+  display: flex;
+  flex-direction: column;
+  grid-template-columns: unset;
+  gap: 8px;
+}
+
+/* ── Landscape banner base ── */
+.bnr-tile-landscape {
+  height: auto;
+  min-height: 74px;
+  display: flex;
+  align-items: center;
+  padding: 26px 18px 14px;
+  gap: 16px;
+  cursor: default;
+  border-radius: 8px;
+  transform: none;
+}
+.bnr-tile-landscape:hover { transform: none; }
+.bnr-tile-landscape .bnr-tile-bg,
+.bnr-tile-landscape .bnr-tile-tint { display: none !important; }
+
+/* ── Icon badge (circle) ── */
+.bnr-lbanner-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Green — play idle */
+.bnr-lbanner-icon-idle {
+  background: rgba(34,197,94,0.08);
+  border: 1.5px solid rgba(34,197,94,0.25);
+  color: rgba(34,197,94,0.55);
+}
+
+/* Green — play live */
+.bnr-lbanner-icon-live {
+  background: rgba(34,197,94,0.15);
+  border: 1.5px solid rgba(34,197,94,0.55);
+  color: var(--ag);
+  box-shadow: 0 0 18px rgba(34,197,94,0.22);
+}
+
+/* Cyan — camera */
+.bnr-lbanner-icon-cam {
+  background: rgba(0,212,255,0.09);
+  border: 1.5px solid rgba(0,212,255,0.32);
+  color: var(--cyan);
+}
+
+/* ── Body text ── */
+.bnr-lbanner-body {
+  flex: 1;
+  min-width: 0;
+}
+.bnr-lbanner-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: rgba(220,235,248,0.95);
+  margin: 0 0 3px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bnr-lbanner-sub {
+  font-size: 0.73rem;
+  color: rgba(150,180,210,0.6);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+/* ── Action column (right side) ── */
+.bnr-lbanner-action {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+}
+.bnr-lbanner-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ── Play CTA button — green ── */
+.bnr-play-cta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border: 1px solid rgba(34,197,94,0.45);
+  background: rgba(34,197,94,0.12);
+  color: var(--ag);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: "JetBrains Mono", monospace;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.12s, box-shadow 0.12s, border-color 0.12s;
+}
+.bnr-play-cta:hover {
+  background: rgba(34,197,94,0.22);
+  box-shadow: 0 0 14px rgba(34,197,94,0.28);
+  border-color: rgba(34,197,94,0.65);
+}
+.bnr-tile-live .bnr-play-cta {
+  border-color: rgba(34,197,94,0.65);
+  box-shadow: 0 0 16px rgba(34,197,94,0.22);
+  animation: bnr-green-pulse 1.8s ease-in-out infinite;
+}
+@keyframes bnr-green-pulse {
+  0%, 100% { box-shadow: 0 0 16px rgba(34,197,94,0.22); }
+  50%       { box-shadow: 0 0 28px rgba(34,197,94,0.42); }
+}
+
+/* ── Standby state ── */
+.bnr-play-standby {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  color: rgba(34,197,94,0.38);
+  letter-spacing: 0.1em;
+  padding: 4px 0;
+}
+
+/* ── Camera CTA button — cyan ── */
+.bnr-cam-cta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border: 1px solid rgba(0,212,255,0.32);
+  background: rgba(0,212,255,0.07);
+  color: rgba(0,212,255,0.82);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: "JetBrains Mono", monospace;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  pointer-events: none; /* tile click handles it */
+  transition: background 0.12s, border-color 0.12s;
+}
+.bnr-tile-camera:hover .bnr-cam-cta {
+  background: rgba(0,212,255,0.14);
+  border-color: rgba(0,212,255,0.55);
+  color: var(--cyan);
+}
+
+/* ── Play tile overrides — green accent, dark opacity bg ── */
+.bnr-tile-play {
+  border: 1px solid rgba(34,197,94,0.28);
+  background: linear-gradient(135deg, rgba(2,10,5,0.78) 0%, rgba(6,14,10,0.65) 100%);
+  box-shadow: 0 0 20px rgba(34,197,94,0.05);
+  animation: none !important;
+}
+.bnr-tile-live {
+  border-color: rgba(34,197,94,0.52);
+  box-shadow: 0 0 24px rgba(34,197,94,0.12);
+  animation: bnr-green-border-pulse 2.4s ease-in-out infinite !important;
+}
+@keyframes bnr-green-border-pulse {
+  0%, 100% { box-shadow: 0 0 24px rgba(34,197,94,0.12); }
+  50%       { box-shadow: 0 0 36px rgba(34,197,94,0.24); }
+}
+/* Suppress old yellow play tile styles */
+.bnr-tile-play .bnr-tile-content,
+.bnr-tile-play .bnr-default-inner,
+.bnr-tile-play .bnr-default-status-bar { display: none !important; }
+
+/* Hide legacy content for camera tile */
+.bnr-tile-camera .bnr-tile-content,
+.bnr-tile-camera .bnr-tile-footer { display: none; }
+
+/* count widget position — controlled via --cw-top/--cw-left in :root */
+
+/* Camera-specific background — cyan tint instead of yellow */
+.bnr-tile-camera .bnr-tile-bg-empty {
+  background:
+    radial-gradient(ellipse at 10% 50%, rgba(0,212,255,0.06) 0%, transparent 55%),
+    linear-gradient(135deg, #080b10 0%, #0e1319 100%);
+}
+.bnr-tile-camera .bnr-tile-tint {
+  background: linear-gradient(
+    135deg,
+    rgba(0,212,255,0.04) 0%,
+    transparent 55%,
+    rgba(0,0,0,0.25) 100%
+  );
+}
+
+/* Camera tile title — cyan */
+.bnr-tile-camera .bnr-tile-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--cyan);
+  letter-spacing: 0.02em;
+  margin-bottom: 2px;
+  text-shadow: 0 0 10px rgba(0,212,255,0.3);
+}
+.bnr-tile-camera .bnr-tile-info {
+  font-size: 9px;
+  color: rgba(190,215,235,0.6);
+  line-height: 1.4;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* =============================================
+   COUNT WIDGET — hover / tap effect
+   ============================================= */
+
+.count-widget {
+  transition:
+    clip-path 0.28s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease,
+    backdrop-filter 0.22s ease;
+  cursor: pointer;
+  pointer-events: auto !important;
+}
+
+.count-widget:hover,
+.count-widget.cw-active {
+  /* Expand corner cuts on hover — the polygon itself reacts */
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px)) !important;
+  border-color: rgba(255,214,0,0.72);
+  background: rgba(4,7,14,0.88);
+  box-shadow:
+    0 0 24px rgba(255,214,0,0.18),
+    0 0 6px rgba(255,214,0,0.08),
+    inset 0 0 0 1px rgba(255,214,0,0.1);
+  backdrop-filter: blur(6px) !important;
+}
+
+.count-widget:hover::before,
+.count-widget.cw-active::before {
+  color: rgba(255,214,0,0.75);
+}
+
+/* Subtle number brightening on hover */
+.count-widget:hover .count-widget-total span:first-child,
+.count-widget.cw-active .count-widget-total span:first-child {
+  text-shadow:
+    0 0 18px rgba(255,214,0,0.55),
+    0 2px 8px rgba(0,0,0,0.6);
+}
+
+/* Mobile: tap feedback ring */
+.count-widget:active,
+.count-widget.cw-active {
+  border-color: rgba(255,214,0,0.82);
+}
+
+/* =============================================
+   TAB ACTIVE — AI detection box selector
+   ============================================= */
+
+/* Detection box corners via inline SVG background */
+.tab-btn.active::after {
+  /* Reset all underline properties */
+  content: "";
+  position: absolute;
+  inset: 4px 6px;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  height: auto;
+  width: auto;
+  border-radius: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 44' preserveAspectRatio='none'%3E%3Cg stroke='%2300d4ff' stroke-width='2.2' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 1H1V14'/%3E%3Cpath d='M86 1H99V14'/%3E%3Cpath d='M1 30V43H14'/%3E%3Cpath d='M86 43H99V30'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  box-shadow: none !important;
+  pointer-events: none;
+  opacity: 0.9;
+  animation: tab-detect-in 0.18s ease-out forwards;
+}
+
+@keyframes tab-detect-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 0.9; transform: scale(1); }
+}
+
+/* Keep cyan text on active tab */
+.tab-btn.active {
+  color: var(--cyan);
+  background: rgba(0,212,255,0.04);
+  text-shadow: 0 0 10px rgba(0,212,255,0.2);
+  border-bottom-color: transparent;
+}
+
+/* =============================================
+   TAB DETECTION BOX — fix collapsed pseudo-element
+   ============================================= */
+
+/* .sidebar-tabs overflow: visible — merged into canonical in theme-v2.css */
+.tab-btn {
+  overflow: visible !important;
+  flex: 1;
+  position: relative;
+  background: transparent;
+  color: rgba(130,155,185,0.7);
+  padding: 12px 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-bottom: none !important;
+  letter-spacing: 0.04em;
+  transition: color .18s, background .18s;
+}
+
+/* Clean override — no conflicting inset + individual property collision */
+.tab-btn.active::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  bottom: 3px;
+  left: 5px;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 44' preserveAspectRatio='none'%3E%3Cg stroke='%2300d4ff' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 1H1V14'/%3E%3Cpath d='M86 1H99V14'/%3E%3Cpath d='M1 30V43H14'/%3E%3Cpath d='M86 43H99V30'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  box-shadow: none !important;
+  pointer-events: none !important;
+  z-index: 2;
+  opacity: 0.85;
+  animation: tab-detect-in 0.18s ease-out forwards;
+}
+
+/* =============================================
+   MOBILE OVERLAY FIXES — count widget + HUD
+   ============================================= */
+
+@media (max-width: 768px) {
+
+  /* ── Count widget — same top/left as desktop ── */
+  .count-widget {
+    top: var(--cw-top) !important;
+    left: var(--cw-left) !important;
+    /* Replace old skewed polygon with correct HUD corner-cut */
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px)) !important;
+    width: max-content !important;
+    max-width: none !important;
+    padding: 6px 8px 7px 8px !important;
+    background: rgba(4,7,14,0.8) !important;
+  }
+  .count-widget:hover,
+  .count-widget.cw-active {
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px)) !important;
+  }
+
+  /* Shrink LIVE COUNT label */
+  .count-widget::before {
+    font-size: 0.46rem !important;
+    letter-spacing: 0.1em !important;
+    margin-bottom: 3px !important;
+  }
+
+  /* Total number */
+  .count-widget-total span:first-child {
+    font-size: 1rem !important;
+  }
+  .count-widget .cw-label {
+    font-size: 0.52rem !important;
+  }
+  .count-widget-total {
+    margin-bottom: 5px !important;
+  }
+
+  /* Breakdown — 2x2 compact grid */
+  .count-widget-breakdown {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 3px 8px !important;
+  }
+  .cw-item {
+    font-size: 0.64rem !important;
+    gap: 4px !important;
+  }
+  .cw-item strong {
+    font-size: 0.68rem !important;
+  }
+  .vehicle-icon {
+    width: 13px !important;
+    height: 10px !important;
+  }
+
+  /* WS dot */
+  .cw-ws-dot {
+    top: 6px !important;
+    right: 7px !important;
+    width: 5px !important;
+    height: 5px !important;
+  }
+
+  /* Ensure hover transition still works on mobile */
+  .count-widget {
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background 0.2s ease !important;
+  }
+
+  /* Tap active state — same as hover */
+  .count-widget.cw-active {
+    border-color: rgba(255,214,0,0.75) !important;
+    background: rgba(4,7,14,0.92) !important;
+    box-shadow:
+      0 0 20px rgba(255,214,0,0.2),
+      inset 0 0 0 1px rgba(255,214,0,0.1) !important;
+  }
+  .count-widget.cw-active::before {
+    color: rgba(255,214,0,0.8) !important;
+  }
+  .count-widget.cw-active .count-widget-total span:first-child {
+    text-shadow: 0 0 16px rgba(255,214,0,0.55), 0 2px 8px rgba(0,0,0,0.6) !important;
+  }
+
+  /* ── ML HUD — compact on mobile ── */
+  .ml-hud {
+    right: 8px !important;
+    bottom: 8px !important;
+    width: 110px !important;
+    max-width: 110px !important;
+  }
+
+  /* ── Stream badge — keep clear of count widget ── */
+  .stream-badge {
+    top: 8px !important;
+    right: 8px !important;
+  }
+
+  /* ── FPS overlay — bottom left ── */
+  .fps-overlay {
+    bottom: 8px !important;
+    left: 8px !important;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .count-widget {
+    top: 6px !important;
+    left: 6px !important;
+    width: max-content !important;
+    max-width: none !important;
+    padding: 5px 7px 6px 7px !important;
+  }
+
+  .count-widget::before {
+    font-size: 0.42rem !important;
+    margin-bottom: 2px !important;
+  }
+
+  /* Scale down number so 5-digit counts (10,000+) never overflow the widget */
+  .count-widget-total span:first-child {
+    font-size: 0.875rem !important;
+    letter-spacing: -0.03em !important;
+  }
+
+  .count-widget-breakdown {
+    gap: 2px 6px !important;
+  }
+
+  .cw-item {
+    font-size: 0.6rem !important;
+  }
+
+  .vehicle-icon {
+    width: 12px !important;
+    height: 9px !important;
+  }
+}
+
+/* ── Inline-style replacements (converted from HTML) ── */
+.lb-refresh-btn {
+  margin-left: auto;
+  background: rgba(0,0,0,0.25);
+  color: #000;
+  border: none;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.lb-empty-hint       { font-size: 0.82rem; padding: 12px 0; }
+.intel-loading-hint  { font-size: 10px; color: var(--muted); padding: 8px 0; }
+.gov-agency-login-prompt { margin-top: 14px; text-align: center; }
+
+/* ── Public banner detail — render rich HTML ── */
+.bnr-detail-info {
+  font-size: 0.84rem;
+  color: rgba(180,210,235,0.75);
+  line-height: 1.7;
+}
+.bnr-detail-info b, .bnr-detail-info strong { color: rgba(220,240,255,0.95); }
+.bnr-detail-info i, .bnr-detail-info em { color: rgba(180,215,240,0.9); }
+.bnr-detail-info ul, .bnr-detail-info ol { padding-left: 20px; margin: 6px 0; }
+.bnr-detail-info li { margin: 3px 0; }
+.bnr-detail-info ul li::marker { color: rgba(0,212,255,0.5); }
+.bnr-detail-info p { margin: 0 0 8px; }
+.bnr-detail-info p:last-child { margin-bottom: 0; }
+
+/* =============================================
+   COUNT WIDGET — hover fix (stronger effect)
+   ============================================= */
+
+/* Stronger, clearly visible hover state */
+.count-widget:hover,
+.count-widget.cw-active {
+  border-color: rgba(255,214,0,0.95);
+  background: rgba(4,7,14,0.94);
+  box-shadow:
+    0 0 0 1px rgba(255,214,0,0.2),
+    0 0 28px rgba(255,214,0,0.32),
+    0 0 8px rgba(255,214,0,0.14);
+  backdrop-filter: blur(8px) !important;
+}
+
+.count-widget:hover::before,
+.count-widget.cw-active::before {
+  color: rgba(255,214,0,0.95);
+}
+
+.count-widget:hover .count-widget-total span:first-child,
+.count-widget.cw-active .count-widget-total span:first-child {
+  text-shadow:
+    0 0 22px rgba(255,214,0,0.7),
+    0 2px 8px rgba(0,0,0,0.6);
+}
+
+/* Mobile: same effect on tap */
+@media (max-width: 768px) {
+  .count-widget { pointer-events: auto !important; cursor: pointer !important; }
+  .count-widget.cw-active {
+    border-color: rgba(255,214,0,0.95) !important;
+    background: rgba(4,7,14,0.94) !important;
+    box-shadow:
+      0 0 0 1px rgba(255,214,0,0.18),
+      0 0 24px rgba(255,214,0,0.28) !important;
+  }
+  .count-widget.cw-active::before {
+    color: rgba(255,214,0,0.95) !important;
+  }
+  .count-widget.cw-active .count-widget-total span:first-child {
+    text-shadow: 0 0 20px rgba(255,214,0,0.7), 0 2px 8px rgba(0,0,0,0.6) !important;
+  }
+}
+
+/* =============================================
+   COUNT WIDGET — transparent bg + mobile tweak
+   ============================================= */
+
+/* Hover/tap: subtle bg appears only on interaction */
+.count-widget:hover,
+.count-widget.cw-active {
+  background: rgba(4,7,14,0.82);
+  backdrop-filter: blur(6px) !important;
+  box-shadow:
+    0 0 0 1px rgba(255,214,0,0.2),
+    0 0 28px rgba(255,214,0,0.28);
+}
+
+/* Mobile — smaller widget, pushed down to clear stream controls */
+@media (max-width: 768px) {
+  .count-widget {
+    top: 44px !important;
+    left: 8px !important;
+    width: max-content !important;
+    max-width: none !important;
+    padding: 5px 7px 6px 7px !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
+  .count-widget::before {
+    font-size: 0.42rem !important;
+    margin-bottom: 2px !important;
+  }
+  .count-widget-total span:first-child {
+    font-size: 1rem !important;
+  }
+  .count-widget .cw-label {
+    font-size: 0.48rem !important;
+  }
+  .count-widget-breakdown {
+    gap: 2px 6px !important;
+  }
+  .cw-item {
+    font-size: 0.6rem !important;
+  }
+  .vehicle-icon {
+    width: 12px !important;
+    height: 9px !important;
+  }
+  /* Tap active: bg fades in */
+  .count-widget.cw-active {
+    background: rgba(4,7,14,0.88) !important;
+    backdrop-filter: blur(4px) !important;
+    box-shadow: 0 0 20px rgba(255,214,0,0.22) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .count-widget {
+    top: 40px !important;
+    left: 6px !important;
+    width: max-content !important;
+    max-width: none !important;
+    padding: 4px 6px 5px 6px !important;
+  }
+  .count-widget-total span:first-child {
+    font-size: 0.875rem !important;
+  }
+}
+
+/* =============================================
+   DEFAULT TILES — cleaner polish
+   ============================================= */
+
+/* Icon idle breathe — "waiting" state for no-round tile */
+.bnr-icon-idle {
+  animation: bnr-icon-breathe 3s ease-in-out infinite;
+}
+@keyframes bnr-icon-breathe {
+  0%, 100% { opacity: 0.88; }
+  50%       { opacity: 0.45; }
+}
+
+/* Cyan dot variant for camera tile status bar */
+.bnr-ai-dot-cyan {
+  background: var(--cyan);
+  box-shadow: 0 0 0 0 rgba(0,212,255,0.55);
+  animation: bnr-ai-pulse-cyan 1.8s ease-in-out infinite;
+}
+@keyframes bnr-ai-pulse-cyan {
+  0%   { box-shadow: 0 0 0 0 rgba(0,212,255,0.55); }
+  70%  { box-shadow: 0 0 0 5px rgba(0,212,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,212,255,0); }
+}
+
+/* Tighter icon container — single icon centered */
+.bnr-tile-default .bnr-ai-scan-icon,
+.bnr-tile-camera .bnr-ai-scan-icon {
+  width: 36px;
+  height: 36px;
+}
+
+/* Tighter inner layout for cleaner visual balance */
+.bnr-tile-default .bnr-default-inner,
+.bnr-tile-camera .bnr-default-inner {
+  top: 22px;
+  gap: 8px;
+  padding: 0 10px 0 8px;
+}
+
+/* Top accent line — yellow for default, cyan for camera */
+.bnr-tile-default::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,214,0,0.5) 30%, rgba(255,214,0,0.22) 70%, transparent 100%);
+  z-index: 3;
+}
+.bnr-tile-camera::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(0,212,255,0.5) 30%, rgba(0,212,255,0.22) 70%, transparent 100%);
+  z-index: 3;
+}
+
+/* Crisper status bar backgrounds */
+.bnr-tile-camera .bnr-default-status-bar {
+  background: rgba(0,212,255,0.04);
+  border-top: 1px solid rgba(0,212,255,0.12);
+}
+
+/* Default tile standby label */
+.bnr-tile-default .bnr-standby-label {
+  color: rgba(0,212,255,0.38);
+  letter-spacing: 0.09em;
+}
+
+/* =============================================
+   HOW IT WORKS MODAL
+   ============================================= */
+
+.hiw-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(4,6,14,0.12);
+}
+.hiw-modal-backdrop.hidden { display: none; }
+
+.hiw-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1201;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  pointer-events: none;
+}
+.hiw-modal.hidden { display: none; }
+
+.hiw-modal-inner {
+  pointer-events: all;
+  background: #090c12;
+  border: 1px solid rgba(255,214,0,0.3);
+  border-radius: 12px;
+  box-shadow:
+    0 0 60px rgba(255,214,0,0.08),
+    0 24px 48px rgba(0,0,0,0.6);
+  width: 100%;
+  max-width: 430px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  outline: none;
+}
+
+/* ── Header ── */
+.hiw-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px 11px;
+  border-bottom: 1px solid rgba(255,214,0,0.1);
+  background: rgba(255,214,0,0.03);
+  flex-shrink: 0;
+}
+
+.hiw-modal-title-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--cls-moto);
+  text-transform: uppercase;
+}
+
+.hiw-modal-close {
+  background: transparent;
+  border: 1px solid rgba(255,214,0,0.2);
+  border-radius: 5px;
+  color: rgba(255,214,0,0.55);
+  cursor: pointer;
+  padding: 5px 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+.hiw-modal-close:hover {
+  background: rgba(255,214,0,0.08);
+  border-color: rgba(255,214,0,0.45);
+  color: var(--cls-moto);
+}
+
+/* ── Body ── */
+.hiw-modal-body {
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+  min-height: 0;
+}
+
+.hiw-intro {
+  font-size: 0.82rem;
+  color: rgba(180,210,235,0.72);
+  line-height: 1.6;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  margin: 0;
+}
+
+/* ── Steps list ── */
+.hiw-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hiw-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.hiw-step:last-child { border-bottom: none; }
+
+.hiw-step-num {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: rgba(255,214,0,0.4);
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+  width: 20px;
+  padding-top: 2px;
+}
+
+.hiw-step-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.hiw-step-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: rgba(220,235,248,0.95);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.hiw-step-desc {
+  font-size: 0.78rem;
+  color: rgba(150,180,210,0.65);
+  line-height: 1.6;
+}
+
+/* Inline bet type tags */
+.hiw-tag {
+  display: inline-block;
+  font-size: 0.63rem;
+  font-weight: 700;
+  font-family: "JetBrains Mono", monospace;
+  letter-spacing: 0.05em;
+  padding: 1px 6px;
+  border-radius: 3px;
+  margin: 3px 4px 3px 0;
+  vertical-align: middle;
+  text-transform: uppercase;
+}
+.hiw-tag-yellow {
+  background: rgba(255,214,0,0.1);
+  color: rgba(255,214,0,0.85);
+  border: 1px solid rgba(255,214,0,0.25);
+}
+.hiw-tag-cyan {
+  background: rgba(0,212,255,0.08);
+  color: rgba(0,212,255,0.8);
+  border: 1px solid rgba(0,212,255,0.22);
+}
+
+/* ── Footer ── */
+.hiw-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  flex-wrap: wrap;
+}
+
+.hiw-footer-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  font-size: 0.71rem;
+  color: rgba(120,150,180,0.5);
+  line-height: 1.5;
+  flex: 1;
+  min-width: 0;
+}
+.hiw-footer-note svg { flex-shrink: 0; margin-top: 2px; }
+
+.hiw-got-it {
+  background: rgba(255,214,0,0.1);
+  border: 1px solid rgba(255,214,0,0.35);
+  color: var(--cls-moto);
+  font-size: 0.77rem;
+  font-weight: 700;
+  font-family: "JetBrains Mono", monospace;
+  letter-spacing: 0.08em;
+  padding: 7px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.14s, border-color 0.14s, box-shadow 0.14s;
+}
+.hiw-got-it:hover {
+  background: rgba(255,214,0,0.18);
+  border-color: rgba(255,214,0,0.6);
+  box-shadow: 0 0 16px rgba(255,214,0,0.15);
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .hiw-modal-inner { max-width: 100%; max-height: 88vh; }
+  .hiw-modal-body { padding: 12px; gap: 10px; }
+  .hiw-step-title { font-size: 0.8rem; }
+  .hiw-step-desc  { font-size: 0.74rem; }
+  .hiw-footer { flex-direction: column; align-items: flex-start; }
+  .hiw-got-it { width: 100%; text-align: center; }
+}
+
+

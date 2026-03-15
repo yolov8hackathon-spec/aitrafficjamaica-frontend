@@ -1,0 +1,98 @@
+{
+    "version":  2,
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist",
+    "cleanUrls": true,
+    "rewrites":  [
+                     {
+                         "source":  "/api/admin/ml-:slug",
+                         "destination":  "/api/admin/ml?_route=:slug"
+                     },
+                     {
+                         "source":  "/api/analytics/traffic",
+                         "destination":  "/api/analytics/index?_route=traffic"
+                     },
+                     {
+                         "source":  "/api/analytics/data",
+                         "destination":  "/api/analytics/index?_route=data"
+                     },
+                     {
+                         "source":  "/api/analytics/export",
+                         "destination":  "/api/analytics/index?_route=export"
+                     },
+                     {
+                         "source":  "/api/analytics/zones",
+                         "destination":  "/api/analytics/index?_route=zones"
+                     },
+                     {
+                         "source":  "/api/(.*)",
+                         "destination":  "/api/$1"
+                     },
+                     {
+                         "source":  "/(.*)",
+                         "destination":  "/index.html"
+                     }
+                 ],
+    "headers":  [
+                    {
+                        "source":  "/(.*)",
+                        "headers":  [
+                                        {
+                                            "key":  "Cache-Control",
+                                            "value": "no-cache, no-store, must-revalidate"
+                                        },
+                                        {
+                                            "key":  "Content-Security-Policy",
+                                            "value":  "default-src \u0027self\u0027; connect-src \u0027self\u0027 https://*.supabase.co wss: https://*.railway.app https://backend.aitrafficja.com https://cdn.jsdelivr.net https://*.ipcamlive.com https://*.vercel-analytics.com https://vitals.vercel-insights.com https://cloudflareinsights.com; script-src \u0027self\u0027 \u0027unsafe-inline\u0027 \u0027unsafe-eval\u0027 https://cdn.jsdelivr.net blob: https://*.vercel-analytics.com https://static.cloudflareinsights.com; worker-src blob:; style-src \u0027self\u0027 https://cdn.jsdelivr.net https://fonts.googleapis.com \u0027unsafe-inline\u0027; font-src \u0027self\u0027 https://fonts.gstatic.com data:; img-src \u0027self\u0027 data: https://*.supabase.co https://*.ipcamlive.com https://img.youtube.com; media-src \u0027self\u0027 blob: https://*.ipcamlive.com https://*.supabase.co; frame-src https://*.ipcamlive.com https://www.youtube.com https://www.youtube-nocookie.com; frame-ancestors \u0027none\u0027"
+                                        },
+                                        {
+                                            "key":  "X-Frame-Options",
+                                            "value":  "DENY"
+                                        },
+                                        {
+                                            "key":  "X-Content-Type-Options",
+                                            "value":  "nosniff"
+                                        },
+                                        {
+                                            "key":  "Referrer-Policy",
+                                            "value":  "strict-origin-when-cross-origin"
+                                        },
+                                        {
+                                            "key":  "Permissions-Policy",
+                                            "value":  "camera=(), microphone=(), geolocation=()"
+                                        },
+                                        {
+                                            "key":  "Strict-Transport-Security",
+                                            "value":  "max-age=31536000; includeSubDomains; preload"
+                                        }
+                                    ]
+                    },
+                    {
+                        "source":  "/assets/(.*)",
+                        "headers":  [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+                    },
+                    {
+                        "source":  "/img/(.*)",
+                        "headers":  [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
+                    },
+                    {
+                        "source":  "/(favicon.svg|robots.txt|sitemap.xml)",
+                        "headers":  [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
+                    }
+                ],
+    "functions":  {
+                      "api/**/*.js":  {
+                                          "memory":  128,
+                                          "maxDuration":  25
+                                      }
+                  },
+    "crons":      [
+                      { "path": "/api/cron/daily-backfill", "schedule": "0 2 * * *" }
+                  ],
+    "images":     {
+                      "sizes":           [32, 64, 96, 128, 256],
+                      "formats":         ["image/avif", "image/webp"],
+                      "minimumCacheTTL": 86400,
+                      "domains":         []
+                  }
+}

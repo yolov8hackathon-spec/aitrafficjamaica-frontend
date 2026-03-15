@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — AI Traffic Jamaica</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" href="/img/gfdaw-removebg-preview.png" />
+  <link rel="shortcut icon" href="/img/gfdaw-removebg-preview.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/css/index.css" />
+  <link rel="stylesheet" href="/css/admin-dashboard.css" />
+  <script type="module" src="/src/utils/vercel-analytics-init.js"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body class="dark admin-page">
+
+<!-- Mobile overlay -->
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="admin-layout">
+
+  <!-- ── Sidebar ─────────────────────────────────────────────── -->
+  <aside class="admin-sidebar" id="admin-sidebar">
+    <div class="sidebar-header">
+      <a href="/" class="sidebar-logo">
+        <img src="/img/gfdaw-removebg-preview.png" alt="AI TRAFFIC JAMAICA" />
+        <span class="admin-badge">Admin</span>
+      </a>
+      <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Close sidebar">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 4L4 12M4 4l8 8"/>
+        </svg>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="sidebar-section-label">Live Ops</span>
+
+      <button class="admin-nav-btn active" data-panel="overview">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="1" y="1" width="6" height="6" rx="1.2"/>
+          <rect x="9" y="1" width="6" height="6" rx="1.2"/>
+          <rect x="1" y="9" width="6" height="6" rx="1.2"/>
+          <rect x="9" y="9" width="6" height="6" rx="1.2"/>
+        </svg>
+        <span>Dashboard</span>
+      </button>
+
+      <button class="admin-nav-btn" data-panel="bets">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M2 13V8M5.5 13V5M9 13V7M12.5 13V2"/>
+        </svg>
+        <span>Rounds &amp; Bets</span>
+      </button>
+
+      <span class="sidebar-section-label">Cameras</span>
+
+      <button class="admin-nav-btn" data-panel="cameras">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="1" y="4" width="10" height="8" rx="1.2"/>
+          <path d="M11 7l4-2v6l-4-2"/>
+          <circle cx="4" cy="8" r="1.2" fill="currentColor" stroke="none"/>
+        </svg>
+        <span>Camera Manager</span>
+      </button>
+
+      <span class="sidebar-section-label">AI Engine</span>
+
+      <button class="admin-nav-btn" data-panel="detection">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M1 8s2.6-5 7-5 7 5 7 5-2.6 5-7 5-7-5-7-5z"/>
+          <circle cx="8" cy="8" r="2"/>
+        </svg>
+        <span>Detection</span>
+      </button>
+
+      <button class="admin-nav-btn" data-panel="visual">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="1" y="2" width="14" height="10" rx="1.5"/>
+          <path d="M5 14h6M8 12v2"/>
+          <path d="M4 6l2 2 3-3 2 2"/>
+        </svg>
+        <span>Visual</span>
+      </button>
+
+      <button class="admin-nav-btn" data-panel="profiles">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M2 4h12M2 8h8M2 12h10"/>
+          <circle cx="13" cy="10" r="2.2"/>
+          <path d="M13 7.8V8M13 12v.2"/>
+        </svg>
+        <span>Profiles</span>
+      </button>
+
+      <span class="sidebar-section-label">Intelligence</span>
+
+      <button class="admin-nav-btn" data-panel="model">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+          <circle cx="8" cy="8" r="5.5"/>
+          <path d="M8 2.5V8l3 2"/>
+          <circle cx="8" cy="8" r="1.2" fill="currentColor" stroke="none"/>
+        </svg>
+        <span>Model Status</span>
+      </button>
+
+      <button class="admin-nav-btn" data-panel="map-zones">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M1 3l5 2 4-2 5 2v9l-5-2-4 2-5-2V3z"/>
+          <path d="M6 5v9M10 3v9"/>
+          <polygon points="11,1 14.5,3 14.5,7 11,9 7.5,7 7.5,3" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+        <span>Map &amp; Zones</span>
+      </button>
+
+      <span class="sidebar-section-label">System</span>
+
+      <button class="admin-nav-btn" data-panel="health">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+          <polyline points="1 8 3.5 8 5 3 7 13 9 6 11 10 12.5 8 15 8"/>
+        </svg>
+        <span>Health</span>
+      </button>
+
+      <button class="admin-nav-btn" data-panel="banners">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="1" y="3" width="14" height="10" rx="2"/>
+          <path d="M1 6h14"/>
+          <path d="M5 10h4"/>
+        </svg>
+        <span>Content</span>
+      </button>
+
+      <button class="admin-nav-btn" data-panel="audience">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M3 13c-1.8-1.8-2-5.2 0-7.6M13 13c1.8-1.8 2-5.2 0-7.6"/>
+          <path d="M5.5 11c-1-1-1.2-3.2 0-4.6M10.5 11c1-1 1.2-3.2 0-4.6"/>
+          <circle cx="8" cy="8" r="1.2"/>
+        </svg>
+        <span>Audience</span>
+      </button>
+
+      <button class="admin-nav-btn" data-panel="users">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+          <circle cx="8" cy="5" r="2.8"/>
+          <path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
+        </svg>
+        <span>Users</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="/" class="sidebar-action-link">Public View</a>
+      <button id="btn-logout" class="sidebar-logout-btn">Logout</button>
+    </div>
+  </aside>
+
+  <!-- ── Main ──────────────────────────────────────────────────── -->
+  <main class="admin-main">
+
+    <!-- Mobile topbar -->
+    <div class="admin-topbar">
+      <button class="topbar-hamburger" id="topbar-hamburger" aria-label="Open menu">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M2 4h12M2 8h12M2 12h12"/>
+        </svg>
+      </button>
+      <span class="topbar-title">WHITELINEZ Admin</span>
+    </div>
+
+    <div class="admin-workspace">
+
+      <!-- ═══════════════════════════════════════════════════════
+           OVERVIEW PANEL
+           ═══════════════════════════════════════════════════════ -->
+      <section class="admin-panel active" id="panel-overview">
+        <div class="panel-head">
+          <h2>Dashboard</h2>
+          <p>Live telemetry, round control, and active connections.</p>
+        </div>
+
+        <!-- KPIs (top) -->
+        <div class="overview-metrics-primary">
+          <div class="stat-card is-primary">
+            <div class="stat-val" id="stat-count">-</div>
+            <div class="stat-label">Live Count</div>
+          </div>
+          <div class="stat-card is-primary">
+            <div class="stat-val" id="stat-round">-</div>
+            <div class="stat-label">Round Status</div>
+          </div>
+          <div class="stat-card is-primary">
+            <div class="stat-val" id="stat-bets">-</div>
+            <div class="stat-label">Bets Placed</div>
+          </div>
+          <div class="stat-card is-primary">
+            <div class="stat-val" id="stat-users">-</div>
+            <div class="stat-label">Online Users</div>
+          </div>
+          <div class="stat-card is-primary">
+            <div class="stat-val" id="stat-ai-fps">-</div>
+            <div class="stat-label">AI FPS</div>
+          </div>
+          <div class="stat-card is-primary">
+            <div class="stat-val" id="stat-visits">-</div>
+            <div class="stat-label">Visits (Runtime)</div>
+          </div>
+        </div>
+
+        <div class="overview-metrics-secondary">
+          <div class="stat-card is-secondary"><div class="stat-val" id="ml-points-total">-</div><div class="stat-label">Telemetry Rows</div></div>
+          <div class="stat-card is-secondary"><div class="stat-val" id="ml-points-24h">-</div><div class="stat-label">Rows (24h)</div></div>
+          <div class="stat-card is-secondary"><div class="stat-val" id="ml-conf-avg">-</div><div class="stat-label">Avg Confidence</div></div>
+          <div class="stat-card is-secondary"><div class="stat-val" id="ml-model-active">-</div><div class="stat-label">Active Model</div></div>
+        </div>
+
+        <!-- Camera Switch -->
+        <div class="card-box dash-cam-switch" style="margin-bottom:10px;">
+          <h3>Force Camera Switch</h3>
+          <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+            <div class="field" style="flex:1;min-width:180px;max-width:320px;">
+              <label for="dash-cam-select">Active AI Camera</label>
+              <select id="dash-cam-select"><option value="">Loading cameras…</option></select>
+            </div>
+            <button id="dash-cam-switch-btn" class="btn-primary" type="button">Switch &amp; Reset AI</button>
+            <span id="dash-cam-switch-msg" class="line-status"></span>
+          </div>
+        </div>
+
+        <!-- Force Scene Reset -->
+        <div class="card-box" style="margin-bottom:10px;">
+          <h3>Force Detection Reset</h3>
+          <p class="admin-hint">Clears stale detection boxes and forces the AI to re-initialise on the current scene immediately.</p>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <button id="btn-force-scene-reset" class="btn-secondary" type="button">Reset Detection Now</button>
+            <span id="force-scene-reset-msg" class="line-status"></span>
+          </div>
+        </div>
+
+        <!-- Bottom row: Rounds + Connections -->
+        <div class="overview-grid overview-bottom">
+          <div class="card-box overview-feed-card">
+            <h3>Recent Rounds</h3>
+            <div id="recent-rounds" class="rounds-list data-list"><p class="loading">Loading...</p></div>
+          </div>
+          <div class="card-box overview-feed-card">
+            <h3>Active Connections</h3>
+            <div id="active-users-list" class="rounds-list data-list"><p class="loading">Loading active users...</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════
+           ML CONTROL PANEL
+           ═══════════════════════════════════════════════════════ -->
+      <section class="admin-panel" id="panel-ml">
+        <div class="panel-head">
+          <h2>ML Control</h2>
+          <p>Dataset management and model training pipeline. Runtime profiles live in the <strong>Profiles</strong> panel.</p>
+        </div>
+
+        <div class="admin-model-banner">
+          <span class="admin-model-pulse"></span>
+          <span class="admin-model-label">ACTIVE MODEL</span>
+          <span id="ml-active-model-name" class="admin-model-value">—</span>
+        </div>
+
+        <div class="ml-control-wrap">
+          <p class="muted" style="font-size:0.82rem;padding:16px 0;">Dataset capture, annotation, and retraining pipeline controls coming soon. Runtime tuning has moved to the <strong>Profiles</strong> panel.</p>
+        </div>
+
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════
+           DETECTION PANEL (Zones + Count Tuning)
+           ═══════════════════════════════════════════════════════ -->
+      <section class="admin-panel" id="panel-detection">
+        <div class="panel-head">
+          <h2>Detection</h2>
+          <p>Draw a count band over the road. The midline of the band is the vehicle crossing trigger.</p>
+        </div>
+
+        <div class="zone-editor-workflow">
+          <!-- Live preview -->
+          <div class="stream-canvas-wrapper ae-preview">
+            <video id="admin-video" muted playsinline autoplay></video>
+            <canvas id="line-canvas"></canvas>
+            <canvas id="landmark-canvas" style="position:absolute;inset:0;pointer-events:none;"></canvas>
+            <div class="ae-preview-label">LIVE PREVIEW <span id="zone-editor-cam-label" class="zone-editor-cam-label"></span></div>
+          </div>
+          <!-- Controls sidebar -->
+          <div class="zone-controls-dock">
+            <div class="admin-line-controls">
+
+              <!-- Primary: Count Band -->
+              <div class="zone-mode-section">
+                <div class="zone-mode-label">COUNTING</div>
+                <div class="zone-toggle-group zone-toggle-group-primary">
+                  <button id="btn-zone-count" class="zone-toggle count active" title="Draw 4 points over the road. The midline becomes the crossing trigger.">Count Band</button>
+                </div>
+                <p class="zone-mode-hint">Click 4 points on the video to define the count band. The yellow line in the middle is what triggers counting.</p>
+              </div>
+
+              <!-- Secondary: optional extras -->
+              <details class="zone-advanced-section">
+                <summary class="zone-advanced-toggle">Advanced zones</summary>
+                <div class="zone-toggle-group zone-toggle-group-secondary" style="margin-top:8px;">
+                  <button id="btn-zone-detect" class="zone-toggle detect" title="Optional polygon filter — only detections inside this area are processed">Detect Filter</button>
+                  <button id="btn-zone-ground" class="zone-toggle" title="Set 4-corner ground quad for 3D perspective overlay">3D Mask</button>
+                  <button id="btn-zone-landmarks" class="zone-toggle" type="button" title="Place landmark labels (bus stops, signs, etc.)">Labels</button>
+                </div>
+              </details>
+
+              <!-- Tools row -->
+              <div class="zone-tools-row">
+                <button id="btn-zone-guides" class="zone-toggle active zone-tool-btn" type="button" title="Toggle perspective guides">Guides</button>
+                <button id="btn-zone-snap" class="zone-toggle active zone-tool-btn" type="button" title="Snap clicks to perspective guides">Snap</button>
+                <button id="btn-clear-line" class="btn-secondary" type="button">Clear</button>
+                <button id="btn-save-line" class="btn-primary" type="button" disabled>Save</button>
+                <button id="btn-save-landmarks" class="btn-primary" type="button" disabled style="display:none;">Save Labels</button>
+              </div>
+
+              <span id="line-status" class="line-status"></span>
+            </div>
+
+
+            <div class="card-box count-tuning-box compact-controls" style="margin-top:10px;">
+              <h4>Count Tuning <span class="muted" style="font-weight:400;font-size:0.78rem;">— optional</span></h4>
+              <div class="count-tuning-grid">
+                <div class="field">
+                  <label for="count-min-track-frames">Min Track Frames</label>
+                  <input id="count-min-track-frames" type="number" min="1" max="30" step="1" value="2" />
+                </div>
+                <div class="field">
+                  <label for="count-min-confidence">Min Confidence</label>
+                  <input id="count-min-confidence" type="number" min="0" max="1" step="0.05" value="0.22" />
+                </div>
+                <div class="field">
+                  <label for="count-min-box-area-ratio">Min Object Size</label>
+                  <input id="count-min-box-area-ratio" type="number" min="0" max="1" step="0.001" value="0.001" />
+                </div>
+                <div class="field count-tuning-wide">
+                  <label for="count-allowed-classes">Allowed Classes</label>
+                  <input id="count-allowed-classes" type="text" value="car, truck, bus, motorcycle" placeholder="car, truck, bus, motorcycle" />
+                </div>
+                <div class="field count-tuning-wide">
+                  <label for="count-class-min-confidence">Per-class Confidence</label>
+                  <input id="count-class-min-confidence" type="text" value="car:0.22, truck:0.25, bus:0.25, motorcycle:0.22" placeholder="car:0.22, truck:0.25" />
+                </div>
+              </div>
+              <div class="count-tuning-actions">
+                <button id="btn-count-preset-balanced" class="btn-secondary" type="button">Day preset</button>
+                <button id="btn-count-preset-night" class="btn-secondary" type="button">Night preset</button>
+                <button id="btn-save-count-settings" class="btn-primary" type="button">Save Tuning</button>
+                <span id="count-settings-status" class="line-status"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════
+           CAMERA MANAGER PANEL
+           ═══════════════════════════════════════════════════════ -->
+      <section class="admin-panel" id="panel-cameras">
+        <div class="panel-head">
+          <h2>Camera Manager</h2>
+          <p>Manage live camera sources and tune video feed appearance.</p>
+        </div>
+
+        <p id="streams-msg" class="streams-msg"></p>
+
+        <div class="card-box" style="margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <h3 style="margin:0;">Camera Sources</h3>
+            <button id="streams-autopick-btn" class="streams-autopick-btn" style="display:none;" title="Select the camera with the highest quality score">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              AUTO-PICK BEST
+            </button>
+          </div>
+          <div id="streams-list"><p class="loading">Loading...</p></div>
+        </div>
+
+        <div class="card-box" style="margin-bottom:14px;">
+          <h3>Feed Appearance</h3>
+          <p class="admin-hint">Tune camera brightness/colour. Push changes live to public view.</p>
+          <div class="field-row simplified-field-row">
+            <div class="field" style="max-width:210px">
+              <label for="det-video-brightness">Brightness <span id="det-video-brightness-val" class="muted">100%</span></label>
+              <input id="det-video-brightness" type="range" min="50" max="180" step="1" value="100" />
+            </div>
+            <div class="field" style="max-width:210px">
+              <label for="det-video-contrast">Contrast <span id="det-video-contrast-val" class="muted">100%</span></label>
+              <input id="det-video-contrast" type="range" min="50" max="200" step="1" value="100" />
+            </div>
+            <div class="field" style="max-width:210px">
+              <label for="det-video-saturate">Saturation <span id="det-video-saturate-val" class="muted">100%</span></label>
+              <input id="det-video-saturate" type="range" min="0" max="220" step="1" value="100" />
+            </div>
+            <div class="field" style="max-width:210px">
+              <label for="det-video-hue">Hue Rotate <span id="det-video-hue-val" class="muted">0deg</span></label>
+              <input id="det-video-hue" type="range" min="0" max="360" step="1" value="0" />
+            </div>
+            <div class="field" style="max-width:210px">
+              <label for="det-video-blur">Blur <span id="det-video-blur-val" class="muted">0.0px</span></label>
+              <input id="det-video-blur" type="range" min="0" max="4" step="0.1" value="0" />
+            </div>
+          </div>
+          <div class="field-row simplified-field-row">
+            <div class="field" style="max-width:200px">
+              <label for="feed-push-public">Push To Public View</label>
+              <select id="feed-push-public">
+                <option value="1">Enabled</option>
+                <option value="0">Disabled</option>
+              </select>
+            </div>
+            <div class="field" style="max-width:200px">
+              <label for="feed-auto-preset">Auto Day/Night Preset</label>
+              <select id="feed-auto-preset">
+                <option value="0">Disabled</option>
+                <option value="1">Enabled</option>
+              </select>
+            </div>
+          </div>
+          <div class="count-tuning-actions">
+            <button id="btn-feed-preset-day" class="btn-secondary" type="button">Day Preset</button>
+            <button id="btn-feed-preset-night" class="btn-secondary" type="button">Night Preset</button>
+            <button id="btn-feed-apply-auto" class="btn-secondary" type="button">Auto Now</button>
+            <button id="btn-video-push-public" class="btn-primary" type="button">Push To Public</button>
+            <span id="feed-settings-msg" class="line-status"></span>
+          </div>
+        </div>
+
+        <div class="card-box" id="streams-form-card">
+          <h3 id="streams-form-heading">Add Camera</h3>
+          <p class="admin-hint">Use an ipcam alias (short name) or paste a full HLS URL (https://...). The label is shown to users in the camera switcher.</p>
+          <form id="streams-form">
+            <div class="field-row">
+              <div class="field">
+                <label for="streams-form-name">Display Name</label>
+                <input id="streams-form-name" type="text" maxlength="60" placeholder="e.g. Main Street, North Gate…" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="streams-form-alias">Stream Alias or URL</label>
+                <input id="streams-form-alias" type="text" placeholder="my-cam-alias  or  https://stream.example.com/live.m3u8" required />
+                <p class="admin-hint" style="margin:4px 0 0;">Short alias → proxied via /api/stream. Full URL → loaded directly.</p>
+              </div>
+            </div>
+            <div class="field" style="flex-direction:row;align-items:center;gap:10px;">
+              <label style="display:flex;align-items:center;gap:7px;cursor:pointer;">
+                <input id="streams-form-active" type="checkbox" checked />
+                <span>Active (visible to users)</span>
+              </label>
+            </div>
+            <p id="streams-form-msg" class="form-msg" style="margin-top:6px;"></p>
+            <div style="display:flex;gap:8px;margin-top:10px;">
+              <button type="submit" class="btn-primary" id="streams-form-submit">Add Camera</button>
+              <button type="button" class="btn-outline" id="streams-form-cancel">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════
+           VISUAL PANEL (Overlay + Detection Runtime)
+           ═══════════════════════════════════════════════════════ -->
+      <section class="admin-panel" id="panel-visual">
+        <div class="panel-head">
+          <h2>Visual</h2>
+          <p>Overlay style, detection box colors, ground plane, and scan mode diagnostics.</p>
+        </div>
+
+        <div class="detection-status-grid">
+          <article class="stat-card is-secondary">
+            <div class="stat-val" id="det-status-model">-</div>
+            <div class="stat-label">Active Model</div>
+          </article>
+          <article class="stat-card is-secondary">
+            <div class="stat-val" id="det-status-conf">-</div>
+            <div class="stat-label">Avg Confidence</div>
+          </article>
+          <article class="stat-card is-secondary">
+            <div class="stat-val" id="det-status-last">-</div>
+            <div class="stat-label">Last Telemetry</div>
+          </article>
+          <article class="stat-card is-secondary">
+            <div class="stat-val" id="det-status-scan">FULL</div>
+            <div class="stat-label">Feed Scan Mode</div>
+          </article>
+        </div>
+
+        <div class="overview-grid detection-workflow-grid" style="margin-top:10px;">
+          <section class="card-box card-box-priority">
+            <h3>Detection Runtime</h3>
+            <div class="rounds-list data-list">
+              <div class="round-row"><div class="round-row-info"><span class="round-row-id">AI Loop</span><span class="round-row-meta" id="det-runtime-ai">Checking...</span></div></div>
+              <div class="round-row"><div class="round-row-info"><span class="round-row-id">Stream URL</span><span class="round-row-meta" id="det-runtime-stream">Checking...</span></div></div>
+              <div class="round-row"><div class="round-row-info"><span class="round-row-id">Night Profile State</span><span class="round-row-meta" id="det-runtime-night">Checking...</span></div></div>
+              <div class="round-row"><div class="round-row-info"><span class="round-row-id">Runtime Profile</span><span class="round-row-meta" id="det-runtime-profile">Checking...</span></div></div>
+              <div class="round-row"><div class="round-row-info"><span class="round-row-id">Runtime Reason</span><span class="round-row-meta" id="det-runtime-reason">Checking...</span></div></div>
+              <div class="round-row"><div class="round-row-info"><span class="round-row-id">Current Focus</span><span class="round-row-meta" id="det-runtime-focus">Full-feed detection with zone-aware counting</span></div></div>
+            </div>
+          </section>
+
+          <section class="card-box card-box-secondary">
+            <h3>Overlay Customization</h3>
+            <div class="field-row">
+              <div class="field" style="max-width:170px">
+                <label for="det-box-style">Box Style</label>
+                <select id="det-box-style">
+                  <option value="solid">Solid</option>
+                  <option value="dashed">Dashed</option>
+                  <option value="corner">Corner</option>
+                </select>
+              </div>
+              <div class="field" style="max-width:160px">
+                <label for="det-line-width">Line Width</label>
+                <input id="det-line-width" type="range" min="1" max="5" step="0.5" value="2" />
+              </div>
+              <div class="field" style="max-width:160px">
+                <label for="det-fill-alpha">Fill Opacity</label>
+                <input id="det-fill-alpha" type="range" min="0" max="0.45" step="0.05" value="0.10" />
+              </div>
+              <div class="field" style="max-width:160px">
+                <label for="det-max-boxes">Max Boxes</label>
+                <input id="det-max-boxes" type="number" min="1" max="40" value="10" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field" style="max-width:160px"><label for="det-color-car">Car Color</label><input id="det-color-car" type="color" value="#29B6F6" /></div>
+              <div class="field" style="max-width:160px"><label for="det-color-truck">Truck Color</label><input id="det-color-truck" type="color" value="#FF7043" /></div>
+              <div class="field" style="max-width:160px"><label for="det-color-bus">Bus Color</label><input id="det-color-bus" type="color" value="#AB47BC" /></div>
+              <div class="field" style="max-width:160px"><label for="det-color-motorcycle">Motorcycle Color</label><input id="det-color-motorcycle" type="color" value="#FFD600" /></div>
+            </div>
+            <div class="field-row">
+              <div class="field" style="max-width:190px">
+                <label for="det-show-labels">Show Labels</label>
+                <select id="det-show-labels">
+                  <option value="1">Enabled</option>
+                  <option value="0">Disabled</option>
+                </select>
+              </div>
+              <div class="field" style="max-width:245px">
+                <label for="det-show-zone-only">Render Boxes In Detect Zone Only</label>
+                <select id="det-show-zone-only">
+                  <option value="0">No (Full Feed)</option>
+                  <option value="1" selected>Yes (Visual Filter)</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field" style="max-width:200px">
+                <label for="det-ground-enabled">Ground Overlay</label>
+                <select id="det-ground-enabled">
+                  <option value="1">Enabled</option>
+                  <option value="0">Disabled</option>
+                </select>
+              </div>
+              <div class="field" style="max-width:200px">
+                <label for="det-ground-alpha">Ground Opacity</label>
+                <input id="det-ground-alpha" type="range" min="0" max="0.45" step="0.05" value="0.16" />
+              </div>
+              <div class="field" style="max-width:200px">
+                <label for="det-ground-grid">Ground Grid Density</label>
+                <input id="det-ground-grid" type="number" min="2" max="16" value="6" />
+              </div>
+              <div class="field" style="max-width:200px">
+                <label for="det-ground-cutout">Vehicle Cutout</label>
+                <input id="det-ground-cutout" type="range" min="0" max="0.85" step="0.05" value="0.38" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field" style="max-width:148px"><label for="det-ground-x1">Quad X1 (top-left)</label><input id="det-ground-x1" type="number" min="0" max="1" step="0.05" value="0.34" /></div>
+              <div class="field" style="max-width:148px"><label for="det-ground-y1">Quad Y1</label><input id="det-ground-y1" type="number" min="0" max="1" step="0.05" value="0.58" /></div>
+              <div class="field" style="max-width:148px"><label for="det-ground-x2">Quad X2 (top-right)</label><input id="det-ground-x2" type="number" min="0" max="1" step="0.05" value="0.78" /></div>
+              <div class="field" style="max-width:148px"><label for="det-ground-y2">Quad Y2</label><input id="det-ground-y2" type="number" min="0" max="1" step="0.05" value="0.58" /></div>
+              <div class="field" style="max-width:148px"><label for="det-ground-x3">Quad X3 (bottom-right)</label><input id="det-ground-x3" type="number" min="0" max="1" step="0.05" value="0.98" /></div>
+              <div class="field" style="max-width:148px"><label for="det-ground-y3">Quad Y3</label><input id="det-ground-y3" type="number" min="0" max="1" step="0.05" value="0.98" /></div>
+              <div class="field" style="max-width:148px"><label for="det-ground-x4">Quad X4 (bottom-left)</label><input id="det-ground-x4" type="number" min="0" max="1" step="0.05" value="0.08" /></div>
+              <div class="field" style="max-width:148px"><label for="det-ground-y4">Quad Y4</label><input id="det-ground-y4" type="number" min="0" max="1" step="0.05" value="0.98" /></div>
+            </div>
+            <div class="ml-control-actions">
+              <button id="btn-det-preset-balanced" class="btn-secondary" type="button">Day Overlay</button>
+              <button id="btn-det-preset-night" class="btn-secondary" type="button">Night Overlay</button>
+              <button id="btn-det-save" class="btn-primary" type="button">Save Visual Settings</button>
+              <button id="btn-det-reset" class="btn-secondary" type="button">Reset Defaults</button>
+              <span id="det-settings-msg" class="muted"></span>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════
+           PROFILES PANEL (Night + Adaptive Runtime)
+           ═══════════════════════════════════════════════════════ -->
+      <section class="admin-panel" id="panel-profiles">
+        <div class="panel-head">
+          <h2>Profiles</h2>
+          <p>Night tracking and adaptive runtime profiles for the AI detection engine.</p>
+        </div>
+
+        <div class="profiles-layout">
+          <div class="card-box">
+            <h3 style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              Night Tracking Profile
+              <span id="night-profile-status" class="ml-status-chip">Unknown</span>
+            </h3>
+            <p id="night-profile-window" class="muted" style="font-size:0.78rem;margin:0 0 10px;">Window: --</p>
+            <div class="field-row">
+              <div class="field" style="max-width:160px">
+                <label for="night-profile-enabled">Enable Night Profile</label>
+                <select id="night-profile-enabled">
+                  <option value="1">Enabled</option>
+                  <option value="0">Disabled</option>
+                </select>
+              </div>
+              <div class="field" style="max-width:120px">
+                <label for="night-start-hour">Start Hour</label>
+                <input id="night-start-hour" type="number" min="0" max="23" value="18" />
+              </div>
+              <div class="field" style="max-width:120px">
+                <label for="night-end-hour">End Hour</label>
+                <input id="night-end-hour" type="number" min="0" max="23" value="6" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field" style="max-width:175px">
+                <label for="night-profile-mode">Night Preset</label>
+                <select id="night-profile-mode">
+                  <option value="conservative">Conservative</option>
+                  <option value="aggressive">Aggressive</option>
+                </select>
+              </div>
+              <div class="field" style="max-width:120px">
+                <label for="night-yolo-conf">Night Conf</label>
+                <input id="night-yolo-conf" type="number" min="0.01" max="0.99" step="0.01" value="0.30" />
+              </div>
+              <div class="field" style="max-width:140px">
+                <label for="night-infer-size">Night Infer Size</label>
+                <input id="night-infer-size" type="number" min="320" max="1280" step="32" value="640" />
+              </div>
+              <div class="field" style="max-width:110px">
+                <label for="night-iou">Night IOU</label>
+                <input id="night-iou" type="number" min="0.05" max="0.95" step="0.01" value="0.45" />
+              </div>
+              <div class="field" style="max-width:120px">
+                <label for="night-max-det">Night Max Det</label>
+                <input id="night-max-det" type="number" min="10" max="500" value="120" />
+              </div>
+            </div>
+            <div class="ml-control-actions">
+              <button id="btn-apply-night-preset" class="btn-secondary" type="button">Apply Preset</button>
+              <button id="btn-save-night-profile" class="btn-primary" type="button">Save Night Profile</button>
+              <span id="night-profile-msg" class="muted"></span>
+            </div>
+            <div class="night-live-panel">
+              <h5>Night Tracking Live Data</h5>
+              <p id="night-live-summary" class="muted">Checking live night tracking state...</p>
+              <div id="night-live-grid" class="night-live-grid">
+                <div class="night-live-item"><span>Local Time</span><strong id="night-live-now">-</strong></div>
+                <div class="night-live-item"><span>Window State</span><strong id="night-live-window-state">-</strong></div>
+                <div class="night-live-item"><span>Effective Thresholds</span><strong id="night-live-thresholds">-</strong></div>
+                <div class="night-live-item"><span>Capture Counters</span><strong id="night-live-counters">-</strong></div>
+                <div class="night-live-item"><span>Latest Telemetry</span><strong id="night-live-telemetry">-</strong></div>
+                <div class="night-live-item"><span>Latest Training</span><strong id="night-live-training">-</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-box">
+            <h3 style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              Adaptive Runtime Profile
+              <span id="runtime-profile-status" class="ml-status-chip">Unknown</span>
+            </h3>
+            <p id="runtime-profile-live" class="muted" style="font-size:0.78rem;margin:0 0 10px;">Waiting for live runtime state...</p>
+            <div class="field-row">
+              <div class="field" style="max-width:160px">
+                <label for="runtime-profile-mode">Mode</label>
+                <select id="runtime-profile-mode">
+                  <option value="auto">Auto</option>
+                  <option value="manual">Manual</option>
+                </select>
+              </div>
+              <div class="field" style="max-width:210px">
+                <label for="runtime-manual-profile">Manual Profile</label>
+                <select id="runtime-manual-profile"></select>
+              </div>
+              <div class="field" style="max-width:200px">
+                <label for="runtime-manual-until">Manual Until (optional)</label>
+                <input id="runtime-manual-until" type="datetime-local" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field" style="max-width:170px">
+                <label for="runtime-autotune-interval">Autotune Interval (sec)</label>
+                <input id="runtime-autotune-interval" type="number" min="5" max="300" value="20" />
+              </div>
+              <div class="field" style="max-width:165px">
+                <label for="runtime-cooldown-sec">Switch Cooldown (sec)</label>
+                <input id="runtime-cooldown-sec" type="number" min="15" max="3600" value="600" />
+              </div>
+              <div class="field" style="max-width:165px">
+                <label for="runtime-stream-grab-latest">Stream Grab Latest</label>
+                <select id="runtime-stream-grab-latest">
+                  <option value="1">Enabled</option>
+                  <option value="0">Disabled</option>
+                </select>
+              </div>
+            </div>
+            <div class="ml-control-actions">
+              <button id="btn-save-runtime-profile" class="btn-primary" type="button">Save Runtime Profile</button>
+              <button id="btn-runtime-force-auto" class="btn-secondary" type="button">Force Auto</button>
+              <span id="runtime-profile-msg" class="muted"></span>
+            </div>
+            <p id="runtime-profile-error" class="auth-error" role="alert" style="display:none;margin-top:8px;"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════
+           BETS PANEL
+           ═══════════════════════════════════════════════════════ -->
+      <section class="admin-panel" id="panel-bets">
+        <div class="panel-head">
+          <h2>Rounds &amp; Bets</h2>
+          <p>Round controls, session scheduling, and recent bet activity.</p>
+        </div>
+
+        <!-- Round Operations -->
+        <section class="card-box card-box-secondary round-ops-section">
+          <h3>Round Operations</h3>
+          <div class="round-ops-grid">
+            <div class="round-create-pane">
+              <h4>Create Round</h4>
+              <form id="round-form">
+                <div class="field-row">
+                  <div class="field">
+                    <label for="market-type">Bet Type</label>
+                    <select id="market-type">
+                      <option value="over_under">Over / Under — total vehicles</option>
+                      <option value="vehicle_count">Count — specific vehicle type</option>
+                      <option value="vehicle_type">Type Leader — which type wins</option>
+                    </select>
+                  </div>
+                  <div class="field" id="vehicle-class-field" style="display:none">
+                    <label for="vehicle-class">Vehicle Type</label>
+                    <select id="vehicle-class">
+                      <option value="car">Cars</option>
+                      <option value="truck">Trucks</option>
+                      <option value="bus">Buses</option>
+                      <option value="motorcycle">Motorcycles</option>
+                    </select>
+                  </div>
+                  <div class="field" id="threshold-field">
+                    <label for="threshold" id="threshold-label">Threshold (vehicles)</label>
+                    <input id="threshold" type="number" min="1" value="20" />
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="starts-at">Round Starts <small class="muted">(local time)</small></label>
+                    <input id="starts-at" type="datetime-local" required />
+                  </div>
+                  <div class="field" style="max-width:120px">
+                    <label for="duration">Duration (min)</label>
+                    <input id="duration" type="number" min="5" max="480" value="10" />
+                  </div>
+                  <div class="field" style="max-width:140px">
+                    <label for="bet-cutoff">Close bets (min before end)</label>
+                    <input id="bet-cutoff" type="number" min="0" max="60" value="1" />
+                  </div>
+                </div>
+                <div class="computed-times" id="computed-times" style="display:none">
+                  <span>Bets close: <strong id="computed-closes">-</strong></span>
+                  <span>Round ends: <strong id="computed-ends">-</strong></span>
+                </div>
+                <div id="round-preview" class="round-preview hidden">
+                  <div class="preview-row"><span>Duration</span><strong id="prev-duration">-</strong></div>
+                  <div class="preview-row"><span>Avg zone flow (this hour)</span><strong id="prev-rate">-</strong></div>
+                  <div class="preview-row" id="prev-expected-row"><span>Expected for window</span><strong id="prev-expected">-</strong></div>
+                  <div id="prev-warning" class="preview-warning hidden"></div>
+                  <div id="prev-ok" class="preview-ok hidden">Round looks competitive</div>
+                </div>
+                <p id="round-error" class="auth-error" role="alert"></p>
+                <p id="round-success" class="auth-success" role="status"></p>
+                <button type="submit" class="btn-primary" id="round-submit-btn">Create Round</button>
+              </form>
+            </div>
+
+            <div class="round-session-pane">
+              <h4>Session Loop</h4>
+              <p class="admin-hint">Auto-run rounds continuously for a fixed session window.</p>
+              <div class="field-row">
+                <div class="field" style="max-width:160px">
+                  <label for="session-duration">Session Duration (min)</label>
+                  <input id="session-duration" type="number" min="10" max="1440" value="120" />
+                </div>
+                <div class="field" style="max-width:155px">
+                  <label for="session-interval">Interval Between Rounds (min)</label>
+                  <input id="session-interval" type="number" min="0" max="120" value="2" />
+                </div>
+                <div class="field" style="max-width:135px">
+                  <label for="session-max-rounds">Max Rounds (optional)</label>
+                  <input id="session-max-rounds" type="number" min="1" max="500" placeholder="no limit" />
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:6px;">
+                <button type="button" id="btn-session-start" class="btn-primary">Start Session</button>
+              </div>
+              <p id="session-status" class="auth-success" role="status" style="min-height:18px;margin-top:6px;"></p>
+              <div id="session-list" class="rounds-list data-list" style="margin-top:8px;">
+                <p class="loading">Loading sessions...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="card-box slim" style="margin-bottom:12px;margin-top:0;">
+          <h3>Bet Validation Status</h3>
+          <div id="bet-validation-status" class="rounds-list data-list">
+            <p class="loading">Loading validation metrics...</p>
+          </div>
+        </div>
+        <div id="recent-bets" class="rounds-list data-list tall"><p class="loading">Loading...</p></div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════
+           AUDIENCE PANEL
+           ═══════════════════════════════════════════════════════ -->
+      <section class="admin-panel" id="panel-audience">
+        <div class="panel-head">
+          <h2>Audience Intelligence</h2>
+          <p>Guests, registered users, and site-view behavior in one place.</p>
+        </div>
+
+        <div class="overview-metrics-primary audience-kpis">
+          <div class="stat-card is-primary"><div class="stat-val" id="aud-kpi-views-total">-</div><div class="stat-label">Total Site Views</div></div>
+          <div class="stat-card is-primary"><div class="stat-val" id="aud-kpi-views-24h">-</div><div class="stat-label">Views (24h)</div></div>
+          <div class="stat-card is-primary"><div class="stat-val" id="aud-kpi-guests-total">-</div><div class="stat-label">Guests (Total)</div></div>
+          <div class="stat-card is-primary"><div class="stat-val" id="aud-kpi-guests-24h">-</div><div class="stat-label">Guests (24h)</div></div>
+          <div class="stat-card is-primary"><div class="stat-val" id="aud-kpi-users-total">-</div><div class="stat-label">Registered Users</div></div>
+        </div>
+
+        <div class="audience-toolbar">
+          <div class="field" style="max-width:190px;">
+            <label for="aud-source-filter">Source Filter</label>
+            <select id="aud-source-filter">
+              <option value="all">All Sources</option>
+              <option value="web">Web</option>
+              <option value="vercel">Vercel</option>
+            </select>
+          </div>
+          <button id="aud-refresh-btn" class="btn-secondary" type="button">Refresh Audience</button>
+        </div>
+
+        <div class="overview-grid audience-grid">
+          <div class="card-box">
+            <h3>Top Pages (24h)</h3>
+            <div id="aud-top-pages" class="rounds-list data-list"><p class="loading">Loading top pages...</p></div>
+          </div>
+          <div class="card-box">
+            <h3>Recent Site Views</h3>
+            <div id="aud-recent-views" class="rounds-list data-list"><p class="loading">Loading recent site views...</p></div>
+          </div>
+          <div class="card-box">
+            <h3>Guest Activity</h3>
+            <div id="aud-guest-activity" class="rounds-list data-list"><p class="loading">Loading guest activity...</p></div>
+          </div>
+          <div class="card-box">
+            <h3>Recent Registered Users</h3>
+            <div id="aud-registered-users" class="rounds-list data-list"><p class="loading">Loading users...</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════
+           USERS PANEL
+           ═══════════════════════════════════════════════════════ -->
+      <section class="admin-panel" id="panel-users">
+        <div class="panel-head">
+          <h2>User Management</h2>
+          <p>View registered users and grant admin role by email.</p>
+        </div>
+        <div class="user-mgmt-row">
+          <div class="field">
+            <label for="admin-email-input">User Email</label>
+            <input id="admin-email-input" type="email" placeholder="user@example.com" />
+          </div>
+          <div class="field">
+            <label for="admin-role-select">Role</label>
+            <select id="admin-role-select">
+              <option value="admin">Admin</option>
+              <option value="user">User (revoke admin)</option>
+            </select>
+          </div>
+          <button id="btn-set-admin" class="btn-primary">Set Role</button>
+        </div>
+        <p id="user-mgmt-msg" style="font-size:0.82rem;margin-top:6px;color:var(--ok);"></p>
+        <div class="card-box slim" style="margin-top:12px;">
+          <h3>Registered Users</h3>
+          <div id="registered-users" class="rounds-list data-list tall"><p class="loading">Loading users...</p></div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════
+           SYSTEM HEALTH PANEL
+           ═══════════════════════════════════════════════════════ -->
+      <!-- ══ Model ══════════════════════════════════════════════ -->
+      <section class="admin-panel" id="panel-model">
+        <div class="panel-head">
+          <h2>Model Status</h2>
+          <p>Live AI inference status — model identity, scene context, detection activity, and task health.</p>
+        </div>
+        <div id="model-panel-root">
+          <!-- Hero bar -->
+          <div class="mp-hero" id="mp-hero">
+            <div class="mp-hero-left">
+              <span class="mp-status-dot" id="mp-status-dot"></span>
+              <span class="mp-status-label" id="mp-status-label">—</span>
+              <span class="mp-model-name" id="mp-model-name">—</span>
+            </div>
+            <div class="mp-hero-chips">
+              <span class="mp-chip" id="mp-chip-device">—</span>
+              <span class="mp-chip" id="mp-chip-conf">conf —</span>
+              <span class="mp-chip mp-chip-muted" id="mp-chip-frame">frame —</span>
+            </div>
+          </div>
+
+          <!-- Three columns -->
+          <div class="mp-grid">
+            <!-- Scene -->
+            <div class="mp-card" id="mp-scene-card">
+              <div class="mp-card-label">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+                Scene
+              </div>
+              <div class="mp-scene-rows">
+                <div class="mp-scene-row">
+                  <span class="mp-scene-key">Camera</span>
+                  <span class="mp-scene-val" id="mp-camera-name">—</span>
+                </div>
+                <div class="mp-scene-row">
+                  <span class="mp-scene-key">Lighting</span>
+                  <span class="mp-scene-val" id="mp-lighting">—</span>
+                </div>
+                <div class="mp-scene-row">
+                  <span class="mp-scene-key">Weather</span>
+                  <span class="mp-scene-val" id="mp-weather">—</span>
+                </div>
+                <div class="mp-scene-row">
+                  <span class="mp-scene-key">Scene conf</span>
+                  <span class="mp-scene-val" id="mp-scene-conf">—</span>
+                </div>
+              </div>
+              <div class="mp-scene-conf-bar-wrap">
+                <div class="mp-scene-conf-bar" id="mp-scene-conf-bar" style="width:0%"></div>
+              </div>
+            </div>
+
+            <!-- Detections -->
+            <div class="mp-card" id="mp-det-card">
+              <div class="mp-card-label">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h.01M15 9h.01M9 15h.01M15 15h.01"/></svg>
+                Detections
+              </div>
+              <div class="mp-det-classes" id="mp-det-classes">
+                <!-- rendered by JS -->
+              </div>
+              <div class="mp-det-meta">
+                <span>Total: <b id="mp-det-total">0</b></span>
+                <span>Avg conf: <b id="mp-det-conf">—</b></span>
+                <span>Crossings: <b id="mp-det-crossings">0</b></span>
+              </div>
+              <div class="mp-det-ts">Last event: <span id="mp-det-ts">—</span></div>
+            </div>
+
+            <!-- Performance -->
+            <div class="mp-card" id="mp-perf-card">
+              <div class="mp-card-label">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                Performance
+              </div>
+              <div class="mp-perf-big">
+                <div class="mp-perf-stat">
+                  <span class="mp-perf-val" id="mp-fps">—</span>
+                  <span class="mp-perf-unit">fps</span>
+                </div>
+                <div class="mp-perf-divider"></div>
+                <div class="mp-perf-stat">
+                  <span class="mp-perf-val" id="mp-frames">—</span>
+                  <span class="mp-perf-unit">frames</span>
+                </div>
+              </div>
+              <div class="mp-perf-rows">
+                <div class="mp-scene-row">
+                  <span class="mp-scene-key">Device</span>
+                  <span class="mp-scene-val" id="mp-device-full">—</span>
+                </div>
+                <div class="mp-scene-row">
+                  <span class="mp-scene-key">CUDA</span>
+                  <span class="mp-scene-val" id="mp-cuda">—</span>
+                </div>
+                <div class="mp-scene-row">
+                  <span class="mp-scene-key">DB write lag</span>
+                  <span class="mp-scene-val" id="mp-db-lag">—</span>
+                </div>
+                <div class="mp-scene-row">
+                  <span class="mp-scene-key">Last error</span>
+                  <span class="mp-scene-val mp-scene-val-muted" id="mp-last-error">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tasks bar -->
+          <div class="mp-tasks" id="mp-tasks">
+            <div class="mp-tasks-label">Backend tasks</div>
+            <div class="mp-tasks-row" id="mp-tasks-row">
+              <!-- rendered by JS -->
+            </div>
+          </div>
+
+          <!-- AI Intelligence Stats -->
+          <div class="mp-intel" id="mp-intel">
+            <div class="mp-card-label" style="padding:0 0 10px 0">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              AI Intelligence
+            </div>
+            <div class="mp-intel-grid">
+              <div class="mp-intel-item">
+                <span class="mp-intel-val" id="mp-crossings-24h">—</span>
+                <span class="mp-intel-label">Crossings (24h)</span>
+              </div>
+              <div class="mp-intel-item">
+                <span class="mp-intel-val" id="mp-crossings-total">—</span>
+                <span class="mp-intel-label">Total Crossings</span>
+              </div>
+              <div class="mp-intel-item">
+                <span class="mp-intel-val" id="mp-zones-active">—</span>
+                <span class="mp-intel-label">Active Zones</span>
+              </div>
+              <div class="mp-intel-item">
+                <span class="mp-intel-val" id="mp-turnings-24h">—</span>
+                <span class="mp-intel-label">Turnings (24h)</span>
+              </div>
+            </div>
+            <div class="mp-intel-classes" id="mp-intel-classes"><!-- class breakdown --></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-panel" id="panel-health">
+        <div class="panel-head">
+          <h2>System Health &amp; Recovery</h2>
+          <p>Backend health status, pipeline diagnostics, and automatic recovery logs.</p>
+        </div>
+        <div id="health-overview"><p class="loading">Loading /health...</p></div>
+      </section>
+
+      <!-- ══ Banners ════════════════════════════════════════════ -->
+      <section class="admin-panel" id="panel-banners">
+        <div class="panel-head">
+          <h2>Content</h2>
+          <p>Create and manage announcement banners shown to users when no round is active.</p>
+        </div>
+
+        <!-- Banner list -->
+        <div id="admin-banners-list" class="abn-list">
+          <p class="muted">Loading…</p>
+        </div>
+
+        <!-- Create / Edit form -->
+        <div class="abn-form-card" id="abn-form-card">
+
+          <div class="abn-form-header">
+            <div class="abn-form-header-left">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              <span id="abn-form-heading">New Banner</span>
+            </div>
+            <button type="button" class="abn-form-cancel-x" id="abn-form-cancel-x" title="Cancel">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+
+          <form id="abn-form" class="abn-form-body">
+
+            <!-- Title -->
+            <div class="abn-field-group">
+              <label class="abn-label" for="abn-form-title">
+                Title
+                <span class="abn-char-count"><span id="abn-title-count">0</span>/80</span>
+              </label>
+              <input id="abn-form-title" class="abn-input" type="text" maxlength="80"
+                     placeholder="e.g. Site Maintenance, How It Works…" required />
+            </div>
+
+            <!-- Rich text body -->
+            <div class="abn-field-group">
+              <label class="abn-label">Body Text</label>
+              <div class="rte-wrap">
+                <div class="rte-toolbar" id="abn-rte-toolbar">
+                  <button type="button" class="rte-btn" data-cmd="bold" title="Bold"><b>B</b></button>
+                  <button type="button" class="rte-btn rte-italic" data-cmd="italic" title="Italic"><i>I</i></button>
+                  <button type="button" class="rte-btn rte-underline" data-cmd="underline" title="Underline"><u>U</u></button>
+                  <span class="rte-sep"></span>
+                  <button type="button" class="rte-btn" data-cmd="insertUnorderedList" title="Bullet list">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1.5" fill="currentColor"/><circle cx="4" cy="12" r="1.5" fill="currentColor"/><circle cx="4" cy="18" r="1.5" fill="currentColor"/></svg>
+                  </button>
+                  <button type="button" class="rte-btn" data-cmd="insertOrderedList" title="Ordered list">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><text x="2" y="8" font-size="7" fill="currentColor" stroke="none" font-family="monospace">1.</text><text x="2" y="14" font-size="7" fill="currentColor" stroke="none" font-family="monospace">2.</text><text x="2" y="20" font-size="7" fill="currentColor" stroke="none" font-family="monospace">3.</text></svg>
+                  </button>
+                  <span class="rte-sep"></span>
+                  <button type="button" class="rte-btn" data-cmd="removeFormat" title="Clear formatting">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 9l6 6m0-6l-6 6"/><path d="M4 7h16M10 3h4M5 21l4-4M10 21H5"/></svg>
+                  </button>
+                </div>
+                <div id="abn-rte-editor" class="rte-editor" contenteditable="true"
+                     data-placeholder="Full details shown when user taps 'More info'…"></div>
+              </div>
+            </div>
+
+            <!-- Image upload -->
+            <div class="abn-field-group">
+              <label class="abn-label">Banner Image <span class="abn-label-hint">max 4 MB</span></label>
+              <label class="abn-dropzone" id="abn-dropzone" for="abn-form-image">
+                <div class="abn-dropzone-inner" id="abn-dropzone-inner">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9l4-4 4 4 4-5 4 5"/><circle cx="8.5" cy="7.5" r="1.5"/></svg>
+                  <span>Drop image or click to browse</span>
+                </div>
+                <img id="abn-form-preview" class="abn-dropzone-preview hidden" alt="Preview" />
+                <input id="abn-form-image" type="file" accept="image/*" class="abn-file-input" />
+              </label>
+              <button type="button" class="abn-clear-img hidden" id="abn-clear-img">✕ Remove image</button>
+            </div>
+
+            <!-- Toggles -->
+            <div class="abn-toggles-row">
+              <label class="abn-toggle-label">
+                <input id="abn-form-pinned" type="checkbox" class="abn-toggle-input" />
+                <span class="abn-toggle-track">
+                  <span class="abn-toggle-thumb"></span>
+                </span>
+                <span class="abn-toggle-text">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l2.4 6.4H21l-5.2 3.8 2 6.4L12 14.8 6.2 18.6l2-6.4L3 8.4h6.6z"/></svg>
+                  Pin to top
+                </span>
+              </label>
+              <label class="abn-toggle-label">
+                <input id="abn-form-active" type="checkbox" class="abn-toggle-input" checked />
+                <span class="abn-toggle-track">
+                  <span class="abn-toggle-thumb"></span>
+                </span>
+                <span class="abn-toggle-text">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>
+                  Active (visible)
+                </span>
+              </label>
+            </div>
+
+            <p id="abn-form-msg" class="abn-form-msg"></p>
+
+            <div class="abn-form-actions">
+              <button type="submit" class="btn-primary" id="abn-form-submit">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Create Banner
+              </button>
+              <button type="button" class="btn-outline" id="abn-form-cancel">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ══ Map & Zones (merged: Scene Map + Analytics Zones) ══════ -->
+      <section class="admin-panel" id="panel-map-zones">
+        <div class="panel-head">
+          <h2>Map &amp; Zones</h2>
+          <p>Annotate road geometry and draw named detection zones for analytics.</p>
+        </div>
+
+        <!-- In-panel tab bar -->
+        <div class="mz-tab-bar">
+          <button class="mz-tab active" data-mz-tab="mapping">Scene Map</button>
+          <button class="mz-tab" data-mz-tab="analytics-zones">Analytics Zones</button>
+        </div>
+
+        <!-- ── Scene Map pane ── -->
+        <div class="mz-pane active" id="mz-pane-mapping">
+          <div class="mapping-layout">
+            <!-- Canvas col -->
+            <div class="mapping-canvas-col">
+              <div class="stream-canvas-wrapper" style="min-height:clamp(280px,44vh,520px);position:relative;background:#080C14;">
+                <canvas id="mapping-canvas"
+                        style="display:block;width:100%;cursor:crosshair;"></canvas>
+              </div>
+              <p id="mapping-draw-hint" class="mapping-draw-hint">Select a tool to start annotating.</p>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="mapping-sidebar">
+              <div class="card-box" style="margin-bottom:10px;">
+                <h3>Draw Tool</h3>
+                <div id="mapping-tool-grid" class="mapping-tool-grid"></div>
+              </div>
+
+              <div class="card-box" style="margin-bottom:10px;">
+                <h3>Features <span id="mapping-feature-count" class="mf-count"></span></h3>
+                <div id="mapping-feature-list" class="mapping-feature-list">
+                  <p class="mapping-no-features">No features yet.</p>
+                </div>
+              </div>
+
+              <div class="mapping-actions">
+                <button class="btn-outline" id="mapping-undo-btn" title="Undo last point (Ctrl+Z)">Undo Point</button>
+                <button class="btn-outline" id="mapping-cancel-btn" title="Cancel drawing (Esc)">Cancel</button>
+                <button class="btn-primary" id="mapping-save-btn">Save Map</button>
+              </div>
+              <p id="mapping-status" class="mapping-status"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Analytics Zones pane ── -->
+        <div class="mz-pane" id="mz-pane-analytics-zones">
+          <div class="az-layout">
+
+            <!-- ── Canvas editor column ── -->
+            <div class="az-canvas-col">
+              <div class="az-canvas-wrap" id="az-canvas-wrap">
+                <canvas id="az-bg-canvas"></canvas>
+                <canvas id="az-draw-canvas"></canvas>
+                <div class="az-canvas-overlay-msg" id="az-canvas-msg">Loading stream…</div>
+              </div>
+              <!-- Helper toggles row -->
+              <div class="az-helpers-bar">
+                <button class="az-helper-btn active" id="az-grid-btn" title="Toggle grid overlay">Grid</button>
+                <button class="az-helper-btn active" id="az-snap-btn" title="Snap vertices to grid intersections">Snap</button>
+                <button class="az-helper-btn active" id="az-compass-btn" title="Toggle N/S/E/W direction labels">Compass</button>
+                <select class="az-select az-select-sm" id="az-grid-size" title="Grid density">
+                  <option value="8">8×8</option>
+                  <option value="10" selected>10×10</option>
+                  <option value="16">16×16</option>
+                  <option value="20">20×20</option>
+                </select>
+                <span class="az-coord-display" id="az-coord-display" title="Cursor position (snapped)">—</span>
+              </div>
+              <div class="az-canvas-toolbar">
+                <span class="az-hint" id="az-canvas-hint">Click to place polygon vertices</span>
+                <button class="az-tool-btn" id="az-undo-btn" disabled>Undo</button>
+                <button class="az-tool-btn" id="az-cancel-btn" disabled>Cancel</button>
+              </div>
+            </div>
+
+            <!-- ── Controls column ── -->
+            <div class="az-controls-col">
+
+              <!-- Active camera indicator -->
+              <div class="az-card">
+                <div class="az-card-head">Camera</div>
+                <div class="az-cam-label" id="az-cam-label" style="font-size:12px;color:var(--accent,#FFB800);padding:4px 0">Resolving…</div>
+                <input type="hidden" id="az-camera-select" value="" />
+              </div>
+
+              <!-- New zone form -->
+              <div class="az-card">
+                <div class="az-card-head">New Zone</div>
+                <div class="az-field">
+                  <label class="az-label">Type</label>
+                  <select class="az-select" id="az-zone-type">
+                    <option value="queue">Queue / Stop-line</option>
+                    <option value="entry">Entry Approach</option>
+                    <option value="exit">Exit Lane</option>
+                    <option value="speed_a">Speed Trap — Line A</option>
+                    <option value="speed_b">Speed Trap — Line B</option>
+                    <option value="roi">Region of Interest</option>
+                  </select>
+                </div>
+                <div class="az-field">
+                  <label class="az-label">Zone Name</label>
+                  <input class="az-input" id="az-zone-name" placeholder="e.g. North Approach" maxlength="40" />
+                </div>
+                <div class="az-field" id="az-speed-dist-row" style="display:none">
+                  <label class="az-label">Distance (metres)</label>
+                  <input class="az-input" id="az-speed-dist" type="number" min="1" max="200" value="10" />
+                  <span class="az-hint" style="margin-top:3px">Real-world distance between Line A and Line B</span>
+                </div>
+                <div class="az-type-legend" id="az-type-legend">
+                  <span class="az-type-dot" id="az-type-dot"></span>
+                  <span id="az-type-desc">Polygon covering the queue area near the stop line.</span>
+                </div>
+                <button class="btn-primary az-btn-full" id="az-draw-btn" disabled>Draw Zone</button>
+              </div>
+
+              <!-- Active draft zones -->
+              <div class="az-card" id="az-draft-card" style="display:none">
+                <div class="az-card-head">Drawing in Progress</div>
+                <div id="az-draft-info" class="az-draft-info">
+                  <span id="az-draft-pts">0 points placed</span>
+                  <span class="az-hint">Click near the first point to close the polygon, or press Enter</span>
+                </div>
+              </div>
+
+              <!-- Saved zones list -->
+              <div class="az-card">
+                <div class="az-card-head" style="display:flex;align-items:center;justify-content:space-between">
+                  <span>Defined Zones <span class="az-zone-count" id="az-zone-count">0</span></span>
+                  <button class="btn-primary az-btn" id="az-save-btn" disabled>Save All</button>
+                </div>
+                <div id="az-zones-list">
+                  <p class="az-empty-msg">No zones defined. Select a camera and draw a zone.</p>
+                </div>
+              </div>
+
+              <p id="az-status" class="az-status-msg"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- .admin-workspace -->
+  </main>
+</div><!-- .admin-layout -->
+
+<!-- Sidebar toggle script -->
+<script type="module" src="/src/admin-main.js"></script>
+</body>
+</html>
