@@ -14,27 +14,16 @@
    ══════════════════════════════════════════════════════════════ */
 
 /* ── 1. Body shell ───────────────────────────────────────────── */
-body.dark {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
-}
+/* body height is natural — main-grid uses explicit calc() height */
 
 /* ── 2. Header ───────────────────────────────────────────────── */
-.site-header {
-  flex-shrink: 0;
-  z-index: 100;
-  /* position + sizing handled in base.css; we only set flex context here */
-}
+/* position/sizing in base.css */
 
 /* ── 3. Main grid (2-column) ─────────────────────────────────── */
 .main-grid {
   display: grid;
   grid-template-columns: 1fr var(--sidebar-w);
-  grid-template-rows: 1fr;
-  flex: 1;
-  min-height: 0;          /* allow children to shrink below content size */
+  height: calc(100vh - var(--header-h));
   overflow: hidden;
 }
 
@@ -197,33 +186,21 @@ body.dark {
   :root { --sidebar-w: 300px; }
 }
 
-/* Tablet portrait: stack vertically, sidebar gets fixed height below stream */
+/* Tablet portrait: stack vertically */
 @media (max-width: 900px) {
-  html, body.dark {
-    height: auto;
-    min-height: 100vh;
-    overflow: visible;
-  }
-
   .main-grid {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
     height: auto;
-    min-height: 0;
     overflow: visible;
-    flex: unset;
   }
 
   .stream-panel {
-    /* 16:9 aspect — constrain height so sidebar stays visible */
     height: 56.25vw;
     max-height: 52vh;
     min-height: 220px;
-    flex: unset;
   }
 
   .stream-wrapper {
-    flex: unset;
     height: 100%;
   }
 
@@ -235,21 +212,11 @@ body.dark {
   }
 }
 
-/* Mobile: full-screen stream + bottom sheet sidebar */
-/* Note: gov.css handles the fine-grained mobile bottom-bar layout.
-   These rules set the structural foundation gov.css overrides. */
+/* Mobile: gov.css owns the bottom-sheet layout — we just set the grid base */
 @media (max-width: 767px) {
-  html, body.dark {
-    height: 100vh;
-    overflow: hidden;
-  }
-
   .main-grid {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
     height: calc(100vh - var(--header-h) - var(--bottom-bar-h));
-    min-height: 0;
-    flex: unset;
     overflow: hidden;
   }
 
