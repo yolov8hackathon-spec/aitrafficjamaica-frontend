@@ -1301,7 +1301,12 @@
                 <div class="az-card-head">Drawing in Progress</div>
                 <div id="az-draft-info" class="az-draft-info">
                   <span id="az-draft-pts">0 points placed</span>
-                  <span class="az-hint">Click near the first point to close the polygon, or press Enter</span>
+                  <span class="az-hint" id="az-draft-hint" style="margin-top:4px;display:block"></span>
+                </div>
+                <div style="display:flex;gap:6px;margin-top:8px">
+                  <button class="az-tool-btn" id="az-finish-btn" disabled style="flex:1;background:var(--accent,#FFB800);color:#080C14;font-weight:700;border:none">Finish</button>
+                  <button class="az-tool-btn" id="az-undo-inline-btn" disabled style="flex:1">Undo Pt</button>
+                  <button class="az-tool-btn" id="az-cancel-inline-btn" style="flex:1;color:#ef4444;border-color:#ef4444">Cancel</button>
                 </div>
               </div>
 

@@ -83,9 +83,14 @@ export const AdminZones = (() => {
     drawCanvas.addEventListener("mousemove", handleMouseMove);
     drawCanvas.addEventListener("mouseleave", handleMouseLeave);
 
-    // Undo / cancel
+    // Undo / cancel (toolbar)
     document.getElementById("az-undo-btn")?.addEventListener("click", undoPoint);
     document.getElementById("az-cancel-btn")?.addEventListener("click", cancelDraw);
+
+    // Finish / undo / cancel inside the draft card
+    document.getElementById("az-finish-btn")?.addEventListener("click", closePoly);
+    document.getElementById("az-undo-inline-btn")?.addEventListener("click", undoPoint);
+    document.getElementById("az-cancel-inline-btn")?.addEventListener("click", cancelDraw);
 
     // Save
     document.getElementById("az-save-btn")?.addEventListener("click", saveZones);
@@ -407,8 +412,10 @@ export const AdminZones = (() => {
     drawing  = true;
     draftPts = [];
     document.getElementById("az-draft-card").style.display = "";
-    document.getElementById("az-undo-btn").removeAttribute("disabled");
-    document.getElementById("az-cancel-btn").removeAttribute("disabled");
+    document.getElementById("az-undo-btn")?.removeAttribute("disabled");
+    document.getElementById("az-cancel-btn")?.removeAttribute("disabled");
+    document.getElementById("az-undo-inline-btn")?.removeAttribute("disabled");
+    document.getElementById("az-finish-btn")?.setAttribute("disabled", "");
     document.getElementById("az-draw-btn").setAttribute("disabled", "");
     const hint = isLineZone()
       ? "Click to place first endpoint of the line"
@@ -490,13 +497,15 @@ export const AdminZones = (() => {
   }
 
   function cancelDraw() {
-    drawing = false;
+    drawing  = false;
     draftPts = [];
     document.getElementById("az-draft-card").style.display = "none";
-    document.getElementById("az-undo-btn").setAttribute("disabled", "");
-    document.getElementById("az-cancel-btn").setAttribute("disabled", "");
+    document.getElementById("az-undo-btn")?.setAttribute("disabled", "");
+    document.getElementById("az-cancel-btn")?.setAttribute("disabled", "");
+    document.getElementById("az-undo-inline-btn")?.setAttribute("disabled", "");
+    document.getElementById("az-finish-btn")?.setAttribute("disabled", "");
     if (cameraId) document.getElementById("az-draw-btn")?.removeAttribute("disabled");
-    setHint("Click to place polygon vertices");
+    setHint("Select zone type, enter a name, then click Draw Zone");
     updateDraftInfo();
   }
 
@@ -619,18 +628,31 @@ export const AdminZones = (() => {
   }
 
   function updateDraftInfo() {
-    const el = document.getElementById("az-draft-pts");
+    const el          = document.getElementById("az-draft-pts");
+    const draftHintEl = document.getElementById("az-draft-hint");
+    const finishBtn   = document.getElementById("az-finish-btn");
     if (el) el.textContent = `${draftPts.length} point${draftPts.length !== 1 ? "s" : ""} placed`;
     if (!drawing) return;
+
     if (isLineZone()) {
-      setHint(draftPts.length === 0
-        ? "Click to place first endpoint of the line"
-        : "Click to place second endpoint — line will auto-complete");
+      const msg = draftPts.length === 0
+        ? "Click on the canvas to place first endpoint"
+        : "Click on the canvas to place second endpoint — auto-completes";
+      setHint(msg);
+      if (draftHintEl) draftHintEl.textContent = msg;
+      if (finishBtn) finishBtn.setAttribute("disabled", ""); // lines auto-complete
     } else {
-      const need = Math.max(0, 3 - draftPts.length);
-      setHint(need > 0
-        ? `Click to place vertices — ${need} more point${need > 1 ? "s" : ""} needed`
-        : "Click near first point (or press Enter) to close polygon");
+      const canClose = draftPts.length >= 3;
+      const need     = Math.max(0, 3 - draftPts.length);
+      const msg      = need > 0
+        ? `Click to add vertices — ${need} more point${need > 1 ? "s" : ""} needed to finish`
+        : `${draftPts.length} points — click Finish, near first point, or press Enter`;
+      setHint(msg);
+      if (draftHintEl) draftHintEl.textContent = msg;
+      if (finishBtn) {
+        if (canClose) finishBtn.removeAttribute("disabled");
+        else finishBtn.setAttribute("disabled", "");
+      }
     }
   }
 
