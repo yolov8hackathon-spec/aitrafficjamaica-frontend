@@ -1,7 +1,5 @@
 import { defineConfig } from 'vite'
 import path from 'path'
-import tailwindcss from 'tailwindcss'
-import autoprefixer from 'autoprefixer'
 
 const root = path.resolve(process.cwd(), 'public')
 
@@ -23,11 +21,6 @@ export default defineConfig({
         changeOrigin: true,
         secure: true,
       },
-    },
-  },
-  css: {
-    postcss: {
-      plugins: [tailwindcss(), autoprefixer()],
     },
   },
   build: {

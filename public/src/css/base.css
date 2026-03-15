@@ -2,19 +2,19 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:      #060A10;
-  --bg2:     #0B1220;
-  --bg3:     #0F1A2B;
-  --border:  #1C2D40;
-  --text:    #E2EEF8;
-  --muted:   #6B8CA8;
-  --dim:     #334D63;
-  --accent:  #F59E0B;
-  --accent2: #D97706;
-  --cyan:    #38BDF8;
-  --green:   #34D399;
+  --bg:      #080C14;
+  --bg2:     #0D1520;
+  --bg3:     #111D2B;
+  --border:  #1A2D42;
+  --text:    #E8F4FF;
+  --muted:   #7A9BB5;
+  --dim:     #3A5568;
+  --accent:  #FFB800;
+  --accent2: #f59e0b;
+  --cyan:    #00D4FF;
+  --green:   #00FF88;
   --ag:      #22C55E;
-  --red:     #EF4444;
+  --red:     #FF3D6B;
   --blue:    #3b82f6;
   --radius:  8px;
   --shadow:  0 4px 24px rgba(0,0,0,0.5);
@@ -33,10 +33,10 @@
   --bottom-bar-h:  56px;
 
   /* ── Vehicle class colors (matches JS CHART_GOV constants) ── */
-  --cls-car:   #38BDF8;
-  --cls-truck: #FB923C;
-  --cls-bus:   #A78BFA;
-  --cls-moto:  #FCD34D;
+  --cls-car:   #29B6F6;
+  --cls-truck: #FF7043;
+  --cls-bus:   #AB47BC;
+  --cls-moto:  #FFD600;
 }
 
 

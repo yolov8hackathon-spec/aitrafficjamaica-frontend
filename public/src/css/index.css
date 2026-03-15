@@ -3,8 +3,6 @@
  * Edit component files in this directory; do not edit public/css/main.css.
  * ────────────────────────────────────────────────────────────────────────── */
 
-@tailwind utilities;
-
 /* 1. Foundation — vars, reset, body, header, logo */
 @import './base.css';
 
@@ -34,6 +32,3 @@
 
 /* 10. Gov — government analytics overlay, onboarding, all responsive rules */
 @import './gov.css';
-
-/* 11. Overrides — premium de-neon pass, always last to win the cascade */
-@import './overrides.css';

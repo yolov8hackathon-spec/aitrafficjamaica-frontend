@@ -2125,7 +2125,7 @@
 }
 .gov-agency-bullet:last-child { border-bottom: none; }
 .gov-agency-bullet::before {
-  content: '\2713'; position: absolute; left: 0; top: 9px;
+  content: '✓'; position: absolute; left: 0; top: 9px;
   font-size: 11px; font-weight: 700;
   color: var(--ag-color); line-height: 1.45;
 }
@@ -2723,6 +2723,17 @@
   #header-analytics-cta { padding: 0 10px; font-size: 10px; height: 28px; }
 }
 
+/* ============================================================
+   Sidebar tab label overrides
+   ============================================================ */
+.tab-btn[data-tab="ml-showcase"] {
+  /* INTEL tab — subtle cyan tint when active */
+}
+.tab-btn[data-tab="ml-showcase"].active {
+  color: var(--cyan);
+  border-bottom-color: var(--cyan);
+}
+
 
 
 /* ============================================================
@@ -2889,6 +2900,10 @@
     line-height: 1;
     display: block;
   }
+  .tab-btn[data-tab="markets"]::before    { content: '🎮'; }
+  .tab-btn[data-tab="leaderboard"]::before { content: '🏆'; }
+  .tab-btn[data-tab="chat"]::before       { content: '💬'; }
+  .tab-btn[data-tab="ml-showcase"]::before { content: '📡'; }
 
   /* RANKINGS is long — shorten it on mobile */
   .tab-btn[data-tab="leaderboard"] { font-size: 8px; }

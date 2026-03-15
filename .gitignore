@@ -1,7 +1,8 @@
 node_modules/
-test-results/
-.env
-.env.*
 dist/
+.vercel/
+*.local
 .DS_Store
-*:Zone.Identifier
+.env*.local
+.env
+public/.env
