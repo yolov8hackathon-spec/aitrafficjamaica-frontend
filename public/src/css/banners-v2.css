@@ -1534,50 +1534,11 @@
 }
 
 /* =============================================
-   TAB ACTIVE — AI detection box selector
+   TAB ACTIVE — canonical sidebar tab styles
    ============================================= */
 
-/* Detection box corners via inline SVG background */
-.tab-btn.active::after {
-  /* Reset all underline properties */
-  content: "";
-  position: absolute;
-  inset: 4px 6px;
-  bottom: auto;
-  left: auto;
-  right: auto;
-  height: auto;
-  width: auto;
-  border-radius: 0;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 44' preserveAspectRatio='none'%3E%3Cg stroke='%2300d4ff' stroke-width='2.2' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 1H1V14'/%3E%3Cpath d='M86 1H99V14'/%3E%3Cpath d='M1 30V43H14'/%3E%3Cpath d='M86 43H99V30'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  box-shadow: none !important;
-  pointer-events: none;
-  opacity: 0.9;
-  animation: tab-detect-in 0.18s ease-out forwards;
-}
-
-@keyframes tab-detect-in {
-  from { opacity: 0; transform: scale(0.9); }
-  to   { opacity: 0.9; transform: scale(1); }
-}
-
-/* Keep cyan text on active tab */
-.tab-btn.active {
-  color: var(--cyan);
-  background: rgba(0,212,255,0.04);
-  text-shadow: 0 0 10px rgba(0,212,255,0.2);
-  border-bottom-color: transparent;
-}
-
-/* =============================================
-   TAB DETECTION BOX — fix collapsed pseudo-element
-   ============================================= */
-
-/* .sidebar-tabs overflow: visible — merged into canonical in theme-v2.css */
 .tab-btn {
-  overflow: visible !important;
+  overflow: visible;
   flex: 1;
   position: relative;
   background: transparent;
@@ -1585,31 +1546,30 @@
   padding: 12px 0;
   font-size: 0.85rem;
   font-weight: 600;
-  border-bottom: none !important;
+  border-bottom: 2px solid transparent;
   letter-spacing: 0.04em;
   transition: color .18s, background .18s;
 }
 
-/* Clean override — no conflicting inset + individual property collision */
+.tab-btn.active {
+  color: var(--cyan);
+  background: rgba(0,212,255,0.06);
+  text-shadow: 0 0 10px rgba(0,212,255,0.25);
+  border-bottom-color: transparent;
+}
+
+/* Cyan glow underline on active tab */
 .tab-btn.active::after {
   content: "";
   position: absolute;
-  top: 3px;
-  right: 5px;
-  bottom: 3px;
-  left: 5px;
-  width: auto;
-  height: auto;
-  border-radius: 0;
-  background-color: transparent;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 44' preserveAspectRatio='none'%3E%3Cg stroke='%2300d4ff' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 1H1V14'/%3E%3Cpath d='M86 1H99V14'/%3E%3Cpath d='M1 30V43H14'/%3E%3Cpath d='M86 43H99V30'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  box-shadow: none !important;
-  pointer-events: none !important;
-  z-index: 2;
-  opacity: 0.85;
-  animation: tab-detect-in 0.18s ease-out forwards;
+  bottom: 0;
+  left: 12%;
+  right: 12%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+  box-shadow: 0 0 8px rgba(0,212,255,0.55);
+  border-radius: 1px;
+  pointer-events: none;
 }
 
 /* =============================================

@@ -505,8 +505,7 @@
 /* â”€â”€ Sidebar tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 /* .sidebar-tabs — canonical in theme-v2.css */
 
-.tab-btn:hover { color: var(--text); }
-.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn:hover { color: rgba(190,220,240,0.9); background: rgba(0,212,255,0.04); }
 
 .tab-indicator {
   display: inline-flex;
