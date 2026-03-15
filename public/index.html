@@ -1,1195 +1,1679 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>AI Traffic Jamaica — Live Computer Vision Analytics</title>
-<link rel="icon" type="image/png" href="/img/gfdaw-removebg-preview.png"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<style>
-:root {
-  --bg:     #030608;
-  --bg2:    #070D14;
-  --bg3:    #0C1520;
-  --border: rgba(245,166,35,0.12);
-  --gold:   #F5A623;
-  --gold2:  #FFD060;
-  --cyan:   #00D4FF;
-  --green:  #00FF88;
-  --red:    #FF3D6B;
-  --text:   #E8F4FF;
-  --muted:  #5A7A94;
-  --dim:    #1E3248;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>AI Traffic Jamaica — Live CCTV Vehicle Detection &amp; Prediction Game</title>
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+  <!-- ── SEO ──────────────────────────────────────────────────────────────── -->
+  <meta name="description" content="Watch live CCTV footage of Jamaican roads with real-time AI vehicle detection. Predict how many cars pass in 1, 3, or 5 minutes, score points, and climb the leaderboard. Powered by YOLO computer vision." />
+  <meta name="keywords" content="Jamaica traffic, live traffic Jamaica, AI traffic monitoring Jamaica, Kingston traffic camera, vehicle detection AI, traffic prediction game, YOLO vehicle counting, real-time road traffic Jamaica, CCTV Jamaica" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="AI Traffic Jamaica" />
+  <link rel="canonical" href="https://aitrafficja.com/" />
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Syne', sans-serif;
-  overflow-x: hidden;
-  cursor: crosshair;
-}
+  <!-- ── Open Graph ────────────────────────────────────────────────────────── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://aitrafficja.com/" />
+  <meta property="og:site_name" content="AI Traffic Jamaica" />
+  <meta property="og:locale" content="en_JM" />
+  <meta property="og:title" content="AI Traffic Jamaica — Live CCTV Vehicle Detection &amp; Prediction Game" />
+  <meta property="og:description" content="Live Jamaican road cameras with AI vehicle counting. Predict traffic, score points, dominate the leaderboard. Real-time YOLO detection." />
+  <meta property="og:image" content="https://aitrafficja.com/img/ai%20banner.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="AI Traffic Jamaica — live road camera with vehicle detection overlay" />
 
-/* ── SCANLINE OVERLAY ── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0,0,0,0.08) 2px,
-    rgba(0,0,0,0.08) 4px
-  );
-  pointer-events: none;
-  z-index: 9999;
-}
+  <!-- ── Twitter Card ──────────────────────────────────────────────────────── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AI Traffic Jamaica — Live CCTV Vehicle Detection &amp; Prediction Game" />
+  <meta name="twitter:description" content="Live Jamaican road cameras with AI vehicle counting. Predict traffic, score points, dominate the leaderboard." />
+  <meta name="twitter:image" content="https://aitrafficja.com/img/ai%20banner.png" />
 
-/* ── NOISE GRAIN ── */
-body::after {
-  content: '';
-  position: fixed;
-  inset: -50%;
-  width: 200%;
-  height: 200%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 9998;
-  opacity: 0.4;
-  animation: grain 0.5s steps(2) infinite;
-}
-@keyframes grain { 0%,100%{transform:translate(0,0)} 25%{transform:translate(-1%,-2%)} 50%{transform:translate(1%,1%)} 75%{transform:translate(-1%,2%)} }
+  <!-- ── Structured Data ───────────────────────────────────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": "https://aitrafficja.com/#app",
+        "name": "AI Traffic Jamaica",
+        "url": "https://aitrafficja.com",
+        "description": "Real-time AI traffic monitoring and vehicle prediction game for Jamaica. Watch live CCTV footage with YOLO AI vehicle detection and compete on the leaderboard.",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Web Browser",
+        "browserRequirements": "Requires JavaScript, HTML5",
+        "inLanguage": "en-JM",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "AI Traffic Jamaica",
+          "url": "https://aitrafficja.com"
+        }
+      },
+      {
+        "@type": "VideoObject",
+        "@id": "https://aitrafficja.com/#livestream",
+        "name": "Live Jamaica Traffic Camera — AI Vehicle Detection",
+        "description": "Live CCTV road footage with real-time YOLO AI vehicle detection, counting, and zone tracking. Watch traffic on Jamaican roads 24/7.",
+        "thumbnailUrl": "https://aitrafficja.com/img/iconinframes.png",
+        "uploadDate": "2025-01-01",
+        "contentUrl": "https://aitrafficja.com/",
+        "embedUrl": "https://aitrafficja.com/",
+        "requiresSubscription": false,
+        "isLiveBroadcast": true,
+        "inLanguage": "en-JM"
+      }
+    ]
+  }
+  </script>
 
-/* ── GRID BACKGROUND ── */
-.grid-bg {
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(245,166,35,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(245,166,35,0.03) 1px, transparent 1px);
-  background-size: 48px 48px;
-  z-index: 0;
-}
-
-/* ── NAV ── */
-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 40px;
-  height: 60px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(3,6,8,0.85);
-  backdrop-filter: blur(20px);
-}
-
-.nav-logo {
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 900;
-  font-size: 14px;
-  letter-spacing: 0.15em;
-  color: var(--gold);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.nav-logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); animation: pulse-dot 2s ease-in-out infinite; }
-@keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
-
-.nav-links { display: flex; gap: 32px; }
-.nav-links a {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  color: var(--muted);
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: color 0.2s;
-}
-.nav-links a:hover { color: var(--gold); }
-
-.nav-cta {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--bg);
-  background: var(--gold);
-  border: none;
-  padding: 8px 20px;
-  cursor: pointer;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: background 0.2s, transform 0.1s;
-}
-.nav-cta:hover { background: var(--gold2); transform: translateY(-1px); }
-
-/* ── HERO ── */
-.hero {
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 120px 80px 80px;
-  overflow: hidden;
-}
-
-.hero-tag {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  color: var(--cyan);
-  text-transform: uppercase;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  opacity: 0;
-  animation: fadeUp 0.6s 0.2s forwards;
-}
-.hero-tag::before { content: ''; width: 32px; height: 1px; background: var(--cyan); }
-
-.hero-title {
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 900;
-  font-size: clamp(52px, 8vw, 110px);
-  line-height: 0.92;
-  letter-spacing: -0.02em;
-  margin-bottom: 32px;
-  opacity: 0;
-  animation: fadeUp 0.8s 0.4s forwards;
-}
-.hero-title .line1 { color: var(--text); display: block; }
-.hero-title .line2 { color: var(--gold); display: block; }
-.hero-title .line3 { color: var(--text); display: block; opacity: 0.15; font-size: 0.45em; letter-spacing: 0.1em; margin-top: 8px; }
-
-.hero-desc {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 14px;
-  line-height: 1.8;
-  color: var(--muted);
-  max-width: 560px;
-  margin-bottom: 52px;
-  opacity: 0;
-  animation: fadeUp 0.8s 0.6s forwards;
-}
-.hero-desc span { color: var(--gold); }
-
-.hero-stats {
-  display: flex;
-  gap: 0;
-  opacity: 0;
-  animation: fadeUp 0.8s 0.8s forwards;
-}
-
-.hero-stat {
-  padding: 24px 40px;
-  border: 1px solid var(--border);
-  border-right: none;
-  background: rgba(7,13,20,0.6);
-  position: relative;
-}
-.hero-stat:last-child { border-right: 1px solid var(--border); }
-.hero-stat::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  opacity: 0.4;
-}
-
-.stat-val {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 36px;
-  font-weight: 700;
-  color: var(--gold);
-  display: block;
-  line-height: 1;
-  margin-bottom: 6px;
-}
-.stat-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  color: var(--muted);
-  text-transform: uppercase;
-}
-
-/* Diagonal stripe decoration */
-.hero-stripe {
-  position: absolute;
-  top: 0; right: 0;
-  width: 45%;
-  height: 100%;
-  overflow: hidden;
-  z-index: -1;
-}
-.hero-stripe-inner {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    -55deg,
-    transparent 0px,
-    transparent 40px,
-    rgba(245,166,35,0.025) 40px,
-    rgba(245,166,35,0.025) 41px
-  );
-}
-.hero-glow {
-  position: absolute;
-  top: 20%; right: -10%;
-  width: 600px; height: 600px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(245,166,35,0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-/* ── LIVE TICKER ── */
-.ticker {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  z-index: 50;
-  height: 36px;
-  background: var(--bg2);
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-}
-.ticker-label {
-  flex-shrink: 0;
-  padding: 0 20px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  color: var(--bg);
-  background: var(--gold);
-  height: 100%;
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-}
-.ticker-track { display: flex; animation: ticker-scroll 30s linear infinite; }
-.ticker-item {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-  padding: 0 32px;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.ticker-item span { color: var(--gold); }
-.ticker-sep { color: var(--dim); margin: 0 4px; }
-@keyframes ticker-scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-
-/* ── SECTION ── */
-section {
-  position: relative;
-  z-index: 1;
-  padding: 100px 80px;
-}
-
-.section-tag {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.25em;
-  color: var(--cyan);
-  text-transform: uppercase;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.section-tag::after { content: ''; flex: 1; height: 1px; background: var(--border); max-width: 80px; }
-
-.section-title {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(28px, 4vw, 48px);
-  font-weight: 700;
-  margin-bottom: 60px;
-  line-height: 1.1;
-}
-
-/* ── PIPELINE ── */
-#pipeline { background: var(--bg2); }
-
-.pipeline-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0;
-  position: relative;
-}
-.pipeline-grid::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 10%;
-  right: 10%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  opacity: 0.2;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.pipe-step {
-  padding: 40px 32px;
-  border-right: 1px solid var(--border);
-  text-align: center;
-  position: relative;
-  transition: background 0.3s;
-}
-.pipe-step:last-child { border-right: none; }
-.pipe-step:hover { background: rgba(245,166,35,0.03); }
-
-.pipe-num {
-  font-family: 'Orbitron', monospace;
-  font-size: 10px;
-  color: var(--dim);
-  letter-spacing: 0.2em;
-  margin-bottom: 20px;
-}
-.pipe-icon {
-  width: 56px; height: 56px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  margin: 0 auto 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg);
-  color: var(--gold);
-  transition: border-color 0.3s, color 0.3s;
-}
-.pipe-step:hover .pipe-icon { border-color: var(--gold); color: var(--gold2); }
-
-.pipe-name {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  margin-bottom: 10px;
-  color: var(--text);
-}
-.pipe-desc {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-  line-height: 1.6;
-}
-
-/* ── ANALYTICS DASHBOARD ── */
-#analytics {}
-
-.analytics-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 24px;
-}
-
-.analytics-main { display: flex; flex-direction: column; gap: 24px; }
-.analytics-side { display: flex; flex-direction: column; gap: 24px; }
-
-.card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  padding: 28px;
-  position: relative;
-  overflow: hidden;
-}
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  opacity: 0.3;
-}
-
-.card-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
-}
-.card-title {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  color: var(--muted);
-  text-transform: uppercase;
-}
-.card-badge {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  padding: 3px 10px;
-  border: 1px solid;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.badge-live { border-color: var(--green); color: var(--green); }
-.badge-ai   { border-color: var(--cyan);  color: var(--cyan);  }
-
-/* Chart area */
-.chart-area {
-  height: 200px;
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  gap: 6px;
-}
-.bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.bar {
-  width: 100%;
-  background: linear-gradient(to top, var(--gold), rgba(245,166,35,0.3));
-  border-radius: 2px 2px 0 0;
-  transition: height 1s cubic-bezier(0.16,1,0.3,1);
-  position: relative;
-  cursor: pointer;
-}
-.bar:hover { background: linear-gradient(to top, var(--gold2), rgba(255,208,96,0.5)); }
-.bar-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
-  color: var(--muted);
-  white-space: nowrap;
-}
-.chart-grid-line {
-  position: absolute;
-  left: 0; right: 0;
-  border-top: 1px dashed rgba(255,255,255,0.05);
-}
-.chart-grid-label {
-  position: absolute;
-  right: calc(100% + 8px);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
-  color: var(--dim);
-  transform: translateY(-50%);
-}
-
-/* Vehicle breakdown */
-.breakdown-list { display: flex; flex-direction: column; gap: 14px; }
-.breakdown-row { display: flex; align-items: center; gap: 12px; }
-.breakdown-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-  width: 80px;
-  flex-shrink: 0;
-}
-.breakdown-bar-track {
-  flex: 1;
-  height: 4px;
-  background: var(--bg3);
-  border-radius: 2px;
-  overflow: hidden;
-}
-.breakdown-bar-fill {
-  height: 100%;
-  border-radius: 2px;
-  transition: width 1.5s cubic-bezier(0.16,1,0.3,1);
-}
-.breakdown-val {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  width: 48px;
-  text-align: right;
-}
-
-/* KPI cards */
-.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.kpi {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  padding: 20px;
-  position: relative;
-}
-.kpi-val {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--gold);
-  display: block;
-  line-height: 1;
-  margin-bottom: 8px;
-}
-.kpi-lbl {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  color: var(--muted);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-.kpi-delta {
-  position: absolute;
-  top: 16px; right: 16px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  color: var(--green);
-}
-
-/* Detection log */
-.log-list { display: flex; flex-direction: column; gap: 0; }
-.log-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-}
-.log-row:last-child { border-bottom: none; }
-.log-time { color: var(--dim); flex-shrink: 0; width: 56px; }
-.log-type {
-  padding: 2px 8px;
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  flex-shrink: 0;
-}
-.log-txt { color: var(--muted); flex: 1; }
-.log-count { color: var(--gold); font-weight: 700; }
-
-/* ── TECH STACK ── */
-#tech { background: var(--bg2); }
-
-.tech-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-}
-.tech-card {
-  background: var(--bg2);
-  padding: 40px 32px;
-  transition: background 0.3s;
-  cursor: default;
-}
-.tech-card:hover { background: var(--bg3); }
-.tech-tier {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  color: var(--cyan);
-  text-transform: uppercase;
-  margin-bottom: 16px;
-}
-.tech-name {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 10px;
-  letter-spacing: 0.05em;
-}
-.tech-desc {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-  line-height: 1.7;
-}
-.tech-tag {
-  display: inline-block;
-  margin-top: 16px;
-  padding: 4px 12px;
-  background: rgba(245,166,35,0.08);
-  border: 1px solid rgba(245,166,35,0.2);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  color: var(--gold);
-  letter-spacing: 0.1em;
-}
-
-/* ── TERMINAL OUTPUT ── */
-.terminal {
-  background: #000;
-  border: 1px solid var(--border);
-  padding: 24px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 12px;
-  line-height: 2;
-  max-height: 280px;
-  overflow-y: auto;
-}
-.t-prompt { color: var(--green); }
-.t-cmd { color: var(--text); }
-.t-out { color: var(--muted); }
-.t-val { color: var(--gold); }
-.t-cyan { color: var(--cyan); }
-.t-red { color: var(--red); }
-.t-cursor { display: inline-block; width: 8px; height: 14px; background: var(--gold); animation: blink 1s step-end infinite; vertical-align: text-bottom; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-/* ── FOOTER ── */
-footer {
-  position: relative;
-  z-index: 1;
-  padding: 60px 80px 100px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.footer-brand {
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 900;
-  font-size: 18px;
-  color: var(--gold);
-  letter-spacing: 0.1em;
-}
-.footer-sub {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 6px;
-}
-.footer-badge {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 24px;
-  border: 1px solid var(--border);
-}
-.footer-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse-dot 2s infinite; }
-.footer-badge-txt {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.1em;
-}
-
-/* ── ANIMATIONS ── */
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(24px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.visible { opacity: 1; transform: none; }
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--dim); }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  .hero { padding: 100px 24px 60px; }
-  section { padding: 60px 24px; }
-  nav { padding: 0 24px; }
-  .nav-links { display: none; }
-  .pipeline-grid { grid-template-columns: 1fr 1fr; }
-  .analytics-grid { grid-template-columns: 1fr; }
-  .tech-grid { grid-template-columns: 1fr 1fr; }
-  footer { flex-direction: column; gap: 24px; padding: 40px 24px 100px; }
-  .hero-stats { flex-wrap: wrap; }
-  .hero-stat { border-right: 1px solid var(--border) !important; }
-  .kpi-grid { grid-template-columns: 1fr; }
-}
-</style>
+  <!-- ── Favicons ──────────────────────────────────────────────────────────── -->
+  <link rel="icon" type="image/png" href="/img/gfdaw-removebg-preview.png" />
+  <link rel="shortcut icon" href="/img/gfdaw-removebg-preview.png" />
+  <!-- ── Resource hints ─────────────────────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cndtlqeqkjtztnhpbbkg.supabase.co" crossorigin />
+  <link rel="dns-prefetch" href="https://camera.ipcamlive.com" />
+  <!-- Chart.js prefetched early; loaded only when gov overlay opens -->
+  <link rel="prefetch" href="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" as="script" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Archivo:wght@700;800&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" />
+  <meta name="theme-color" content="#080C14" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="WHITELINEZ" />
+  <link rel="stylesheet" href="/src/css/index.css" />
+  <script type="module" src="/src/utils/vercel-analytics-init.js"></script>
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
-<body>
-<div class="grid-bg"></div>
+<body class="dark">
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">
-    <div class="nav-logo-dot"></div>
-    AI TRAFFIC JA
-  </a>
-  <div class="nav-links">
-    <a href="#pipeline">SYSTEM</a>
-    <a href="#analytics">ANALYTICS</a>
-    <a href="#tech">STACK</a>
+  <!-- ── Dev banner ─────────────────────────────────────────────────────── -->
+  <div class="dev-banner" id="dev-banner" role="status" aria-live="polite">
+    <svg class="dev-banner-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <span class="dev-banner-text dev-banner-full">Site is under heavy development — features may change without notice</span>
+    <span class="dev-banner-text dev-banner-short">Under heavy development</span>
+    <button class="dev-banner-close" aria-label="Dismiss" onclick="document.getElementById('dev-banner').style.display='none';localStorage.setItem('wlz.dev-banner.dismissed','1')">&#x2715;</button>
   </div>
-  <a href="https://aitrafficja.com" class="nav-cta" target="_blank">LIVE DEMO &rarr;</a>
-</nav>
+  <script>(function(){var b=document.getElementById('dev-banner');if(localStorage.getItem('wlz.dev-banner.dismissed')==='1'){b.style.display='none';}else{setTimeout(function(){b.style.display='none';localStorage.setItem('wlz.dev-banner.dismissed','1');},30000);}})();</script>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-stripe"><div class="hero-stripe-inner"></div></div>
-  <div class="hero-glow"></div>
+  <header class="site-header">
+    <!-- Left: Logo -->
+    <a href="/" class="logo" id="site-logo">
+      <span class="logo-img-wrap">
+        <img class="logo-icon" src="/img/iconinframes.png" alt="TRAFFIC.AI JAMAICA" />
+        <img class="logo-ai-frame" src="/img/aiframes.png" alt="" aria-hidden="true" />
+      </span>
+      <span class="logo-title-block">
+        <span class="logo-part-main">AI TRAFFIC</span>
+        <span class="logo-part-loc">JAMAICA</span>
+      </span>
+    </a>
 
-  <p class="hero-tag">YOLOv8 · Real-Time · Jamaica</p>
+    <!-- #header-cam-name kept hidden for JS (camera-switcher + gov mode) -->
+    <span id="header-cam-name" style="display:none" aria-hidden="true"></span>
 
-  <h1 class="hero-title">
-    <span class="line1">AI TRAFFIC</span>
-    <span class="line2">JAMAICA</span>
-    <span class="line3">COMPUTER VISION ANALYTICS PLATFORM</span>
-  </h1>
+    <!-- Right: Actions + auth -->
+    <nav class="header-nav">
+      <button id="header-demo-btn" class="header-play-btn header-demo-btn hidden">DEMO</button>
+      <button id="header-analytics-cta" class="header-play-btn">ANALYTICS</button>
 
-  <p class="hero-desc">
-    Live CCTV feeds processed by <span>YOLOv8</span> neural networks —
-    detecting, classifying, and counting vehicles in real-time across
-    Jamaican road infrastructure. <span>Sub-100ms</span> inference.
-    <span>24/7</span> autonomous operation.
-  </p>
+      <!-- Logged out -->
+      <span id="nav-auth">
+        <button id="btn-open-login" class="nav-login-btn">Login</button>
+        <!-- kept hidden — wired by index-init.js -->
+        <button id="btn-open-register" class="hidden" aria-hidden="true" tabindex="-1"></button>
+      </span>
 
-  <div class="hero-stats">
-    <div class="hero-stat">
-      <span class="stat-val" id="hero-total">—</span>
-      <span class="stat-label">Vehicles Detected Today</span>
-    </div>
-    <div class="hero-stat">
-      <span class="stat-val" id="hero-rate">—</span>
-      <span class="stat-label">Detections / Min</span>
-    </div>
-    <div class="hero-stat">
-      <span class="stat-val">YOLOv8</span>
-      <span class="stat-label">Detection Model</span>
-    </div>
-    <div class="hero-stat">
-      <span class="stat-val">&lt;100ms</span>
-      <span class="stat-label">Inference Latency</span>
-    </div>
-  </div>
-</div>
-
-<!-- PIPELINE -->
-<section id="pipeline">
-  <p class="section-tag reveal">Detection Pipeline</p>
-  <h2 class="section-title reveal">How the AI Sees Traffic</h2>
-
-  <div class="pipeline-grid reveal">
-    <div class="pipe-step">
-      <div class="pipe-num">01</div>
-      <div class="pipe-icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="1.5"/><path d="M8 21h8M12 17v4"/><circle cx="12" cy="10" r="3"/></svg>
-      </div>
-      <div class="pipe-name">CCTV INGEST</div>
-      <div class="pipe-desc">Live HLS stream captured from road-mounted cameras via ipcamlive</div>
-    </div>
-    <div class="pipe-step">
-      <div class="pipe-num">02</div>
-      <div class="pipe-icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 9h.01M15 9h.01M9 15h.01M15 15h.01M12 12h.01"/><rect x="7" y="7" width="4" height="4" rx=".5" stroke-width="1.2"/><rect x="13" y="13" width="4" height="4" rx=".5" stroke-width="1.2"/></svg>
-      </div>
-      <div class="pipe-name">YOLO DETECT</div>
-      <div class="pipe-desc">YOLOv8 processes frames at 8–15 FPS detecting cars, trucks, buses, motorcycles</div>
-    </div>
-    <div class="pipe-step">
-      <div class="pipe-num">03</div>
-      <div class="pipe-icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="M13 13l6 6"/></svg>
-      </div>
-      <div class="pipe-name">ZONE TRACK</div>
-      <div class="pipe-desc">Kalman-filter multi-object tracker assigns IDs across frames within polygon zones</div>
-    </div>
-    <div class="pipe-step">
-      <div class="pipe-num">04</div>
-      <div class="pipe-icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      </div>
-      <div class="pipe-name">LINE COUNT</div>
-      <div class="pipe-desc">Virtual crossing lines record directional vehicle flow — in/out counts per second</div>
-    </div>
-    <div class="pipe-step">
-      <div class="pipe-num">05</div>
-      <div class="pipe-icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l5 3"/></svg>
-      </div>
-      <div class="pipe-name">BROADCAST</div>
-      <div class="pipe-desc">WebSocket pushes live counts + bounding boxes to all connected clients in real-time</div>
-    </div>
-  </div>
-</section>
-
-<!-- ANALYTICS -->
-<section id="analytics">
-  <p class="section-tag reveal">Live Intelligence</p>
-  <h2 class="section-title reveal">Real-Time Traffic Analytics</h2>
-
-  <div class="analytics-grid">
-    <div class="analytics-main">
-      <!-- Bar chart -->
-      <div class="card reveal">
-        <div class="card-head">
-          <span class="card-title">Vehicle Count — Last 12 Hours</span>
-          <span class="card-badge badge-live">● LIVE</span>
-        </div>
-        <div class="chart-area" id="chart-area">
-          <div class="chart-grid-line" style="bottom:25%;"><span class="chart-grid-label" id="gl-25"></span></div>
-          <div class="chart-grid-line" style="bottom:50%;"><span class="chart-grid-label" id="gl-50"></span></div>
-          <div class="chart-grid-line" style="bottom:75%;"><span class="chart-grid-label" id="gl-75"></span></div>
-        </div>
-      </div>
-
-      <!-- KPIs -->
-      <div class="kpi-grid reveal">
-        <div class="kpi">
-          <span class="kpi-val" id="kpi-total">—</span>
-          <span class="kpi-lbl">Total Detected (24h)</span>
-          <span class="kpi-delta" id="kpi-delta">—</span>
-        </div>
-        <div class="kpi">
-          <span class="kpi-val" id="kpi-sessions">—</span>
-          <span class="kpi-lbl">Active Sessions</span>
-        </div>
-        <div class="kpi">
-          <span class="kpi-val" id="kpi-events">—</span>
-          <span class="kpi-lbl">ML Events (24h)</span>
-        </div>
-        <div class="kpi">
-          <span class="kpi-val" id="kpi-messages">—</span>
-          <span class="kpi-lbl">Chat Messages</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="analytics-side">
-      <!-- Vehicle breakdown -->
-      <div class="card reveal">
-        <div class="card-head">
-          <span class="card-title">Vehicle Classification</span>
-          <span class="card-badge badge-ai">AI</span>
-        </div>
-        <div class="breakdown-list">
-          <div class="breakdown-row">
-            <span class="breakdown-label">Cars</span>
-            <div class="breakdown-bar-track"><div class="breakdown-bar-fill" id="br-car" style="width:0%;background:#29B6F6;"></div></div>
-            <span class="breakdown-val" id="bv-car" style="color:#29B6F6">—</span>
-          </div>
-          <div class="breakdown-row">
-            <span class="breakdown-label">Trucks</span>
-            <div class="breakdown-bar-track"><div class="breakdown-bar-fill" id="br-truck" style="width:0%;background:#FF7043;"></div></div>
-            <span class="breakdown-val" id="bv-truck" style="color:#FF7043">—</span>
-          </div>
-          <div class="breakdown-row">
-            <span class="breakdown-label">Buses</span>
-            <div class="breakdown-bar-track"><div class="breakdown-bar-fill" id="br-bus" style="width:0%;background:#AB47BC;"></div></div>
-            <span class="breakdown-val" id="bv-bus" style="color:#AB47BC">—</span>
-          </div>
-          <div class="breakdown-row">
-            <span class="breakdown-label">Motorcycles</span>
-            <div class="breakdown-bar-track"><div class="breakdown-bar-fill" id="br-moto" style="width:0%;background:#FFD600;"></div></div>
-            <span class="breakdown-val" id="bv-moto" style="color:#FFD600">—</span>
+      <!-- Logged in: avatar + dropdown -->
+      <span id="nav-user" class="hidden">
+        <div class="nav-user-menu" id="nav-user-menu">
+          <button class="nav-avatar-trigger" id="nav-avatar-trigger" aria-haspopup="true" aria-expanded="false">
+            <img id="nav-avatar" class="nav-avatar" alt="Profile" />
+            <svg class="nav-dd-chevron" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="nav-dropdown" id="nav-dropdown" hidden>
+            <!-- Balance -->
+            <div class="nav-dd-balance" id="nav-balance">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span id="nav-balance-val">0</span><span class="nav-balance-label">PTS</span>
+            </div>
+            <div class="nav-dd-sep"></div>
+            <a href="/account" class="nav-dd-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              Account
+            </a>
+            <a id="nav-admin-link" href="/admin" class="nav-dd-item hidden">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><path d="M3 9V5h4M21 9V5h-4M3 15v4h4M21 15v4h-4" stroke-width="1.8"/><circle cx="12" cy="12" r="2.2" stroke-width="1.6"/></svg>
+              Admin
+            </a>
+            <button id="btn-layout-editor" class="nav-dd-item hidden">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+              Layout
+            </button>
+            <div class="nav-dd-sep"></div>
+            <button id="btn-logout" class="nav-dd-item nav-dd-logout">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign out
+            </button>
           </div>
         </div>
+      </span>
+
+    </nav>
+  </header>
+
+  <!-- ── Sponsor bar (hidden until sponsor configured via JS) ──────────────── -->
+  <div id="sponsor-bar" class="sponsor-bar hidden" role="complementary" aria-label="Sponsor">
+    <div class="sponsor-bar-inner">
+      <span class="sponsor-bar-label">PRESENTED BY</span>
+      <a id="sponsor-link" class="sponsor-bar-logo-wrap" href="#" target="_blank" rel="noopener sponsored" aria-label="Sponsor">
+        <img id="sponsor-logo" class="sponsor-bar-logo" src="" alt="Sponsor" />
+        <span id="sponsor-name" class="sponsor-bar-name"></span>
+      </a>
+      <span id="sponsor-tagline" class="sponsor-bar-tagline"></span>
+    </div>
+  </div>
+
+  <main class="main-grid">
+    <section class="stream-panel">
+        <div class="stream-wrapper">
+        <video id="live-video" muted playsinline autoplay></video>
+        <canvas id="detection-canvas" class="detection-overlay"></canvas>
+        <canvas id="zone-canvas" class="zone-overlay"></canvas>
+        <div id="fps-overlay" class="fps-overlay" aria-live="polite">FPS --.-</div>
+
+        <!-- Demo mode badge — shown when demo video is playing -->
+        <div id="stream-demo-badge" class="stream-demo-badge hidden">
+          <span class="demo-badge-dot"></span>
+          DEMO MODE — Pre-recorded footage
+        </div>
+
+        <div id="play-overlay" class="play-overlay hidden">
+          <button id="btn-play">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="8 5 20 12 8 19 8 5"></polygon></svg>
+            Play
+          </button>
+        </div>
+
+        <div id="stream-switching-overlay" class="stream-switching-overlay hidden">
+          <div class="sso-inner">
+            <svg class="sso-spinner" width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="13" stroke="rgba(0,212,255,0.15)" stroke-width="2.5"/>
+              <path d="M16 3 A13 13 0 0 1 29 16" stroke="#00d4ff" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+            <div class="sso-steps">
+              <p class="sso-step active" id="sso-step-1">Switching stream…</p>
+              <p class="sso-step" id="sso-step-2">Loading detection zones…</p>
+              <p class="sso-step" id="sso-step-3">Starting AI…</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="stream-offline-overlay" class="stream-offline-overlay hidden">
+          <div class="stream-offline-inner">
+            <!-- Broken screen icon -->
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+              <!-- Monitor body -->
+              <rect x="3" y="6" width="42" height="28" rx="2.5" stroke="#ef4444" stroke-width="1.8"/>
+              <!-- Stand stem -->
+              <line x1="24" y1="34" x2="24" y2="41" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round"/>
+              <!-- Stand base -->
+              <line x1="14" y1="41" x2="34" y2="41" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round"/>
+              <!-- Crack lightning bolt -->
+              <path d="M26 6 L21 20 L27 20 L19 34" stroke="rgba(239,68,68,0.85)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Crack splinters -->
+              <line x1="21" y1="20" x2="12" y2="26" stroke="rgba(239,68,68,0.45)" stroke-width="1.1" stroke-linecap="round"/>
+              <line x1="21" y1="20" x2="13" y2="14" stroke="rgba(239,68,68,0.35)" stroke-width="1" stroke-linecap="round"/>
+              <line x1="27" y1="20" x2="36" y2="16" stroke="rgba(239,68,68,0.4)" stroke-width="1" stroke-linecap="round"/>
+              <line x1="27" y1="20" x2="37" y2="25" stroke="rgba(239,68,68,0.35)" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+            <div class="stream-offline-copy">
+              <p class="stream-offline-title">STREAM OFFLINE</p>
+              <p class="stream-offline-info">Reconnecting to live feed...</p>
+            </div>
+            <div class="stream-offline-bar">
+              <span class="stream-offline-dot"></span>
+              <span class="stream-offline-label">SIGNAL LOST</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Demo Mode Overlay — shown to all users when admin is running demo -->
+        <div id="ai-demo-overlay" class="ai-demo-overlay hidden">
+          <div class="ai-demo-inner">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+              <circle cx="18" cy="18" r="15" stroke="rgba(239,68,68,0.25)" stroke-width="1.5"/>
+              <circle cx="18" cy="18" r="15" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="12 8" class="ai-demo-ring"/>
+              <path d="M18 10v8l5 3" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="7" y1="7" x2="29" y2="29" stroke="rgba(239,68,68,0.5)" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+            <p class="ai-demo-title">AI INFERENCE OFFLINE</p>
+            <p class="ai-demo-sub">Being used in Demo Mode by Admin</p>
+            <div class="ai-demo-bar">
+              <span class="ai-demo-dot"></span>
+              <span class="ai-demo-label">DEMO ACTIVE</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Non-AI camera notice — shown when viewing a camera without active AI -->
+        <div id="non-ai-overlay" class="non-ai-overlay hidden">
+          <div class="non-ai-inner">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <line x1="1" y1="1" x2="23" y2="23" stroke-width="1.8"/>
+            </svg>
+            <p class="non-ai-title">AI not active on this camera</p>
+            <p class="non-ai-sub">Today's AI stream: <strong id="non-ai-cam-name">—</strong></p>
+            <button id="btn-go-ai-cam" class="non-ai-btn">Switch to AI Camera</button>
+          </div>
+        </div>
+
+        <div id="count-widget" class="count-widget" aria-label="floating vehicle count widget">
+
+          <!-- Strip identifier label (hidden; ::before in CSS provides HUD label) -->
+          <div class="cw-strip-label">LIVE COUNT — Vehicles</div>
+
+          <!-- Guess mode: inline swap for vehicle breakdown -->
+          <div id="cw-guess-mode" class="cw-guess-mode hidden">
+            <div class="cw-gm-nums">
+              <span id="cw-gm-current" class="cw-vehicle-num" style="color:var(--green)">0</span>
+              <span class="cw-gm-sep">/</span>
+              <span id="cw-gm-target" class="cw-vehicle-num" style="color:var(--accent)">—</span>
+            </div>
+            <div class="cw-gm-bar-wrap">
+              <div id="cw-gm-bar" class="cw-gm-bar"></div>
+            </div>
+          </div>
+
+          <!-- Right side: total + status -->
+          <div class="cw-total-wrap">
+            <span id="cw-total" class="cw-total-val" aria-label="vehicle count value">0</span>
+            <div id="cw-ws-dot" class="cw-ws-dot cw-ws-err"></div>
+          </div>
+
+          <!-- Hidden elements (JS writes to these; kept for compat) -->
+          <span id="cw-fps" class="cw-fps" aria-hidden="true">--.- fps</span>
+          <span id="cw-cam-label" class="cw-cam-label hidden"></span>
+          <span id="cw-snapshot-badge" class="cw-snapshot-badge hidden">SNAPSHOT</span>
+        </div>
+
+        <div id="ml-hud" class="ml-hud" title="Toggle AI details">
+          <div class="ml-hud-head">
+            <span class="ml-hud-title">VISION HUD</span>
+            <span id="ml-hud-level" class="ml-hud-state">
+              <svg id="ml-hud-wx-svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" style="width:9px;height:9px;flex-shrink:0"><path id="ml-hud-wx-path" d=""/></svg>
+              <span id="ml-hud-wx-text">Idle</span>
+            </span>
+          </div>
+          <p id="ml-hud-msg" class="ml-hud-msg"></p>
+          <p id="ml-hud-bot" class="ml-hud-bot"></p>
+          <p id="ml-hud-verbose" class="ml-hud-verbose">Scene lock scanning | retrain idle | scene --</p>
+          <div class="ml-hud-cells">
+            <div class="ml-cell-row">
+              <span class="ml-cell-label">Detection Rate</span>
+              <strong id="ml-hud-conf">0.0/m</strong>
+              <div class="ml-cell-track">
+                <div id="ml-hud-conf-bar" class="ml-cell-fill" style="--pct:0"></div>
+              </div>
+            </div>
+            <div class="ml-cell-row ml-cell-row-traffic">
+              <span class="ml-cell-label">Traffic Load</span>
+              <span id="ml-hud-traffic-msg" class="ml-cell-note">Waiting for data…</span>
+            </div>
+          </div>
+          <div class="ml-hud-metrics">
+            <span>Frames <strong id="ml-hud-frames">0</strong></span>
+            <span>Objects <strong id="ml-hud-dets">0</strong></span>
+          </div>
+          <!-- JS-contracted IDs (ml-overlay.js guard) — hidden, not displayed -->
+          <span id="ml-hud-profile" style="display:none" aria-hidden="true"></span>
+          <span id="ml-hud-delay" style="display:none" aria-hidden="true"></span>
+          <span id="ml-hud-scene-conf" style="display:none" aria-hidden="true"></span>
+        </div>
+
+        <!-- Scene chip: weather only (location shown in header cam chip) -->
+        <div id="scene-chips" class="scene-chips">
+          <span id="chip-weather" class="scene-chip hidden"></span>
+          <span id="chip-location" style="display:none" aria-hidden="true"></span>
+        </div>
+
+        <div id="stream-chat-overlay" class="stream-chat-overlay">
+          <div class="sco-header">
+            <span class="sco-dot"></span>
+            <span id="sco-count">0 watching</span>
+          </div>
+          <div id="sco-messages" class="sco-messages"></div>
+        </div>
+
+      </div>
+      <!-- Camera pill strip (populated by JS, hidden when ≤1 camera) -->
+      <div id="cam-pill-strip" class="cam-pill-strip" aria-label="Camera selector"></div>
+    </section>
+
+    <aside class="sidebar">
+      <div class="sidebar-tabs" role="tablist">
+        <button class="tab-btn active" data-tab="markets" role="tab" aria-label="Play">
+          <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          PLAY
+        </button>
+        <button class="tab-btn" data-tab="leaderboard" role="tab" aria-label="Rankings">
+          <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><polyline points="18 20 18 10"/><polyline points="12 20 12 4"/><polyline points="6 20 6 14"/></svg>
+          RANKINGS
+        </button>
+        <button class="tab-btn" data-tab="chat" role="tab" aria-label="Chat">
+          <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          LIVE <span id="chat-tab-indicator" class="tab-indicator hidden" aria-label="new chat messages">0</span>
+        </button>
+        <button class="tab-btn" data-tab="ml-showcase" role="tab" aria-label="Intel">
+          <svg class="tab-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M16.9 16.9l2.1 2.1M4.9 19.1l2.1-2.1M16.9 7.1l2.1-2.1"/></svg>
+          INTEL
+        </button>
       </div>
 
-      <!-- Terminal log -->
-      <div class="card reveal">
-        <div class="card-head">
-          <span class="card-title">Detection Feed</span>
-          <span class="card-badge badge-live">● LIVE</span>
+      <div id="tab-markets" class="tab-content active">
+        <div id="markets-container"></div>
+        <div id="banners-section" class="banners-section hidden"></div>
+      </div>
+
+      <div id="tab-leaderboard" class="tab-content">
+
+        <div class="lb-header yolo-label yolo-label-cyan">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="18 20 18 10"/><polyline points="12 20 12 4"/><polyline points="6 20 6 14"/></svg>
+          <span>STANDINGS</span>
+          <button id="lb-refresh" class="btn-sm lb-refresh-btn">↻ Refresh</button>
         </div>
-        <div class="terminal" id="terminal">
-          <div><span class="t-prompt">$</span> <span class="t-cmd">ai-traffic --connect</span></div>
-          <div class="t-out">Connecting to backend...</div>
+        <div class="lb-window-tabs">
+          <button class="lb-wtab active" data-win="60" aria-label="1 minute window">1MIN</button>
+          <button class="lb-wtab" data-win="180" aria-label="3 minute window">3MIN</button>
+          <button class="lb-wtab" data-win="300" aria-label="5 minute window">5MIN</button>
+        </div>
+        <div class="lb-col-header"><span>Player</span><span>Points</span></div>
+        <ol id="ranked-list" class="lb-list">
+          <li class="muted lb-empty-hint">Open tab to load rankings.</li>
+        </ol>
+      </div>
+
+      <div id="tab-chat" class="tab-content">
+        <div class="chat-tab-header yolo-label yolo-label-cyan">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>CHAT</span>
+        </div>
+        <div class="chat-meta-row">
+          <span id="chat-online-count" class="chat-online-count">0 online</span>
+          <div id="chat-online-users" class="chat-online-users"></div>
+        </div>
+        <div id="chat-messages" class="chat-messages"></div>
+        <div class="chat-input-row">
+          <input id="chat-input" type="text" maxlength="280" placeholder="Say something... (@username)" />
+          <button id="chat-send" class="btn-primary">Send</button>
+        </div>
+        <p id="chat-login-hint" class="chat-login-hint hidden">
+          <button class="chat-login-link" id="chat-login-link">Login</button> to send messages
+        </p>
+      </div>
+
+      <div id="tab-ml-showcase" class="tab-content intel-panel">
+
+        <div class="intel-header yolo-label yolo-label-cyan">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z"/></svg>
+          <span>INTEL</span>
+          <span class="intel-status-row">
+            <span class="intel-online-dot"></span>
+            <span class="intel-online-label">ONLINE</span>
+          </span>
+        </div>
+
+        <!-- SESSION section -->
+        <div class="intel-section-head">SESSION</div>
+        <div class="intel-stat-row">
+          <span class="intel-stat-key">Vehicles counted</span>
+          <span id="mls-lifetime-total" class="intel-stat-val">—</span>
+        </div>
+        <div class="intel-stat-row">
+          <span class="intel-stat-key">Detection rate</span>
+          <span id="mls-live-rate" class="intel-stat-val intel-stat-muted">—</span>
+        </div>
+        <div class="intel-stat-row">
+          <span class="intel-stat-key">Live objects</span>
+          <span id="mls-live-objects" class="intel-stat-val">—</span>
+        </div>
+
+        <!-- Breakdown row -->
+        <div class="intel-breakdown">
+          <span class="intel-bd-item">
+            <svg width="14" height="8" viewBox="0 0 22 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-label="Cars"><path d="M1 8h20M4 8l2.5-4.5a1 1 0 0 1 .9-.5h7.2a1 1 0 0 1 .9.5L18 8"/><rect x="1" y="8" width="20" height="2.5" rx="0.5"/><circle cx="6" cy="11" r="1.2"/><circle cx="16" cy="11" r="1.2"/></svg>
+            <span id="mls-lt-car">—</span>
+          </span>
+          <span class="intel-bd-item">
+            <svg width="14" height="8" viewBox="0 0 24 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-label="Trucks"><rect x="1" y="4" width="14" height="7" rx="0.5"/><path d="M15 6.5h4.5l2.5 2.5v2.5H15z"/><circle cx="5.5" cy="12" r="1.2"/><circle cx="18.5" cy="12" r="1.2"/><line x1="1" y1="7.5" x2="15" y2="7.5"/></svg>
+            <span id="mls-lt-truck">—</span>
+          </span>
+          <span class="intel-bd-item">
+            <svg width="14" height="8" viewBox="0 0 22 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-label="Buses"><rect x="1" y="2" width="20" height="8.5" rx="1"/><line x1="1" y1="5.5" x2="21" y2="5.5"/><line x1="7" y1="2" x2="7" y2="10.5"/><line x1="14" y1="2" x2="14" y2="10.5"/><circle cx="6" cy="12" r="1.2"/><circle cx="16" cy="12" r="1.2"/></svg>
+            <span id="mls-lt-bus">—</span>
+          </span>
+          <span class="intel-bd-item">
+            <svg width="14" height="8" viewBox="0 0 22 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" aria-label="Motos"><circle cx="5" cy="10" r="2.8"/><circle cx="17" cy="10" r="2.8"/><path d="M5 10 L9 5 L13 5 L17 10"/><path d="M13 5 L15 3 L18 3"/><line x1="9" y1="5" x2="9" y2="3"/></svg>
+            <span id="mls-lt-moto">—</span>
+          </span>
+        </div>
+
+        <!-- AI MODEL section -->
+        <div class="intel-section-head">AI MODEL</div>
+        <div class="intel-stat-row">
+          <span class="intel-stat-key">Model</span>
+          <span id="mls-model-name" class="intel-stat-val intel-stat-muted">—</span>
+        </div>
+        <div class="intel-stat-row">
+          <span class="intel-stat-key">Updated</span>
+          <span id="mls-last-seen" class="intel-stat-val intel-stat-muted">—</span>
+        </div>
+
+        <!-- DATA section -->
+        <div class="intel-section-head">DATA</div>
+        <div class="intel-stat-row">
+          <span class="intel-stat-key">Events (24h)</span>
+          <span id="mls-rows-24h" class="intel-stat-val">—</span>
+        </div>
+
+        <!-- LIVE STREAM section -->
+        <div class="intel-section-head">LIVE STREAM</div>
+        <div id="mls-stream-list" class="intel-stream-list">
+          <p class="loading intel-loading-hint">Collecting events…</p>
+        </div>
+
+      </div>
+
+      <div id="bet-panel" class="bet-panel hidden">
+        <button id="bet-panel-back" class="bet-panel-back">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          Back
+        </button>
+        <h3 id="bp-title" class="bp-prediction-title">MAKE YOUR PREDICTION</h3>
+        <p id="bp-market-label" class="bp-market-label"></p>
+
+        <div class="bp-field">
+          <label>Observation Window</label>
+          <div class="bp-pills" id="bp-window-pills">
+            <button class="pill active" data-val="60">1 MIN</button>
+            <button class="pill" data-val="180">3 MIN</button>
+            <button class="pill" data-val="300">5 MIN</button>
+          </div>
+        </div>
+
+        <div class="bp-field">
+          <label for="bp-count">Your Prediction</label>
+          <p class="bp-field-hint">How many vehicles will cross the zone?</p>
+          <div class="bp-count-row">
+            <button class="btn-count-adj" id="bp-count-minus">−</button>
+            <input id="bp-count" type="number" min="0" max="10000" value="5" />
+            <button class="btn-count-adj" id="bp-count-plus">+</button>
+          </div>
+        </div>
+
+        <!-- Prize hint (shown before submit) -->
+        <div id="bp-prize-hint" class="bp-prize-hint">
+          <span class="bp-ph-row"><span class="bp-ph-badge bp-ph-exact">EXACT</span> Perfect match → Maximum pts</span>
+          <span class="bp-ph-row"><span class="bp-ph-badge bp-ph-close">CLOSE</span> Within ±40% → Partial pts</span>
+          <span class="bp-ph-row"><span class="bp-ph-badge bp-ph-miss">MISS</span> Too far off → 0 pts</span>
+        </div>
+
+        <!-- Scoring explanation (kept for compat, hidden) -->
+        <div class="bp-score-card" style="display:none;">
+          <div class="bp-sc-row bp-sc-exact">
+            <span class="bp-sc-badge">EXACT</span>
+            <span class="bp-sc-desc">Perfect match → Maximum points</span>
+          </div>
+          <div class="bp-sc-row bp-sc-close">
+            <span class="bp-sc-badge">CLOSE</span>
+            <span class="bp-sc-desc">Within range → Partial points</span>
+          </div>
+          <div class="bp-sc-row bp-sc-miss">
+            <span class="bp-sc-badge">MISS</span>
+            <span class="bp-sc-desc">Too far off → No points</span>
+          </div>
+        </div>
+
+        <p id="bp-error" class="bp-error" role="alert"></p>
+        <button id="bp-submit" class="btn-primary btn-full">Submit Prediction</button>
+
+        <div id="bp-active-bet" class="bp-active-bet hidden">
+          <div class="bpa-header">
+            <span class="bpa-dot"></span>
+            <span class="bpa-label">WINDOW ACTIVE</span>
+            <span id="bpa-window-tag" class="bpa-window-tag">1 MIN</span>
+          </div>
+          <div class="bpa-receipt">
+            <div class="bpa-receipt-row">
+              <span>Your guess</span>
+              <strong id="bpa-receipt-guess">—</strong>
+            </div>
+            <div class="bpa-receipt-row">
+              <span>Window closes in</span>
+              <strong id="bp-countdown" class="bpa-countdown">--:--</strong>
+            </div>
+          </div>
+          <div class="bpa-live-count-wrap">
+            <div class="bpa-live-header">
+              <div class="bpa-live-label">WINDOW COUNT</div>
+              <div id="bpa-live-count" class="bpa-live-val">—</div>
+            </div>
+            <div class="bpa-prog-track">
+              <div class="bpa-prog-fill" id="bpa-progress-fill"></div>
+            </div>
+          </div>
+          <p id="bp-active-hint" class="bpa-hint">Locked in — only AI-detected vehicles count toward your score</p>
+        </div>
+
+        <!-- ── Inline result (replaces toast) ──────────────────── -->
+        <div id="bp-result" class="bp-result hidden">
+          <div class="bpr-status-row">
+            <span id="bpr-badge" class="bpr-badge bpr-badge-miss">MISS</span>
+            <span id="bpr-pts" class="bpr-pts">No pts</span>
+          </div>
+          <div class="bpa-receipt">
+            <div class="bpa-receipt-row">
+              <span>Your guess</span>
+              <strong id="bpr-guess">—</strong>
+            </div>
+            <div class="bpa-receipt-row">
+              <span>Actual count</span>
+              <strong id="bpr-actual">—</strong>
+            </div>
+            <div class="bpa-receipt-row">
+              <span>Points earned</span>
+              <strong id="bpr-payout">—</strong>
+            </div>
+            <div class="bpa-receipt-row" id="bpr-tolerance-row" style="display:none">
+              <span id="bpr-tolerance-lbl">Off by</span>
+              <strong id="bpr-tolerance-val">—</strong>
+            </div>
+          </div>
+          <div class="bpr-actions">
+            <button id="bpr-leaderboard-btn" class="btn-secondary bpr-btn">View Standing</button>
+            <button id="bpr-again-btn" class="btn-primary bpr-btn">Guess Again</button>
+          </div>
+          <button id="bpr-share-btn" class="bpr-share-btn" aria-label="Share result">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share
+          </button>
+          <!-- ── Replay sparkline ──────────────────────────────── -->
+          <div class="bpr-replay" id="bpr-replay">
+            <div class="bpr-replay-label">COUNT DURING WINDOW</div>
+            <canvas id="bpr-replay-canvas" class="bpr-replay-canvas" height="60"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+    </aside>
+
+  </main>
+
+  <!-- ── Login Modal ───────────────────────────────────────────── -->
+  <div id="login-modal" class="auth-modal hidden" role="dialog" aria-modal="true" aria-label="Sign in">
+    <div class="auth-modal-backdrop" id="login-modal-backdrop"></div>
+    <div class="auth-card auth-modal-card">
+      <button class="auth-modal-close" id="login-modal-close" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <a href="/" class="logo">
+        <span class="logo-img-wrap">
+          <img class="logo-icon" src="/img/iconinframes.png" alt="AI TRAFFIC JAMAICA" loading="lazy" />
+          <img class="logo-ai-frame" src="/img/aiframes.png" alt="" aria-hidden="true" loading="lazy" />
+        </span>
+        <span class="logo-title">AI TRAFFIC JAMAICA</span>
+      </a>
+      <h1>Sign In</h1>
+      <button type="button" id="modal-google-btn" class="btn-google-login btn-google-primary btn-full">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Continue with Google
+      </button>
+      <button type="button" id="modal-guest-btn" class="btn-outline btn-full btn-guest-login">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/>
+        </svg>
+        Continue as Guest
+      </button>
+      <div class="auth-divider"><span>or sign in with email</span></div>
+      <form id="modal-login-form">
+        <div class="field">
+          <label for="modal-email">Email</label>
+          <input id="modal-email" type="email" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="modal-password">Password</label>
+          <input id="modal-password" type="password" autocomplete="current-password" required />
+        </div>
+        <p id="modal-auth-error" class="auth-error" role="alert"></p>
+        <button type="submit" class="btn-outline btn-full" id="modal-submit-btn">Sign In</button>
+      </form>
+      <p class="auth-switch">Don't have an account? <a href="#" id="switch-to-register">Register</a></p>
+    </div>
+  </div>
+
+  <!-- ── Register Modal ─────────────────────────────────────────── -->
+  <div id="register-modal" class="auth-modal hidden" role="dialog" aria-modal="true" aria-label="Create account">
+    <div class="auth-modal-backdrop" id="register-modal-backdrop"></div>
+    <div class="auth-card auth-modal-card">
+      <button class="auth-modal-close" id="register-modal-close" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <a href="/" class="logo">
+        <span class="logo-img-wrap">
+          <img class="logo-icon" src="/img/iconinframes.png" alt="AI TRAFFIC JAMAICA" loading="lazy" />
+          <img class="logo-ai-frame" src="/img/aiframes.png" alt="" aria-hidden="true" loading="lazy" />
+        </span>
+        <span class="logo-title">AI TRAFFIC JAMAICA</span>
+      </a>
+      <h1>Create Account</h1>
+      <button type="button" id="reg-google-btn" class="btn-google-login btn-google-primary btn-full">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Continue with Google
+      </button>
+      <div class="auth-divider"><span>or sign up with email</span></div>
+      <form id="modal-register-form">
+        <div class="field">
+          <label for="modal-reg-email">Email</label>
+          <input id="modal-reg-email" type="email" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="modal-reg-password">Password</label>
+          <input id="modal-reg-password" type="password" autocomplete="new-password" required />
+        </div>
+        <div class="field">
+          <label for="modal-reg-confirm">Confirm Password</label>
+          <input id="modal-reg-confirm" type="password" autocomplete="new-password" required />
+        </div>
+        <p id="modal-register-error" class="auth-error" role="alert"></p>
+        <button type="submit" class="btn-outline btn-full" id="register-submit-btn">Create Account</button>
+      </form>
+      <p class="auth-switch">Already have an account? <a href="#" id="switch-to-login">Sign In</a></p>
+    </div>
+  </div>
+
+  <!-- ── How It Works Modal ────────────────────────────────────── -->
+  <div id="hiw-modal-backdrop" class="hiw-modal-backdrop hidden"></div>
+  <div id="hiw-modal" class="hiw-modal hidden" role="dialog" aria-modal="true" aria-label="How It Works">
+    <div class="hiw-modal-inner">
+      <div class="hiw-modal-head">
+        <div class="hiw-modal-title-row">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFD600" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          HOW IT WORKS
+        </div>
+        <button id="hiw-modal-close" class="hiw-modal-close" aria-label="Close">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 4L4 12M4 4l8 8"/></svg>
+        </button>
+      </div>
+      <div class="hiw-modal-body">
+        <p class="hiw-intro">A live CCTV camera films real traffic on a Jamaican road. Watch the feed, guess how many vehicles will pass, and the AI does the counting. Closer = more points.</p>
+        <ol class="hiw-steps">
+          <li class="hiw-step">
+            <span class="hiw-step-num">01</span>
+            <div class="hiw-step-body">
+              <div class="hiw-step-title">Watch the Live Feed</div>
+              <div class="hiw-step-desc">A real camera streams traffic in real time. Study the flow — how busy is it? How fast are vehicles moving? Use that to inform your guess.</div>
+            </div>
+          </li>
+          <li class="hiw-step">
+            <span class="hiw-step-num">02</span>
+            <div class="hiw-step-body">
+              <div class="hiw-step-title">A Match Opens</div>
+              <div class="hiw-step-desc">The admin starts a timed match — 1, 3, or 5 minutes. Pick your window and submit your guess before time runs out.</div>
+            </div>
+          </li>
+          <li class="hiw-step">
+            <span class="hiw-step-num">03</span>
+            <div class="hiw-step-body">
+              <div class="hiw-step-title">Submit Your Guess</div>
+              <div class="hiw-step-desc">Type in how many vehicles you think will pass during your chosen window.
+                <span class="hiw-tag hiw-tag-yellow">Exact match</span> scores the most points.
+                <span class="hiw-tag hiw-tag-cyan">Close guess</span> still earns partial points.
+              </div>
+            </div>
+          </li>
+          <li class="hiw-step">
+            <span class="hiw-step-num">04</span>
+            <div class="hiw-step-body">
+              <div class="hiw-step-title">AI Counts Every Vehicle</div>
+              <div class="hiw-step-desc">Computer vision tracks and counts every vehicle crossing the camera line in real time. No manual counting, no bias.</div>
+            </div>
+          </li>
+          <li class="hiw-step">
+            <span class="hiw-step-num">05</span>
+            <div class="hiw-step-body">
+              <div class="hiw-step-title">Score &amp; Leaderboard</div>
+              <div class="hiw-step-desc">Your guess is compared to the AI count. The closer you are, the more points you earn. Build your score across multiple matches and climb the leaderboard.</div>
+            </div>
+          </li>
+        </ol>
+        <div class="hiw-footer">
+          <span class="hiw-footer-note">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FFD600" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Matches run on a schedule. Stay on the feed — the next one starts any time.
+          </span>
+          <button class="hiw-got-it" id="hiw-got-it">Got it</button>
         </div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- TECH STACK -->
-<section id="tech">
-  <p class="section-tag reveal">Architecture</p>
-  <h2 class="section-title reveal">Built on Production Infrastructure</h2>
-
-  <div class="tech-grid reveal">
-    <div class="tech-card">
-      <div class="tech-tier">AI / Vision</div>
-      <div class="tech-name">YOLOv8</div>
-      <div class="tech-desc">Ultralytics YOLOv8 custom-trained on Jamaican traffic conditions. CUDA-accelerated inference with Kalman tracking.</div>
-      <span class="tech-tag">COMPUTER VISION</span>
-    </div>
-    <div class="tech-card">
-      <div class="tech-tier">Backend</div>
-      <div class="tech-name">FastAPI</div>
-      <div class="tech-desc">Python 3.12 async backend on Railway. WebSocket broadcasting, REST API, round lifecycle management.</div>
-      <span class="tech-tag">PYTHON 3.12</span>
-    </div>
-    <div class="tech-card">
-      <div class="tech-tier">Database</div>
-      <div class="tech-name">Supabase</div>
-      <div class="tech-desc">PostgreSQL with Realtime subscriptions, Row Level Security, and atomic RPC functions for bet resolution.</div>
-      <span class="tech-tag">POSTGRESQL</span>
-    </div>
-    <div class="tech-card">
-      <div class="tech-tier">Frontend</div>
-      <div class="tech-name">Vanilla JS</div>
-      <div class="tech-desc">Zero-framework frontend with HLS.js for live video, Supabase SDK v2, and custom WebSocket consumer.</div>
-      <span class="tech-tag">HLS · WS · VITE</span>
-    </div>
-    <div class="tech-card">
-      <div class="tech-tier">Edge / CDN</div>
-      <div class="tech-name">Cloudflare</div>
-      <div class="tech-desc">Worker routes HLS segments via backend.aitrafficja.com — backend URL never exposed to client.</div>
-      <span class="tech-tag">WORKERS · DNS</span>
-    </div>
-    <div class="tech-card">
-      <div class="tech-tier">Deployment</div>
-      <div class="tech-name">Vercel</div>
-      <div class="tech-desc">Frontend on Vercel edge with serverless API proxy functions. Auto-deploy on push from GitHub.</div>
-      <span class="tech-tag">EDGE FUNCTIONS</span>
-    </div>
-    <div class="tech-card">
-      <div class="tech-tier">Container</div>
-      <div class="tech-name">Docker</div>
-      <div class="tech-desc">Dockerized FastAPI backend deployed on Railway with nixpacks. CUDA runtime for GPU inference.</div>
-      <span class="tech-tag">RAILWAY · CUDA</span>
-    </div>
-    <div class="tech-card">
-      <div class="tech-tier">Data Pipeline</div>
-      <div class="tech-name">ML Pipeline</div>
-      <div class="tech-desc">Automated dataset capture, labeling export, YOLO fine-tuning, and model promotion pipeline.</div>
-      <span class="tech-tag">TRAINING · EVAL</span>
+  <!-- ── Camera Switcher Modal ───────────────────────────────── -->
+  <div id="cam-modal-backdrop" class="cam-modal-backdrop hidden"></div>
+  <div id="camera-modal" class="camera-modal hidden" role="dialog" aria-modal="true" aria-label="Camera Locations">
+    <div class="cam-modal-inner">
+      <div class="cam-modal-head">
+        <div class="cam-modal-title-row">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="7" width="14" height="10" rx="1.5"/><path d="M16 10l5-3v10l-5-3"/></svg>
+          <span>Live Cameras</span>
+        </div>
+        <button id="cam-modal-close" class="cam-modal-close" aria-label="Close">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4L4 12M4 4l8 8"/></svg>
+        </button>
+      </div>
+      <p class="cam-modal-hint">Click <strong>Preview</strong> to watch a live feed before switching. Click <strong>Switch Here</strong> to change the main stream.</p>
+      <div id="cam-modal-body" class="cam-modal-body">
+        <p class="cam-modal-empty">Loading cameras...</p>
+      </div>
     </div>
   </div>
-</section>
 
-<!-- FOOTER -->
-<footer>
-  <div>
-    <div class="footer-brand">AI TRAFFIC JAMAICA</div>
-    <div class="footer-sub">YOLOv8 · FastAPI · Supabase · Vercel · Cloudflare</div>
+  <!-- ── Onboarding Overlay (first-visit) ────────────────────────────────── -->
+  <div id="onboarding-overlay" class="onboarding-overlay hidden" role="dialog" aria-modal="true" aria-label="Welcome">
+    <div class="ob-inner">
+      <button id="ob-skip" class="ob-skip" aria-label="Skip">Skip intro</button>
+
+      <div id="ob-step-1" class="ob-step active">
+        <div class="ob-step-num">1 OF 4</div>
+        <h2 class="ob-title">Watch real traffic.</h2>
+        <p class="ob-body">AI counts every vehicle in real time on a live Jamaican road camera. The detection zone spans the lane — every car, truck, and bus that crosses it gets logged.</p>
+      </div>
+
+      <div id="ob-step-2" class="ob-step">
+        <div class="ob-step-num">2 OF 4</div>
+        <h2 class="ob-title">Predict. <span class="ob-highlight">Score.</span></h2>
+        <p class="ob-body">When a round opens, guess how many vehicles will cross in 1, 3, or 5 minutes. Exact prediction scores the most. Within ±3 earns partial. Miss gets nothing.</p>
+      </div>
+
+      <div id="ob-step-3" class="ob-step ob-step--gov">
+        <div class="ob-step-num">3 OF 4</div>
+        <div class="ob-gov-badge">
+          <img src="/img/iconinframes.png" class="ob-gov-logo" alt="" loading="lazy">
+          <span class="ob-gov-label">Traffic Intelligence</span>
+        </div>
+        <h2 class="ob-title">Beyond the count.</h2>
+        <p class="ob-body">The same live feed powers a full analytics dashboard — vehicle class breakdown, flow direction, queue depth, and speed stats. Open it from any camera view.</p>
+        <div class="ob-gov-chips">
+          <span class="ob-gov-chip">Class Split</span>
+          <span class="ob-gov-chip">Queue Depth</span>
+          <span class="ob-gov-chip">Speed</span>
+          <span class="ob-gov-chip">Turning Flow</span>
+        </div>
+      </div>
+
+      <div id="ob-step-4" class="ob-step">
+        <div class="ob-step-num">4 OF 4</div>
+        <h2 class="ob-title">Early access.</h2>
+        <p class="ob-body">This platform is actively being built. Detection works best in daylight with a stable stream — we're integrating a dedicated provider for consistent 24/7 coverage and night detection. You're in early.</p>
+        <div class="ob-beta-notice">
+          <span class="ob-beta-tag">BETA</span>
+          <span class="ob-beta-text">Features and data may change as we develop.</span>
+        </div>
+      </div>
+
+      <div class="ob-nav">
+        <div class="ob-dots">
+          <span class="ob-dot active" data-step="1"></span>
+          <span class="ob-dot" data-step="2"></span>
+          <span class="ob-dot" data-step="3"></span>
+          <span class="ob-dot" data-step="4"></span>
+        </div>
+        <button id="ob-next" class="ob-next">NEXT →</button>
+      </div>
+    </div>
   </div>
-  <div class="footer-badge">
-    <div class="footer-badge-dot"></div>
-    <span class="footer-badge-txt">SYSTEM OPERATIONAL</span>
+
+  <!-- ── Analytics Preloader ───────────────────────────────────────────────── -->
+  <div id="gov-preloader" class="gov-preloader hidden" aria-live="polite" role="status">
+    <div class="gov-pl-inner">
+      <div class="gov-pl-logo">
+        <img src="/img/iconinframes.png" alt="" class="gov-pl-logoimg" aria-hidden="true" loading="lazy">
+        <img src="/img/aiframes.png"     alt="" class="gov-pl-aiframe" aria-hidden="true" loading="lazy">
+      </div>
+      <div class="gov-pl-title">TRAFFIC INTELLIGENCE</div>
+      <div class="gov-pl-sub" id="gov-pl-label">Initialising…</div>
+      <div class="gov-pl-pct" id="gov-pl-pct">0%</div>
+      <div class="gov-pl-bar-wrap">
+        <div class="gov-pl-bar" id="gov-pl-bar"></div>
+      </div>
+    </div>
   </div>
-</footer>
 
-<!-- LIVE TICKER -->
-<div class="ticker">
-  <div class="ticker-label">LIVE FEED</div>
-  <div class="ticker-track" id="ticker-track">
-    <div class="ticker-item">SYSTEM <span>ONLINE</span> <span class="ticker-sep">///</span></div>
-    <div class="ticker-item">MODEL <span>YOLOv8</span> <span class="ticker-sep">///</span></div>
-    <div class="ticker-item">BACKEND <span>RAILWAY</span> <span class="ticker-sep">///</span></div>
-    <div class="ticker-item">DATABASE <span>SUPABASE</span> <span class="ticker-sep">///</span></div>
-    <div class="ticker-item">DETECTION <span>ACTIVE</span> <span class="ticker-sep">///</span></div>
-    <div class="ticker-item">VEHICLES TODAY <span id="ticker-total">LOADING</span> <span class="ticker-sep">///</span></div>
-    <div class="ticker-item">LATENCY <span>&lt;100ms</span> <span class="ticker-sep">///</span></div>
-    <div class="ticker-item">CLASSES <span>CAR · TRUCK · BUS · MOTO</span> <span class="ticker-sep">///</span></div>
-    <!-- duplicate for seamless loop -->
-    <div class="ticker-item">SYSTEM <span>ONLINE</span> <span class="ticker-sep">///</span></div>
-    <div class="ticker-item">MODEL <span>YOLOv8</span> <span class="ticker-sep">///</span></div>
-    <div class="ticker-item">BACKEND <span>RAILWAY</span> <span class="ticker-sep">///</span></div>
-    <div class="ticker-item">DATABASE <span>SUPABASE</span> <span class="ticker-sep">///</span></div>
-    <div class="ticker-item">DETECTION <span>ACTIVE</span> <span class="ticker-sep">///</span></div>
-    <div class="ticker-item">VEHICLES TODAY <span id="ticker-total2">LOADING</span> <span class="ticker-sep">///</span></div>
-    <div class="ticker-item">LATENCY <span>&lt;100ms</span> <span class="ticker-sep">///</span></div>
-    <div class="ticker-item">CLASSES <span>CAR · TRUCK · BUS · MOTO</span> <span class="ticker-sep">///</span></div>
+  <!-- ── Demo Mode Preloader ──────────────────────────────────────────────── -->
+  <div id="demo-preloader" class="demo-preloader hidden" aria-live="polite" role="status">
+    <div class="demo-pl-inner">
+      <div class="demo-pl-logo">
+        <span class="demo-pl-ring"></span>
+        <span class="demo-pl-ring"></span>
+        <span class="demo-pl-ring"></span>
+        <img src="/img/iconinframes.png" alt="" class="demo-pl-logoimg" aria-hidden="true" loading="lazy">
+        <img src="/img/aiframes.png"     alt="" class="demo-pl-aiframe" aria-hidden="true" loading="lazy">
+      </div>
+      <div class="demo-pl-rec"><span class="demo-pl-rec-dot"></span>REC</div>
+      <div class="demo-pl-title">DEMO MODE</div>
+      <div class="demo-pl-sub" id="demo-pl-label">Initialising…</div>
+      <div class="demo-pl-detail" id="demo-pl-detail"></div>
+      <div class="demo-pl-pct" id="demo-pl-pct">0%</div>
+      <div class="demo-pl-bar-wrap">
+        <div class="demo-pl-bar" id="demo-pl-bar"></div>
+      </div>
+    </div>
   </div>
-</div>
 
-<script>
-// ── Supabase init ──
-const SUPABASE_URL  = 'https://btacloepobtruyqwxhys.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0YWNsb2Vwb2J0cnV5cXd4aHlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1NDUxNzUsImV4cCI6MjA4OTEyMTE3NX0.BbYoqxLDIWnKOmSNYMnNja3yw9YBcvl2l5eURyu9Xws';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+  <!-- ── Demo Mode Overlay ────────────────────────────────────────────────── -->
+  <div id="demo-overlay" class="demo-overlay hidden" role="dialog" aria-modal="true" aria-label="Demo Mode">
 
-// ── Scroll reveal ──
-const revealEls = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('visible'), i * 80);
-      observer.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.1 });
-revealEls.forEach(el => observer.observe(el));
+    <!-- Header — reuses gov-hdr styles -->
+    <div class="gov-hdr">
+      <div class="gov-hdr-left">
+        <div class="gov-hdr-logo-wrap">
+          <img src="/img/iconinframes.png" alt="AI Traffic Jamaica" class="gov-hdr-logo" aria-hidden="true" loading="lazy">
+          <img src="/img/aiframes.png" alt="" class="gov-hdr-aiframe" aria-hidden="true" loading="lazy">
+        </div>
+        <div class="gov-hdr-rule"></div>
+        <div class="gov-hdr-id">
+          <div class="gov-title">DEMO MODE</div>
+          <div class="gov-subtitle">Pre-recorded footage · AI detection replay</div>
+        </div>
+      </div>
+      <div class="gov-hdr-right">
+        <button id="btn-close-demo" class="gov-close-btn" aria-label="Exit Demo Mode">
+          <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 4L4 12M4 4l8 8"/></svg>
+          LIVE
+        </button>
+      </div>
+    </div>
 
-// ── Number animation ──
-function animateNum(el, target, suffix='', decimals=0) {
-  const start = 0;
-  const duration = 1800;
-  const startTime = performance.now();
-  function update(now) {
-    const progress = Math.min((now - startTime) / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 4);
-    const val = start + (target - start) * eased;
-    el.textContent = decimals
-      ? val.toFixed(decimals) + suffix
-      : Math.round(val).toLocaleString() + suffix;
-    if (progress < 1) requestAnimationFrame(update);
-  }
-  requestAnimationFrame(update);
-}
+    <!-- Body -->
+    <div class="demo-body">
 
-// ── Terminal log ──
-const terminal = document.getElementById('terminal');
-function termLog(html, delay=0) {
-  setTimeout(() => {
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    terminal.appendChild(div);
-    terminal.scrollTop = terminal.scrollHeight;
-  }, delay);
-}
+      <!-- Left: video + info -->
+      <div class="demo-main">
+        <!-- No recording state -->
+        <div id="demo-no-content" class="demo-no-content hidden">
+          <div class="demo-nc-icon">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.4"/>
+              <line x1="12" y1="2" x2="12" y2="5"/>
+              <line x1="12" y1="19" x2="12" y2="22"/>
+              <line x1="2" y1="12" x2="5" y2="12"/>
+              <line x1="19" y1="12" x2="22" y2="12"/>
+            </svg>
+          </div>
+          <div class="demo-nc-title">NO DEMO RECORDING YET</div>
+          <div class="demo-nc-text">A demo clip will be available once the system has captured and processed live footage. The recording is scheduled — check back soon.</div>
+          <div class="demo-nc-badge"><span class="demo-nc-dot"></span>RECORDING SCHEDULED</div>
+        </div>
 
-// ── Render bar chart ──
-function renderChart(buckets) {
-  const area = document.getElementById('chart-area');
-  // Clear old bars
-  area.querySelectorAll('.bar-wrap').forEach(el => el.remove());
-  if (!buckets || buckets.length === 0) return;
+        <!-- Video + canvas -->
+        <div id="demo-video-area" class="demo-video-wrap hidden">
+          <video id="demo-video" class="demo-video" muted playsinline loop></video>
+          <canvas id="demo-canvas" class="demo-canvas"></canvas>
+          <div class="demo-count-hud" id="demo-count-hud">
+            <span class="demo-count-label">VEHICLES DETECTED</span>
+            <span id="demo-count-val" class="demo-count-val">—</span>
+          </div>
+          <button id="demo-draw-btn" class="demo-draw-btn" title="Draw tripwire">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 17l4-4 4 4 4-8 4 4"/></svg>
+            TRIPWIRE
+          </button>
+        </div>
 
-  const maxVal = Math.max(...buckets.map(b => b.count), 1);
-  document.getElementById('gl-25').textContent = Math.round(maxVal * 0.25);
-  document.getElementById('gl-50').textContent = Math.round(maxVal * 0.5);
-  document.getElementById('gl-75').textContent = Math.round(maxVal * 0.75);
+        <!-- Info bar -->
+        <div class="demo-info-bar">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+          <span>Pre-recorded live footage with frame-synced YOLO detections replayed in real-time — exactly what the AI sees at the intersection.</span>
+        </div>
+      </div><!-- /demo-main -->
 
-  buckets.forEach((b, i) => {
-    const pct = (b.count / maxVal) * 100;
-    const wrap = document.createElement('div');
-    wrap.className = 'bar-wrap';
-    wrap.innerHTML = `
-      <div class="bar" style="height:0%" title="${b.count} vehicles at ${b.hour}"></div>
-      <div class="bar-label">${b.hour}</div>`;
-    area.insertBefore(wrap, area.firstChild.nextSibling);
-    // Animate after paint
-    setTimeout(() => {
-      wrap.querySelector('.bar').style.height = Math.max(pct, 2) + '%';
-    }, 100 + i * 60);
-  });
-}
+      <!-- Right: guess sidebar -->
+      <div class="demo-sidebar">
 
-// ── Load Supabase data ──
-async function loadData() {
-  termLog(`<span class="t-out">Authenticating with Supabase...</span>`, 200);
+        <!-- Form (default state) -->
+        <div id="demo-guess-form">
+          <p class="demo-guess-title">MAKE YOUR PREDICTION</p>
+          <p class="demo-guess-sub">Predict how many vehicles cross the zone in the window</p>
 
-  try {
-    // Hourly buckets from ml_detection_events (last 12h)
-    const twelveHoursAgo = new Date(Date.now() - 12*60*60*1000).toISOString();
-    const { data: events } = await sb
-      .from('ml_detection_events')
-      .select('captured_at, new_crossings, class_counts')
-      .gte('captured_at', twelveHoursAgo)
-      .order('captured_at', { ascending: true });
+          <div class="bp-field">
+            <label>Observation Window</label>
+            <div class="bp-pills" id="demo-window-pills">
+              <button class="pill active" data-val="60">1 MIN</button>
+              <button class="pill" data-val="180">3 MIN</button>
+              <button class="pill" data-val="300">5 MIN</button>
+            </div>
+          </div>
 
-    termLog(`<span class="t-out">Connected. Streaming detection events...</span>`, 600);
+          <div class="bp-field">
+            <label for="demo-guess-input">Your Prediction</label>
+            <p class="bp-field-hint">How many vehicles will cross?</p>
+            <div class="bp-count-row">
+              <button class="btn-count-adj" id="demo-count-minus">−</button>
+              <input id="demo-guess-input" type="number" min="0" max="99999" value="5" />
+              <button class="btn-count-adj" id="demo-count-plus">+</button>
+            </div>
+          </div>
 
-    if (events && events.length > 0) {
-      // Hourly buckets
-      const bucketMap = {};
-      let totalCar=0, totalTruck=0, totalBus=0, totalMoto=0, grandTotal=0;
+          <div class="bp-prize-hint">
+            <span class="bp-ph-row"><span class="bp-ph-badge bp-ph-exact">EXACT</span> Perfect match → Max pts</span>
+            <span class="bp-ph-row"><span class="bp-ph-badge bp-ph-close">CLOSE</span> Within ±40% → Partial pts</span>
+            <span class="bp-ph-row"><span class="bp-ph-badge bp-ph-miss">MISS</span> Too far off → 0 pts</span>
+          </div>
 
-      events.forEach(e => {
-        const h = new Date(e.captured_at).getHours();
-        const key = h.toString().padStart(2,'0') + ':00';
-        if (!bucketMap[key]) bucketMap[key] = 0;
-        bucketMap[key] += (e.new_crossings || 0);
-        grandTotal += (e.new_crossings || 0);
-        const cc = e.class_counts || {};
-        totalCar   += (cc.car || 0);
-        totalTruck += (cc.truck || 0);
-        totalBus   += (cc.bus || 0);
-        totalMoto  += (cc.motorcycle || cc.moto || 0);
-      });
+          <button id="demo-guess-submit" class="btn-primary btn-full">Submit Prediction</button>
+          <p class="demo-guess-note">Demo mode — no account needed</p>
+        </div>
 
-      const buckets = Object.entries(bucketMap)
-        .sort(([a],[b]) => a.localeCompare(b))
-        .map(([hour, count]) => ({ hour, count }));
+        <!-- Active window state -->
+        <div id="demo-active" class="demo-active hidden">
+          <div class="bpa-header">
+            <span class="bpa-dot"></span>
+            <span class="bpa-label">WINDOW ACTIVE</span>
+            <span id="demo-window-tag" class="bpa-window-tag">1 MIN</span>
+          </div>
+          <div class="bpa-receipt">
+            <div class="bpa-receipt-row">
+              <span>Your guess</span>
+              <strong id="demo-receipt-guess">—</strong>
+            </div>
+            <div class="bpa-receipt-row">
+              <span>Window closes in</span>
+              <strong id="demo-countdown" class="bpa-countdown">--:--</strong>
+            </div>
+          </div>
+          <div class="bpa-live-count-wrap">
+            <div class="bpa-live-header">
+              <div class="bpa-live-label">WINDOW COUNT</div>
+              <div id="demo-live-count" class="bpa-live-val">0</div>
+            </div>
+            <div class="bpa-prog-track">
+              <div id="demo-prog-fill" class="bpa-prog-fill"></div>
+            </div>
+          </div>
+          <p class="bpa-hint">Counting AI-detected vehicles in real-time</p>
+        </div>
 
-      renderChart(buckets);
+        <!-- Result state -->
+        <div id="demo-result" class="bp-result hidden">
+          <div class="bpr-status-row">
+            <span id="demo-res-badge" class="bpr-badge bpr-badge-miss">MISS</span>
+            <span id="demo-res-pts" class="bpr-pts bpr-pts-miss">No pts</span>
+          </div>
+          <div class="bpa-receipt">
+            <div class="bpa-receipt-row">
+              <span>Your guess</span>
+              <strong id="demo-res-guess">—</strong>
+            </div>
+            <div class="bpa-receipt-row">
+              <span>Actual count</span>
+              <strong id="demo-res-actual">—</strong>
+            </div>
+          </div>
+          <button id="demo-guess-again" class="btn-primary btn-full" style="margin-top:14px">Try Again</button>
+        </div>
 
-      // Breakdown
-      const clsTotal = totalCar + totalTruck + totalBus + totalMoto || 1;
-      document.getElementById('br-car').style.width   = (totalCar/clsTotal*100)+'%';
-      document.getElementById('br-truck').style.width = (totalTruck/clsTotal*100)+'%';
-      document.getElementById('br-bus').style.width   = (totalBus/clsTotal*100)+'%';
-      document.getElementById('br-moto').style.width  = (totalMoto/clsTotal*100)+'%';
-      document.getElementById('bv-car').textContent   = totalCar.toLocaleString();
-      document.getElementById('bv-truck').textContent = totalTruck.toLocaleString();
-      document.getElementById('bv-bus').textContent   = totalBus.toLocaleString();
-      document.getElementById('bv-moto').textContent  = totalMoto.toLocaleString();
+      </div><!-- /demo-sidebar -->
 
-      // Hero stats
-      animateNum(document.getElementById('hero-total'), grandTotal);
-      const rateEl = document.getElementById('hero-rate');
-      const rate = (grandTotal / (12*60)).toFixed(1);
-      rateEl.textContent = rate;
+    </div><!-- /demo-body -->
 
-      // KPIs
-      animateNum(document.getElementById('kpi-total'), grandTotal);
-      document.getElementById('ticker-total').textContent  = grandTotal.toLocaleString();
-      document.getElementById('ticker-total2').textContent = grandTotal.toLocaleString();
+  </div>
 
-      termLog(`<span class="t-out">Events loaded: </span><span class="t-val">${events.length.toLocaleString()}</span>`, 900);
-      termLog(`<span class="t-out">Total vehicles (12h): </span><span class="t-val">${grandTotal.toLocaleString()}</span>`, 1100);
+  <!-- ── Government / Analytics Mode Overlay ──────────────────────────────── -->
+  <div id="gov-overlay" class="gov-overlay hidden" role="dialog" aria-modal="true" aria-label="Traffic Analytics">
 
-      // Recent log entries
-      events.slice(-5).reverse().forEach((e, i) => {
-        const t = new Date(e.captured_at);
-        const ts = t.getHours().toString().padStart(2,'0') + ':' + t.getMinutes().toString().padStart(2,'0');
-        const cls = Object.keys(e.class_counts||{}).find(k => (e.class_counts[k]||0) > 0) || 'vehicle';
-        termLog(`<span class="t-time t-out">[${ts}]</span> <span class="t-cyan">DETECT</span> <span class="t-out">${e.new_crossings||0} crossings — </span><span class="t-val">${cls}</span>`, 1300 + i*200);
-      });
-    } else {
-      termLog(`<span class="t-out">No recent events found. System idle.</span>`, 900);
-      document.getElementById('hero-total').textContent = '0';
-      document.getElementById('hero-rate').textContent = '0.0';
-    }
+    <!-- Header -->
+    <div class="gov-hdr">
 
-    // Other KPIs
-    const [{ count: sessionCount }, { count: msgCount }] = await Promise.all([
-      sb.from('round_sessions').select('id', { count:'exact', head:true }).eq('status','active'),
-      sb.from('messages').select('id', { count:'exact', head:true })
-    ]);
-    animateNum(document.getElementById('kpi-sessions'), sessionCount || 0);
-    animateNum(document.getElementById('kpi-messages'), msgCount || 0);
+      <!-- Left: identity -->
+      <div class="gov-hdr-left">
+        <div class="gov-hdr-logo-wrap">
+          <img src="/img/iconinframes.png" alt="AI Traffic Jamaica" class="gov-hdr-logo" aria-hidden="true" loading="lazy">
+          <img src="/img/aiframes.png" alt="" class="gov-hdr-aiframe" aria-hidden="true" loading="lazy">
+        </div>
+        <div class="gov-hdr-rule"></div>
+        <div class="gov-hdr-id">
+          <div class="gov-title">TRAFFIC INTELLIGENCE</div>
+          <div class="gov-subtitle" id="gov-cam-subtitle">Initialising…</div>
+        </div>
+      </div>
 
-    const { count: evCount } = await sb
-      .from('ml_detection_events')
-      .select('id', { count:'exact', head:true })
-      .gte('captured_at', new Date(Date.now()-24*60*60*1000).toISOString());
-    animateNum(document.getElementById('kpi-events'), evCount || 0);
 
-    termLog(`<span class="t-out">─────────────────────────</span>`, 2500);
-    termLog(`<span class="t-prompt">$</span> <span class="t-cmd">status: <span class="t-val">ALL SYSTEMS NOMINAL</span></span><span class="t-cursor"></span>`, 2800);
+      <!-- Right: close -->
+      <div class="gov-hdr-right">
+        <span id="gov-hdr-fps" style="display:none"></span>
+        <button id="btn-close-gov" class="gov-close-btn" aria-label="Close Traffic Intelligence">
+          <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 4L4 12M4 4l8 8"/></svg>
+          PLAY
+        </button>
+      </div>
 
-  } catch (err) {
-    termLog(`<span class="t-red">ERROR: ${err.message}</span>`, 800);
-    ['hero-total','hero-rate','kpi-total','kpi-sessions','kpi-events','kpi-messages']
-      .forEach(id => { const el = document.getElementById(id); if(el) el.textContent = 'N/A'; });
-  }
-}
+    </div>
 
-// Boot sequence
-termLog(`<span class="t-out">Initializing AI Traffic Jamaica...</span>`, 0);
-loadData();
+    <!-- Tab Bar -->
+    <div class="gov-tabbar" id="gov-tabbar">
+      <button class="gov-tab active" data-tab="live">LIVE</button>
+      <button class="gov-tab"        data-tab="analytics">ANALYTICS</button>
+      <button class="gov-tab"        data-tab="agencies">AGENCIES</button>
+      <button class="gov-tab"        data-tab="export">EXPORT</button>
+    </div>
 
-// ── Realtime subscribe ──
-sb.channel('ml_events')
-  .on('postgres_changes', { event:'INSERT', schema:'public', table:'ml_detection_events' }, payload => {
-    const e = payload.new;
-    const now = new Date();
-    const ts = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0') + ':' + now.getSeconds().toString().padStart(2,'0');
-    termLog(`<span class="t-out">[${ts}]</span> <span class="t-cyan">LIVE</span> <span class="t-out">${e.new_crossings||0} vehicles detected</span>`);
-    // Update hero total live
-    const heroEl = document.getElementById('hero-total');
-    const curr = parseInt(heroEl.textContent.replace(/,/g,'')) || 0;
-    animateNum(heroEl, curr + (e.new_crossings||0));
-  })
-  .subscribe();
-</script>
+    <!-- ── PANEL: LIVE ───────────────────────────────────────── -->
+    <div class="gov-panel active" id="gov-panel-live">
+
+      <!-- Intro callout -->
+      <div class="gov-intro" id="gov-intro-live">
+        <div class="gov-intro-body">
+          <div class="gov-intro-label">LIVE VIEW</div>
+          <div class="gov-intro-text">Live AI camera feed counting vehicles 24/7. Numbers at the top show today's totals. Switch tabs to see charts, agency insights, and data exports.</div>
+        </div>
+        <button class="gov-intro-dismiss" data-intro-key="live" aria-label="Dismiss">Got it</button>
+      </div>
+
+      <!-- KPI strip -->
+      <div class="gov-kpi-strip">
+        <div class="gov-kpi-card" data-modal="total" data-tip="Total vehicles the AI has counted at this intersection today">
+          <div class="gov-kpi-val" id="gov-kpi-total">—</div>
+          <div class="gov-kpi-lbl">Vehicles Today</div>
+          <div class="gov-kpi-hint">tap for hourly trend</div>
+        </div>
+        <div class="gov-kpi-card" data-modal="peak" data-tip="The busiest single hour recorded today — tap to see the breakdown">
+          <div class="gov-kpi-val" id="gov-kpi-peak">—</div>
+          <div class="gov-kpi-lbl">Peak Hour</div>
+          <div class="gov-kpi-hint">tap for peak breakdown</div>
+        </div>
+        <div class="gov-kpi-card" data-modal="flow" data-tip="Vehicles travelling into the intersection today">
+          <div class="gov-kpi-val" id="gov-kpi-in">—</div>
+          <div class="gov-kpi-lbl">Entering</div>
+          <div class="gov-kpi-hint">tap for flow detail</div>
+        </div>
+        <div class="gov-kpi-card" data-modal="flow" data-tip="Vehicles that have exited through a named zone today — from the Traffic Intelligence system">
+          <div class="gov-kpi-val gov-kpi-out" id="gov-kpi-out">—</div>
+          <div class="gov-kpi-lbl">Exiting</div>
+          <div class="gov-kpi-hint">tap for flow detail</div>
+        </div>
+      </div>
+
+      <!-- Main: video + sidebar -->
+      <div class="gov-live-body">
+        <!-- Video column -->
+        <div class="gov-live-video">
+          <div id="gov-video-slot" class="gov-video-slot" aria-label="Live feed">
+            <canvas id="gov-live-zone-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5"></canvas>
+          </div>
+          <div class="gov-vid-meta">
+            <span class="gov-scene-badge" id="gov-scene">—</span>
+            <span class="gov-vid-cam" id="gov-vid-cam">—</span>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="gov-live-side">
+          <!-- Vehicle class breakdown -->
+          <div class="gov-side-section">
+            <div class="gov-side-head">VEHICLE CLASS</div>
+            <div class="gov-cls-rows">
+              <div class="gov-cls-row" data-modal="class-car">
+                <span class="gov-cls-icon"><svg class="gov-veh-svg" viewBox="0 0 24 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Car"><path d="M1 10V8a1 1 0 0 1 1-1h20a1 1 0 0 1 1 1v2H1z"/><path d="M5 7V6c0-1 1.5-3 3.5-3h7c2 0 3.5 2 3.5 3v1"/><circle cx="5.5" cy="13" r="1.8"/><circle cx="18.5" cy="13" r="1.8"/></svg></span>
+                <div class="gov-cls-info">
+                  <div class="gov-cls-name">Cars</div>
+                  <div class="gov-cls-bar-wrap"><div class="gov-cls-bar" id="gov-bar-car" style="width:0%;background:#29B6F6"></div></div>
+                </div>
+                <span class="gov-cls-val" id="gov-cars">—</span>
+                <span class="gov-cls-pct" id="gov-pct-car">—%</span>
+              </div>
+              <div class="gov-cls-row" data-modal="class-truck">
+                <span class="gov-cls-icon"><svg class="gov-veh-svg" viewBox="0 0 28 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Truck"><rect x="1" y="3" width="14" height="9" rx="1"/><path d="M15 6h7l2 4v3H15V6z"/><line x1="19" y1="6" x2="19" y2="13"/><circle cx="5" cy="14" r="1.8"/><circle cx="11" cy="14" r="1.8"/><circle cx="21.5" cy="14" r="1.8"/></svg></span>
+                <div class="gov-cls-info">
+                  <div class="gov-cls-name">Trucks</div>
+                  <div class="gov-cls-bar-wrap"><div class="gov-cls-bar" id="gov-bar-truck" style="width:0%;background:#FF7043"></div></div>
+                </div>
+                <span class="gov-cls-val" id="gov-trucks">—</span>
+                <span class="gov-cls-pct" id="gov-pct-truck">—%</span>
+              </div>
+              <div class="gov-cls-row" data-modal="class-bus">
+                <span class="gov-cls-icon"><svg class="gov-veh-svg" viewBox="0 0 28 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Bus"><rect x="1" y="2" width="26" height="11" rx="2"/><line x1="1" y1="6" x2="27" y2="6"/><line x1="14" y1="2" x2="14" y2="13"/><circle cx="6" cy="14.5" r="1.5"/><circle cx="22" cy="14.5" r="1.5"/><rect x="3" y="3" width="4" height="2.5" rx="0.5"/><rect x="9" y="3" width="4" height="2.5" rx="0.5"/><rect x="15" y="3" width="4" height="2.5" rx="0.5"/><rect x="21" y="3" width="4" height="2.5" rx="0.5"/></svg></span>
+                <div class="gov-cls-info">
+                  <div class="gov-cls-name">Buses</div>
+                  <div class="gov-cls-bar-wrap"><div class="gov-cls-bar" id="gov-bar-bus" style="width:0%;background:#AB47BC"></div></div>
+                </div>
+                <span class="gov-cls-val" id="gov-buses">—</span>
+                <span class="gov-cls-pct" id="gov-pct-bus">—%</span>
+              </div>
+              <div class="gov-cls-row" data-modal="class-moto">
+                <span class="gov-cls-icon"><svg class="gov-veh-svg" viewBox="0 0 28 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Motorcycle"><circle cx="6" cy="12" r="3.5"/><circle cx="22" cy="12" r="3.5"/><path d="M9.5 12H16l3-6h3"/><path d="M13 6l2 6"/><path d="M19 4h4l1 2"/></svg></span>
+                <div class="gov-cls-info">
+                  <div class="gov-cls-name">Motorcycles</div>
+                  <div class="gov-cls-bar-wrap"><div class="gov-cls-bar" id="gov-bar-moto" style="width:0%;background:#FFD600"></div></div>
+                </div>
+                <span class="gov-cls-val" id="gov-motos">—</span>
+                <span class="gov-cls-pct" id="gov-pct-moto">—%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Traffic flow + mini donut -->
+          <div class="gov-side-section">
+            <div class="gov-side-head">TRAFFIC FLOW</div>
+            <div class="gov-flow-donut">
+              <div class="gov-flow-stats">
+                <div class="gov-flow-stat">
+                  <div class="gov-flow-val" id="gov-inbound">—</div>
+                  <div class="gov-flow-lbl">Zone Crossings</div>
+                </div>
+                <div class="gov-flow-divider"></div>
+                <div class="gov-flow-stat">
+                  <div class="gov-flow-val gov-flow-out" id="gov-top-movement">—</div>
+                  <div class="gov-flow-lbl" id="gov-top-movement-lbl">Top Flow</div>
+                </div>
+              </div>
+              <div class="gov-donut-mini">
+                <canvas id="gov-donut-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI system info -->
+          <div class="gov-side-section">
+            <div class="gov-side-head">AI SYSTEM</div>
+            <div class="gov-sys-rows">
+              <div class="gov-sys-row"><span>Model</span><span id="gov-model">YOLOv8</span></div>
+              <div class="gov-sys-row"><span>Last update</span><span id="gov-last">—</span></div>
+              <div class="gov-sys-row"><span>Camera</span><span id="gov-cam-name">—</span></div>
+              <div class="gov-sys-row"><span>Avg confidence</span><span id="gov-ai-conf">—</span></div>
+              <div class="gov-sys-row"><span>Detections/hr</span><span id="gov-ai-det-hr">—</span></div>
+              <div class="gov-sys-row"><span>Scene</span><span id="gov-ai-scene">—</span></div>
+            </div>
+            <div class="gov-attr">YOLOv8 · Real-time edge inference · 24/7 monitoring</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PANEL: ANALYTICS ──────────────────────────────────── -->
+    <div class="gov-panel" id="gov-panel-analytics">
+
+      <!-- Intro callout -->
+      <div class="gov-intro" id="gov-intro-analytics">
+        <div class="gov-intro-body">
+          <div class="gov-intro-label">ANALYTICS</div>
+          <div class="gov-intro-text">Vehicle counts over time, flow charts, and turning movement data. Use the date picker or preset buttons to change the period.</div>
+        </div>
+        <button class="gov-intro-dismiss" data-intro-key="analytics" aria-label="Dismiss">Got it</button>
+      </div>
+
+      <!-- Analytics loading progress overlay -->
+      <div id="gov-an-progress" class="gov-an-progress hidden" aria-live="polite" aria-label="Loading analytics">
+        <div class="gov-an-progress-inner">
+          <div class="gov-an-progress-pct" id="gov-an-progress-pct">0%</div>
+          <div class="gov-an-progress-bar-wrap">
+            <div class="gov-an-progress-bar" id="gov-an-progress-bar"></div>
+          </div>
+          <div class="gov-an-progress-label" id="gov-an-progress-label">Initialising…</div>
+        </div>
+      </div>
+
+      <!-- Toolbar row 1: Date range + granularity -->
+      <div class="gov-an-toolbar gov-an-toolbar-top">
+        <div class="gov-date-range">
+          <button type="button" id="gov-date-from" class="gov-date-input">From</button>
+          <span class="gov-date-sep">→</span>
+          <button type="button" id="gov-date-to" class="gov-date-input">To</button>
+        </div>
+        <div class="gov-period-pills">
+          <span class="gov-pill active" data-preset="1d">Today</span>
+          <span class="gov-pill" data-preset="7d">Last 7 Days</span>
+          <span class="gov-pill" data-preset="30d">Last 30 Days</span>
+          <span class="gov-pill" data-preset="all">All Time</span>
+        </div>
+        <div class="gov-gran-pills">
+          <span class="gov-gran-pill active" data-gran="hour">Hour</span>
+          <span class="gov-gran-pill" data-gran="day">Day</span>
+          <span class="gov-gran-pill" data-gran="week">Week</span>
+        </div>
+        <button id="gov-export-btn" class="gov-export-btn">↓ Export CSV</button>
+      </div>
+
+      <!-- Custom calendar popup (shared for from/to, rendered by JS) -->
+      <div id="wl-cal-popup" class="wl-cal-popup hidden"></div>
+
+      <!-- Toolbar row 2: Summary stat cards -->
+      <div class="gov-an-sumbar">
+        <div class="gov-an-sumcard">
+          <div class="gov-an-sumcard-val" id="gov-sum-total">—</div>
+          <div class="gov-an-sumcard-lbl">Vehicles Counted</div>
+        </div>
+        <div class="gov-an-sumcard">
+          <div class="gov-an-sumcard-val" id="gov-sum-peak">—</div>
+          <div class="gov-an-sumcard-lbl">Busiest Hour</div>
+        </div>
+        <div class="gov-an-sumcard">
+          <div class="gov-an-sumcard-val" id="gov-sum-heavy">—</div>
+          <div class="gov-an-sumcard-lbl">Trucks &amp; Buses</div>
+        </div>
+        <div class="gov-an-sumcard" id="gov-sum-queue-card" style="display:none">
+          <div class="gov-an-sumcard-val" id="gov-sum-queue">—</div>
+          <div class="gov-an-sumcard-lbl">Avg Wait Line</div>
+        </div>
+        <div class="gov-an-sumcard" id="gov-sum-speed-card" style="display:none">
+          <div class="gov-an-sumcard-val" id="gov-sum-speed">—</div>
+          <div class="gov-an-sumcard-lbl">Avg Speed</div>
+        </div>
+        <div class="gov-an-sumcard gov-an-sumcard--accent">
+          <div class="gov-an-sumcard-val" id="gov-sum-global">—</div>
+          <div class="gov-an-sumcard-lbl">All-Time Total</div>
+        </div>
+      </div>
+
+      <!-- Recording since notice -->
+      <div id="gov-recording-notice" class="gov-recording-notice hidden"></div>
+
+      <!-- Admin: recording start date override (admin only) -->
+      <div id="gov-rec-admin-section" class="gov-rec-admin-section hidden">
+        <span class="gov-rec-admin-label">ADMIN — RECORDING START DATE</span>
+        <input type="date" id="gov-rec-admin-date" class="gov-rec-admin-input" />
+        <button id="gov-rec-admin-save" class="gov-rec-admin-btn">SAVE</button>
+        <button id="gov-rec-admin-reset" class="gov-rec-admin-btn gov-rec-admin-btn--muted">RESET TO AUTO</button>
+        <span id="gov-rec-admin-status" class="gov-rec-admin-status"></span>
+      </div>
+
+      <!-- Live feed strip with AI overlays -->
+      <div class="gov-an-feedstrip">
+        <div class="gov-an-feedstrip-hdr">
+          <span>LIVE CAMERA FEED</span>
+          <span class="gov-an-feedstrip-tags">
+            <span class="gov-an-ftag gov-an-ftag--detect">● AI DETECTION ON</span>
+            <span class="gov-an-ftag gov-an-ftag--zone">● ZONES ACTIVE</span>
+          </span>
+        </div>
+        <div id="gov-an-video-slot" class="gov-an-video-slot">
+          <canvas id="gov-an-zone-canvas" class="gov-an-zone-canvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Active zones status bar -->
+      <div class="gov-zones-bar" id="gov-zones-bar">
+        <span class="gov-zones-label">DETECTION ZONES</span>
+        <div class="gov-zones-chips" id="gov-zones-chips">
+          <span class="gov-zone-chip gov-zone-chip-loading">Loading…</span>
+        </div>
+      </div>
+
+      <div class="gov-an-charts">
+        <!-- Trend: full width, tall filled area wave -->
+        <div class="gov-chart-card gov-chart-full gov-chart-tall">
+          <div class="gov-chart-head">
+            <span class="gov-chart-title">VEHICLE FLOW</span>
+            <span class="gov-head-muted" id="gov-trend-label">— loading…</span>
+          </div>
+          <div class="gov-chart-body"><canvas id="gov-trend-canvas"></canvas></div>
+        </div>
+
+        <!-- Class distribution: 1 col, horizontal bars -->
+        <div class="gov-chart-card">
+          <div class="gov-chart-head"><span class="gov-chart-title">VEHICLE TYPES</span></div>
+          <div class="gov-chart-body"><canvas id="gov-cls-canvas"></canvas></div>
+        </div>
+
+        <!-- Peak period: 2 cols -->
+        <div class="gov-chart-card gov-chart-span2">
+          <div class="gov-chart-head"><span class="gov-chart-title">BUSIEST PERIODS</span><span class="gov-head-muted">— hours with the most traffic</span></div>
+          <div class="gov-chart-body"><canvas id="gov-peak-canvas"></canvas></div>
+        </div>
+
+        <!-- Queue depth: 2 cols, filled area -->
+        <div class="gov-chart-card gov-chart-span2">
+          <div class="gov-chart-head"><span class="gov-chart-title">WAIT LINE</span><span class="gov-head-muted">— vehicles waiting at the stop line</span></div>
+          <div class="gov-chart-body"><canvas id="gov-queue-canvas"></canvas></div>
+        </div>
+
+        <!-- Speed: 1 col, horizontal bars — hidden until data available -->
+        <div class="gov-chart-card" id="gov-speed-card" style="display:none">
+          <div class="gov-chart-head"><span class="gov-chart-title">VEHICLE SPEED</span><span class="gov-head-muted">— measured in km/h</span></div>
+          <div class="gov-chart-body"><canvas id="gov-speed-canvas"></canvas></div>
+        </div>
+
+        <!-- Per-zone entry breakdown: full width -->
+        <div class="gov-chart-card gov-chart-full" id="gov-zones-breakdown-card">
+          <div class="gov-chart-head">
+            <span class="gov-chart-title">WHERE VEHICLES ENTER</span>
+            <span class="gov-head-muted">— how many came from each direction</span>
+          </div>
+          <div id="gov-zones-breakdown-body" class="gov-zones-breakdown-body">
+            <p class="gov-turnings-empty">Loading zone data…</p>
+          </div>
+        </div>
+
+        <!-- Turning movements: full width -->
+        <div class="gov-chart-card gov-chart-full" id="gov-turnings-card">
+          <div class="gov-chart-head"><span class="gov-chart-title">TRAFFIC ROUTES</span><span class="gov-head-muted">— which way vehicles go through the intersection</span></div>
+          <div id="gov-turnings-body" class="gov-turnings-body">
+            <p class="gov-turnings-empty">No turning movement zones defined yet. Use Admin → Analytics Zones to draw entry/exit zones.</p>
+          </div>
+        </div>
+
+        <!-- Crossings table: full width -->
+        <div class="gov-chart-card gov-chart-full">
+          <div class="gov-chart-head"><span class="gov-chart-title">RECENT DETECTIONS</span> <span class="gov-head-muted">— updates every 10s · click a row for detail</span></div>
+          <div class="gov-crossings-wrap">
+            <table class="gov-crossings-table">
+              <thead><tr><th>Time</th><th>Type</th><th>Direction</th><th>Confidence</th><th>Scene</th><th>Dwell Time</th></tr></thead>
+              <tbody id="gov-crossings-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PANEL: AGENCIES ───────────────────────────────────── -->
+    <div class="gov-panel" id="gov-panel-agencies">
+
+      <!-- Intro callout -->
+      <div class="gov-intro" id="gov-intro-agencies">
+        <div class="gov-intro-body">
+          <div class="gov-intro-label">AGENCIES</div>
+          <div class="gov-intro-text">See how live AI vehicle count data supports road planning, transport scheduling, advertising, and logistics decisions.</div>
+        </div>
+        <button class="gov-intro-dismiss" data-intro-key="agencies" aria-label="Dismiss">Got it</button>
+      </div>
+
+      <!-- Header — value pitch -->
+      <div class="gov-agencies-hdr">
+        <div class="gov-agencies-pitch">Know what's moving on Jamaica's roads — before anyone else does.</div>
+        <div class="gov-agencies-sub">Real-time AI traffic counts, verified by camera, updated every second. Used by agencies for planning, compliance, and investment decisions.</div>
+        <div class="gov-trust-badges">
+          <span class="gov-trust-badge"><span class="gov-trust-badge-icon">◈</span>Live AI · Updated every frame</span>
+          <span class="gov-trust-badge"><span class="gov-trust-badge-icon">◈</span><span id="gov-ag-total">—</span> vehicles counted today</span>
+          <span class="gov-trust-badge"><span class="gov-trust-badge-icon">◈</span>24/7 monitoring, no manual counting</span>
+        </div>
+      </div>
+
+      <!-- How it works strip -->
+      <div class="gov-hiw-strip">
+        <div class="gov-hiw-step">
+          <div class="gov-hiw-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="3"/><path d="M2 9h20"/></svg>
+          </div>
+          <div class="gov-hiw-text"><strong>AI monitors live CCTV</strong><span>Camera feed, 24/7</span></div>
+        </div>
+        <div class="gov-hiw-arrow">→</div>
+        <div class="gov-hiw-step">
+          <div class="gov-hiw-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4c0 1.5-.8 2.8-2 3.5V11h2a2 2 0 0 1 2 2v2h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1v-2a2 2 0 0 1 2-2h2V9.5C8.8 8.8 8 7.5 8 6a4 4 0 0 1 4-4z"/></svg>
+          </div>
+          <div class="gov-hiw-text"><strong>Counts &amp; classifies every vehicle</strong><span>Car, truck, bus, motorcycle</span></div>
+        </div>
+        <div class="gov-hiw-arrow">→</div>
+        <div class="gov-hiw-step">
+          <div class="gov-hiw-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="gov-hiw-text"><strong>Data packaged for your agency</strong><span>CSV, API, or live dashboard</span></div>
+        </div>
+      </div>
+
+      <!-- Live count bar -->
+      <div class="gov-ag-live-bar">
+        <span>LIVE</span>
+        <span style="color:var(--border);font-size:10px">▐</span>
+        <span id="gov-ag-live-total">—</span><span> vehicles counted today</span>
+        <span style="color:var(--border);font-size:10px">▐</span>
+        <span>Last detection:</span> <span id="gov-ag-last-det">—</span>
+        <span style="color:var(--border);font-size:10px">▐</span>
+        <span>1 camera active</span>
+      </div>
+
+      <!-- OOH featured card (full width, highest conversion) -->
+      <div class="gov-agency-featured" data-agency="ooh" style="--ag-color:#22C55E">
+        <div class="gov-agency-featured-left">
+          <div class="gov-agency-featured-badge">FEATURED · OUT-OF-HOME ADVERTISING</div>
+          <div class="gov-agency-featured-q">How many vehicles actually passed your billboard today?</div>
+          <div class="gov-agency-featured-bullets">
+            <div class="gov-agency-bullet">Bill advertisers on AI-counted vehicle passes — not panel estimates</div>
+            <div class="gov-agency-bullet">Daypart breakdown — morning peak, afternoon, evening — for rate-card pricing</div>
+            <div class="gov-agency-bullet">Auditable impression count, updated every second, exportable as CSV</div>
+          </div>
+          <button class="gov-agency-btn gov-agency-btn--accent" data-modal="agency-ooh">↓ Download Data Package</button>
+        </div>
+        <div class="gov-agency-featured-right">
+          <div class="gov-agency-abbr">OOH</div>
+          <div class="gov-agency-val" id="gov-ooh-metric">—</div>
+          <div class="gov-agency-unit">AI-verified impressions today</div>
+          <div class="gov-agency-sub-metric" id="gov-ooh-sub">guaranteed reach, auditable</div>
+        </div>
+      </div>
+
+      <!-- 2-column agency grid -->
+      <div class="gov-agencies-grid">
+
+        <!-- NWA -->
+        <div class="gov-agency-card" data-agency="nwa" style="--ag-color:#29B6F6">
+          <div class="gov-card-frame"><span></span><span></span><span></span><span></span></div>
+          <div class="gov-agency-top">
+            <div class="gov-agency-icon">
+              <img src="/img/agencies/nwa.png" alt="NWA" class="gov-agency-logo" loading="lazy" decoding="async">
+            </div>
+            <div>
+              <div class="gov-agency-abbr" style="color:#29B6F6">NWA</div>
+              <div class="gov-agency-name">National Works Agency</div>
+            </div>
+          </div>
+          <div class="gov-agency-question">"Which roads are taking the heaviest commercial load?"</div>
+          <div class="gov-agency-metric">
+            <span class="gov-agency-val" id="gov-nwa-metric">—</span>
+            <span class="gov-agency-unit">heavy vehicles today</span>
+            <span class="gov-agency-sub-metric" id="gov-nwa-sub">of today's total traffic</span>
+          </div>
+          <div class="gov-agency-bullets">
+            <div class="gov-agency-bullet">Road stress by vehicle type, per corridor — ready for budget reports</div>
+            <div class="gov-agency-bullet">Peak congestion hours — schedule maintenance windows around real data</div>
+            <div class="gov-agency-bullet">Truck vs. bus vs. car split for infrastructure and pavement planning</div>
+          </div>
+          <button class="gov-agency-btn" data-modal="agency-nwa">↓ Download Data Package</button>
+        </div>
+
+        <!-- TAJ -->
+        <div class="gov-agency-card" data-agency="taj" style="--ag-color:#FF7043">
+          <div class="gov-card-frame"><span></span><span></span><span></span><span></span></div>
+          <div class="gov-agency-top">
+            <div class="gov-agency-icon">
+              <img src="/img/agencies/taj.png" alt="TAJ" class="gov-agency-logo" loading="lazy" decoding="async">
+            </div>
+            <div>
+              <div class="gov-agency-abbr" style="color:#FF7043">TAJ</div>
+              <div class="gov-agency-name">Tax Administration Jamaica</div>
+            </div>
+          </div>
+          <div class="gov-agency-question">"Are the trucks on the road matching what's declared at customs?"</div>
+          <div class="gov-agency-metric">
+            <span class="gov-agency-val" id="gov-taj-metric">—</span>
+            <span class="gov-agency-unit">commercial vehicles today</span>
+            <span class="gov-agency-sub-metric" id="gov-taj-sub">trucks + buses combined</span>
+          </div>
+          <div class="gov-agency-bullets">
+            <div class="gov-agency-bullet">Compare commercial vehicle volume against declared freight manifests</div>
+            <div class="gov-agency-bullet">Truck movement patterns by time of day — flag anomalies automatically</div>
+            <div class="gov-agency-bullet">Corridor-level counts for toll and licensing compliance cross-check</div>
+          </div>
+          <button class="gov-agency-btn" data-modal="agency-taj">↓ Download Data Package</button>
+        </div>
+
+        <!-- JUTC -->
+        <div class="gov-agency-card" data-agency="jutc" style="--ag-color:#AB47BC">
+          <div class="gov-card-frame"><span></span><span></span><span></span><span></span></div>
+          <div class="gov-agency-top">
+            <div class="gov-agency-icon">
+              <img src="/img/agencies/jutc.png" alt="JUTC" class="gov-agency-logo" loading="lazy" decoding="async">
+            </div>
+            <div>
+              <div class="gov-agency-abbr" style="color:#AB47BC">JUTC</div>
+              <div class="gov-agency-name">Jamaica Urban Transit Co.</div>
+            </div>
+          </div>
+          <div class="gov-agency-question">"Is bus frequency actually matching commuter demand?"</div>
+          <div class="gov-agency-metric">
+            <span class="gov-agency-val" id="gov-jutc-metric">—</span>
+            <span class="gov-agency-unit">buses detected today</span>
+            <span class="gov-agency-sub-metric" id="gov-jutc-sub">at monitored junction</span>
+          </div>
+          <div class="gov-agency-bullets">
+            <div class="gov-agency-bullet">See how often buses actually arrive — compare against schedule</div>
+            <div class="gov-agency-bullet">AM/PM peak commuter demand windows — backed by vehicle counts</div>
+            <div class="gov-agency-bullet">Identify under-served routes from real headway gaps</div>
+          </div>
+          <button class="gov-agency-btn" data-modal="agency-jutc">↓ Download Data Package</button>
+        </div>
+
+        <!-- JTB -->
+        <div class="gov-agency-card" data-agency="tourism" style="--ag-color:#FFD600">
+          <div class="gov-card-frame"><span></span><span></span><span></span><span></span></div>
+          <div class="gov-agency-top">
+            <div class="gov-agency-icon">
+              <img src="/img/agencies/jtb.png" alt="JTB" class="gov-agency-logo" loading="lazy" decoding="async">
+            </div>
+            <div>
+              <div class="gov-agency-abbr" style="color:#FFD600">JTB</div>
+              <div class="gov-agency-name">Jamaica Tourism Board</div>
+            </div>
+          </div>
+          <div class="gov-agency-question">"Which tourist corridors are congested, and when?"</div>
+          <div class="gov-agency-metric">
+            <span class="gov-agency-val" id="gov-tourism-metric">—</span>
+            <span class="gov-agency-unit">verified vehicle passes today</span>
+            <span class="gov-agency-sub-metric" id="gov-tourism-sub">across monitored corridor</span>
+          </div>
+          <div class="gov-agency-bullets">
+            <div class="gov-agency-bullet">Monitor airport corridor and resort zone vehicle flow 24/7</div>
+            <div class="gov-agency-bullet">Identify congestion windows that affect tourist arrival times</div>
+            <div class="gov-agency-bullet">Tour bus frequency data for route and partnership planning</div>
+          </div>
+          <button class="gov-agency-btn" data-modal="agency-tourism">↓ Download Data Package</button>
+        </div>
+
+        <!-- INS -->
+        <div class="gov-agency-card" data-agency="insurance" style="--ag-color:#66BB6A">
+          <div class="gov-card-frame"><span></span><span></span><span></span><span></span></div>
+          <div class="gov-agency-top">
+            <div class="gov-agency-icon">
+              <img src="/img/agencies/ins.png" alt="FSC" class="gov-agency-logo" loading="lazy" decoding="async">
+            </div>
+            <div>
+              <div class="gov-agency-abbr" style="color:#66BB6A">FSC</div>
+              <div class="gov-agency-name">Financial Services Commission</div>
+            </div>
+          </div>
+          <div class="gov-agency-question">"Where and when do high-risk traffic conditions occur?"</div>
+          <div class="gov-agency-metric">
+            <span class="gov-agency-val" id="gov-ins-metric">—</span>
+            <span class="gov-agency-unit">heavy vehicles today</span>
+            <span class="gov-agency-sub-metric" id="gov-ins-sub">high-load vehicles on monitored road</span>
+          </div>
+          <div class="gov-agency-bullets">
+            <div class="gov-agency-bullet">Identify roads and time windows where traffic risk is highest</div>
+            <div class="gov-agency-bullet">Vehicle mix — heavy vs. passenger — for actuarial premium models</div>
+            <div class="gov-agency-bullet">Historical density patterns, exportable for underwriting teams</div>
+          </div>
+          <button class="gov-agency-btn" data-modal="agency-insurance">↓ Download Data Package</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── AGENCY DATA PACKAGE MODALS ─────────────────────────── -->
+    <div id="gov-agency-modal-backdrop" class="gov-agency-modal-backdrop hidden">
+      <div class="gov-agency-modal" id="gov-agency-modal">
+        <button class="gov-agency-modal-close" id="gov-agency-modal-close">
+          <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 4L4 12M4 4l8 8"/></svg>
+        </button>
+        <div id="gov-agency-modal-content"></div>
+      </div>
+    </div>
+
+    <!-- ── PANEL: EXPORT ─────────────────────────────────────── -->
+    <div class="gov-panel" id="gov-panel-export">
+
+      <!-- Intro callout -->
+      <div class="gov-intro" id="gov-intro-export">
+        <div class="gov-intro-body">
+          <div class="gov-intro-label">EXPORT</div>
+          <div class="gov-intro-text">Pick a date range and format, then download. Your file will contain all vehicle counts for that period — ready for Excel or any spreadsheet.</div>
+        </div>
+        <button class="gov-intro-dismiss" data-intro-key="export" aria-label="Dismiss">Got it</button>
+      </div>
+
+      <div class="gov-export-panel">
+        <div class="gov-export-title">EXPORT TRAFFIC DATA</div>
+        <div class="gov-export-form">
+          <div class="gov-export-row">
+            <label class="gov-export-label">DATE RANGE</label>
+            <div class="gov-date-pair">
+              <input type="date" id="gov-exp-from" class="gov-date-input" aria-label="From date">
+              <span class="gov-date-sep">→</span>
+              <input type="date" id="gov-exp-to" class="gov-date-input" aria-label="To date">
+            </div>
+          </div>
+          <div class="gov-export-row">
+            <label class="gov-export-label">INCLUDE FIELDS</label>
+            <div class="gov-export-checks">
+              <label><input type="checkbox" checked name="f-class"> Vehicle Class</label>
+              <label><input type="checkbox" checked name="f-dir"> Direction</label>
+              <label><input type="checkbox" checked name="f-conf"> Confidence</label>
+              <label><input type="checkbox" checked name="f-scene"> Scene Conditions</label>
+              <label><input type="checkbox" checked name="f-dwell"> Dwell Frames</label>
+            </div>
+          </div>
+          <button id="gov-export-dl-btn" class="gov-export-dl-btn">↓ Download CSV</button>
+          <div class="gov-export-note">Login required. Data retained 90 days. Contact us for automated API access or scheduled data feeds.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Detail Modal ──────────────────────────────────────── -->
+    <div id="gov-modal" class="gov-modal hidden" role="dialog" aria-modal="true">
+      <div class="gov-modal-backdrop" id="gov-modal-backdrop"></div>
+      <div class="gov-modal-box">
+        <div class="gov-modal-hdr">
+          <span id="gov-modal-title" class="gov-modal-title"></span>
+          <button id="gov-modal-close" class="gov-modal-close" aria-label="Close">✕</button>
+        </div>
+        <div id="gov-modal-body" class="gov-modal-body"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>
+
