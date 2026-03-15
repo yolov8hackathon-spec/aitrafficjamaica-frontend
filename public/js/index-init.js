@@ -435,7 +435,7 @@ const GUEST_TS_KEY = "wlz.guest.session_ts";
     // Update scene chip location
     const chipLocEl = el("chip-location");
     if (chipLocEl && alias) {
-      chipLocEl.textContent = "📍 " + alias;
+      chipLocEl.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> ${alias}`;
       chipLocEl.classList.remove("hidden");
     }
     // Update active pill
@@ -576,7 +576,6 @@ const GUEST_TS_KEY = "wlz.guest.session_ts";
       .subscribe();
   }
 
-  MlShowcase.init();
   CameraSwitcher.init();
 
   // ws_account — per-user events (balance, bet resolution)
@@ -619,7 +618,7 @@ const GUEST_TS_KEY = "wlz.guest.session_ts";
       if (chipNameEl) chipNameEl.textContent = firstCam.name || firstCam.ipcam_alias || "Live Camera";
       const chipLocEl = el("chip-location");
       if (chipLocEl) {
-        chipLocEl.textContent = "📍 " + (firstCam.name || firstCam.ipcam_alias || "Jamaica");
+        chipLocEl.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> ${firstCam.name || firstCam.ipcam_alias || "Jamaica"}`;
         chipLocEl.classList.remove("hidden");
       }
     }
@@ -3144,7 +3143,7 @@ function _connectUserWs(session) {
       <div style="font-family:'Inter',sans-serif;font-size:10px;color:var(--dim);margin-top:6px">Formats: ${d.formats}</div>
 
       <button class="gov-modal-dl-btn" id="ag-dl-btn" data-agency="${agency}">↓ Download CSV Data Package</button>
-      <div class="gov-modal-dl-success" id="ag-dl-success">✓ Download started — logged to your account</div>
+      <div class="gov-modal-dl-success" id="ag-dl-success"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12"/></svg> Download started — logged to your account</div>
       <div class="gov-modal-note">Account required. Download is logged for audit. Data covers all available historical records.</div>
     `;
     agBackdrop.classList.remove("hidden");

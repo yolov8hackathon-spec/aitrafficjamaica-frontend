@@ -21,30 +21,6 @@
   position: relative;
 }
 
-/* Animated scan-line on header bottom edge */
-.site-header::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(0,212,255,0.55) 30%,
-    rgba(0,212,255,0.95) 50%,
-    rgba(0,212,255,0.55) 70%,
-    transparent 100%
-  );
-  pointer-events: none;
-  animation: hdr-scan 7s ease-in-out infinite;
-  z-index: 1;
-}
-@keyframes hdr-scan {
-  0%, 100% { opacity: 0.25; }
-  50%       { opacity: 0.72; }
-}
 
 /* ── Stream panel — right boundary ──────────────────────────────── */
 .stream-panel {
