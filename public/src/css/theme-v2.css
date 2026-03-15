@@ -17,29 +17,14 @@
   background: linear-gradient(180deg, rgba(245,166,35,0.6), rgba(245,166,35,0.25));
 }
 
-/* ── Body — deep dark + grid + scanlines ─────────────────────── */
+/* ── Body — deep dark + subtle grid ──────────────────────────── */
 body.dark {
   background: #030608;
   background-image:
-    linear-gradient(rgba(245,166,35,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(245,166,35,0.025) 1px, transparent 1px);
+    linear-gradient(rgba(245,166,35,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245,166,35,0.022) 1px, transparent 1px);
   background-size: 48px 48px;
-}
-
-/* Scanline overlay */
-body.dark::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 3px,
-    rgba(0,0,0,0.06) 3px,
-    rgba(0,0,0,0.06) 4px
-  );
-  pointer-events: none;
-  z-index: 9999;
+  background-attachment: fixed;
 }
 
 /* ── Header ──────────────────────────────────────────────────── */
@@ -174,26 +159,7 @@ body.dark::before {
 /* ── Sidebar tabs bar ────────────────────────────────────────── */
 .sidebar-tabs {
   background: rgba(3,6,8,0.9);
-  border-bottom: 1px solid rgba(245,166,35,0.12);
-}
-
-.tab-btn {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  color: rgba(122,155,181,0.7);
-  border-bottom: 2px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
-  padding: 10px 8px;
-}
-.tab-btn:hover {
-  color: rgba(245,166,35,0.8);
-}
-.tab-btn.active,
-.tab-btn[aria-selected="true"] {
-  color: #F5A623;
-  border-bottom-color: #F5A623;
-  background: rgba(245,166,35,0.04);
+  border-bottom: 1px solid rgba(0,212,255,0.12);
 }
 
 /* ── Count widget ────────────────────────────────────────────── */
