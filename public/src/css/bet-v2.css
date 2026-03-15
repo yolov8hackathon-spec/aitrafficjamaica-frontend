@@ -512,9 +512,17 @@
   opacity: 1;
 }
 
-/* ── Vision HUD — position canonical in layout.css / stream.css ── */
+/* ── Vision HUD ───────────────────────────────── */
 .ml-hud {
   width: min(175px, 34vw);
+  bottom: 10px;
+  right: 10px;
+  padding: 4px 6px;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
 }
 
 .ml-hud-head {

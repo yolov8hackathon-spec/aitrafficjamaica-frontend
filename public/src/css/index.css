@@ -12,26 +12,26 @@
 /* 3. Stream — video panel, chat overlay, ML HUD, count widget, AI pulse */
 @import './stream.css';
 
-/* 4. Markets — banners, round cards, bet receipt, outcome card */
+/* 3. Markets — banners, round cards, bet receipt, outcome card */
 @import './markets.css';
 
-/* 5. Leaderboard — activity feed, ML showcase, AI console tab */
+/* 4. Leaderboard — activity feed, ML showcase, AI console tab */
 @import './leaderboard.css';
 
-/* 6. Navigation — icon nav bar + login modal */
+/* 5. Navigation — icon nav bar + login modal */
 @import './nav.css';
 
-/* 7. Account — dashboard, stats, weather widget */
+/* 6. Account — dashboard, stats, weather widget */
 @import './account.css';
 
-/* 8. Theme v2 — cyber glass design tokens, sidebar panels, admin sections */
+/* 7. Theme v2 — cyber glass design tokens, sidebar panels, admin sections */
 @import './theme-v2.css';
 
-/* 9. Banners v2 — landscape tiles, AI banners, stream banners, play tile */
+/* 8. Banners v2 — landscape tiles, AI banners, stream banners, play tile */
 @import './banners-v2.css';
 
-/* 10. Bet v2 — guess mode HUD, scoring card, mobile bottom sheet */
+/* 9. Bet v2 — guess mode HUD, scoring card, mobile bottom sheet */
 @import './bet-v2.css';
 
-/* 11. Gov — government analytics overlay, onboarding, all responsive rules */
+/* 10. Gov — government analytics overlay, onboarding, all responsive rules */
 @import './gov.css';

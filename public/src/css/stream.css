@@ -318,11 +318,10 @@
   padding: 1px 4px;
 }
 
-/* ── AI Pulse widget (Vision HUD) — position canonical in layout.css ──────── */
+/* ── AI Pulse widget (replaces Vision HUD) ───────────────────────────────── */
 .ml-hud {
   position: absolute;
-  bottom: 10px; right: 10px;
-  top: auto; left: auto;
+  top: 12px; right: 12px;
   width: 194px;
   background: rgba(8, 12, 20, 0.82);
   backdrop-filter: blur(12px);
@@ -493,16 +492,21 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* â”€â”€ Sidebar / Tab system — structural layout canonical in layout.css ─────── */
-/* Color/border tokens only here */
+/* â”€â”€ Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sidebar {
   background: var(--bg2);
   border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
 }
 
-/* ── Sidebar tabs ─────────────────────────────────────────────── */
+/* â”€â”€ Sidebar tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* .sidebar-tabs — canonical in theme-v2.css */
 
-.tab-btn:hover { color: rgba(190,220,240,0.9); background: rgba(0,212,255,0.04); }
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
 
 .tab-indicator {
   display: inline-flex;
@@ -543,7 +547,9 @@
   50% { box-shadow: 0 0 0 7px rgba(0,188,212,0); }
 }
 
-/* ── Tab content — canonical in layout.css ────────────────────── */
+/* â”€â”€ Tab content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* .tab-content — canonical in theme-v2.css */
+.tab-content.active { display: flex; flex-direction: column; }
 
 
 /* ── Vision HUD — overflow guard (real fix is in _applyLayout clamping) ─────── */
