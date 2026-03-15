@@ -914,10 +914,32 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
       forceRender = true;
     });
 
-    // ── Continuous queue poll ────────────────────────────────────
-    // Runs every QUEUE_POLL_MS regardless of WS cadence so the canvas
-    // re-evaluates _pickFromQueue() as video playback advances.
+    // ── Continuous render loop ────────────────────────────────────
+    // Runs on every animation frame and re-evaluates _pickFromQueue()
+    // as video playback advances. Using RAF directly ensures rendering
+    // is never throttled by setInterval drift or PixiJS ticker gaps.
+    _startAnimLoop();
+    // Also poll at a slower rate to keep the frame key fresh when the
+    // RAF callback rate is reduced (e.g. background-tab throttling).
     _startQueuePoll();
+  }
+
+  let _animLoopRafId = null;
+  function _startAnimLoop() {
+    if (_animLoopRafId) return;
+    function tick() {
+      const picked = _pickFromQueue();
+      const key    = buildFrameKey(picked);
+      if (key !== lastFrameKey) {
+        lastFrameKey = key;
+        forceRender  = true;
+      }
+      if (forceRender) {
+        draw(picked);
+      }
+      _animLoopRafId = requestAnimationFrame(tick);
+    }
+    _animLoopRafId = requestAnimationFrame(tick);
   }
 
   let _pollTimer = null;
@@ -929,9 +951,6 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
       if (key !== lastFrameKey) {
         lastFrameKey = key;
         forceRender  = true;
-      }
-      if (forceRender && !rafId) {
-        rafId = requestAnimationFrame(renderFrame);
       }
     }, QUEUE_POLL_MS);
   }
@@ -980,7 +999,8 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
     }
 
     if (!detections.length) {
-      if (pixiEnabled) endPixiFrame();
+      if (pixiEnabled) { endPixiFrame(); pixiApp?.renderer?.render(pixiApp.stage); }
+      forceRender = false;
       return;
     }
 
@@ -1039,7 +1059,7 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
         });
       }
     }
-    if (pixiEnabled) endPixiFrame();
+    if (pixiEnabled) { endPixiFrame(); pixiApp?.renderer?.render(pixiApp.stage); }
     forceRender = false;
   }
 

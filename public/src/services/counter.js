@@ -9,7 +9,7 @@ let lastRoundSig = '';
 let lastCountTsMs = 0;
 let lastKnownTotal = 0;
 const MAX_BACKOFF = 30000;
-const MAX_BOX_STALE_MS = 12_000;
+const MAX_BOX_STALE_MS = 30_000;
 
 function setStatus(ok) { FloatingCount.setStatus(ok); }
 
