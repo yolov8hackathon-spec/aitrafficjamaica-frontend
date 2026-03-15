@@ -48,10 +48,10 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
     fill_alpha: 0.0,
     max_boxes: 20,
     show_labels: true,
-    detect_zone_only: false,
+    detect_zone_only: true,
     outside_scan_enabled: true,
-    outside_scan_min_conf: 0.22,
-    outside_scan_max_boxes: 20,
+    outside_scan_min_conf: 0.50,
+    outside_scan_max_boxes: 8,
     outside_scan_hold_ms: 220,
     outside_scan_show_labels: false,
     ground_overlay_enabled: true,
@@ -312,13 +312,10 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
     const tagH = fs + py * 2;
     const tx   = p1.x;
     const ty   = (p1.y - tagH >= 0) ? p1.y - tagH : p1.y;
-    // Dark semi-transparent background pill with accent left border
-    ctx2.fillStyle = `rgba(8,12,20,${bgAlpha})`;
-    ctx2.fillRect(tx, ty, tagW, tagH);
+    // Colored background pill (vehicle class color), black text
     ctx2.fillStyle = accentColor;
-    ctx2.fillRect(tx, ty, 2, tagH);           // accent left stripe
-    // White text
-    ctx2.fillStyle = '#ffffff';
+    ctx2.fillRect(tx, ty, tagW, tagH);
+    ctx2.fillStyle = '#000';
     ctx2.fillText(label, tx + px, ty + py);
   }
 
@@ -673,24 +670,20 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
     const tagH = fs + py * 2;
     const ty = (p1.y - tagH >= 0) ? p1.y - tagH : p1.y;
 
-    // Dark background pill
+    // Colored background pill
     const bg = getPixiGraphic();
     if (bg) {
       const approxCharW = fs * 0.62;
       const tagW = labelStr.length * approxCharW + px * 2;
-      bg.beginFill(0x080c14, 0.82);
+      bg.beginFill(colorNum, 0.88);
       bg.drawRect(p1.x, ty, tagW, tagH);
-      bg.endFill();
-      // Accent left stripe
-      bg.beginFill(colorNum, 1);
-      bg.drawRect(p1.x, ty, 2, tagH);
       bg.endFill();
     }
 
     const txt = getPixiText();
     if (!txt) return;
     txt.text = labelStr;
-    txt.style.fill = 0xffffff;
+    txt.style.fill = 0x000000;
     txt.style.fontWeight = '700';
     txt.x = p1.x + px;
     txt.y = ty + py;
