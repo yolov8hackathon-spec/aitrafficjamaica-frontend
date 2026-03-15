@@ -1,0 +1,311 @@
+/* ══════════════════════════════════════════════════════════════
+   LAYOUT — App Shell Grid Infrastructure
+   Single source of truth for all structural layout.
+   Imported: 2nd in index.css (after base.css, before components)
+
+   Sections:
+   1. Body shell
+   2. Header
+   3. Main grid (2-column)
+   4. Stream panel + overlays
+   5. Sidebar + tab system
+   6. Overlay widgets (z-index map)
+   7. Responsive breakpoints
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── 1. Body shell ───────────────────────────────────────────── */
+/* Lock body to viewport so only inner panels scroll */
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
+body.dark {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;         /* dynamic viewport — accounts for mobile chrome bars */
+  overflow: hidden;
+}
+
+/* ── 2. Header ───────────────────────────────────────────────── */
+.site-header {
+  flex-shrink: 0;
+  z-index: 100;
+  /* position + sizing handled in base.css; we only set flex context here */
+}
+
+/* ── 3. Main grid (2-column) ─────────────────────────────────── */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr var(--sidebar-w);
+  grid-template-rows: 1fr;
+  flex: 1;
+  min-height: 0;          /* allow children to shrink below content size */
+  overflow: hidden;
+}
+
+/* ── 4. Stream panel ─────────────────────────────────────────── */
+.stream-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.stream-wrapper {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.stream-wrapper video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Camera selector strip — fixed height below stream */
+.cam-pill-strip {
+  flex-shrink: 0;
+}
+
+/* ── 5. Sidebar + tab system ─────────────────────────────────── */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Tab bar — horizontal flex row, never shrinks */
+.sidebar-tabs {
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  position: relative;     /* for .tab-btn ::after pseudo-elements */
+}
+
+.tab-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  outline: none;
+}
+
+/* Tab panels — fill remaining sidebar height, scroll internally */
+/* CRITICAL: base display:none ensures only .active panel renders */
+.tab-content {
+  display: none;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px;
+  flex-direction: column;
+}
+
+.tab-content.active {
+  display: flex;
+}
+
+/* Bet/guess panel — absolute overlay that covers the entire sidebar */
+.bet-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 6. Overlay widget z-index map ──────────────────────────── */
+/* All overlays are positioned within .stream-wrapper (position:relative) */
+
+.detection-overlay,
+.zone-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.detection-overlay { z-index: 3; }
+.zone-overlay       { z-index: 4; pointer-events: auto; cursor: crosshair; }
+
+/* Stream chat overlay — top-right */
+.stream-chat-overlay {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* FPS overlay — bottom-left */
+.fps-overlay {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 8;
+  pointer-events: none;
+}
+
+/* Count widget — top-left, driven by CSS vars */
+#count-widget {
+  position: absolute;
+  top: var(--cw-top);
+  left: var(--cw-left);
+  z-index: 6;
+}
+
+/* ML HUD — bottom-left (above FPS) */
+#ml-hud {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 9;
+}
+
+/* Scene chips */
+#scene-chips {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ── 7. Responsive breakpoints ───────────────────────────────── */
+
+/* Large display: give stream more room */
+@media (min-width: 1400px) {
+  :root { --sidebar-w: 420px; }
+}
+
+/* Laptop: tighten sidebar */
+@media (max-width: 1200px) {
+  :root { --sidebar-w: 340px; }
+}
+
+/* Small laptop / large tablet */
+@media (max-width: 1024px) {
+  :root { --sidebar-w: 300px; }
+}
+
+/* Tablet portrait: stack vertically, sidebar gets fixed height below stream */
+@media (max-width: 900px) {
+  html, body.dark {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  .main-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    flex: unset;
+  }
+
+  .stream-panel {
+    /* 16:9 aspect — constrain height so sidebar stays visible */
+    height: 56.25vw;
+    max-height: 52vh;
+    min-height: 220px;
+    flex: unset;
+  }
+
+  .stream-wrapper {
+    flex: unset;
+    height: 100%;
+  }
+
+  .sidebar {
+    height: calc(100dvh - 56.25vw - var(--header-h));
+    min-height: 280px;
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+}
+
+/* Mobile: full-screen stream + bottom sheet sidebar */
+/* Note: gov.css handles the fine-grained mobile bottom-bar layout.
+   These rules set the structural foundation gov.css overrides. */
+@media (max-width: 767px) {
+  html, body.dark {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .main-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    height: calc(100dvh - var(--header-h) - var(--bottom-bar-h));
+    min-height: 0;
+    flex: unset;
+    overflow: hidden;
+  }
+
+  .stream-panel {
+    height: 100%;
+    max-height: unset;
+    min-height: unset;
+    flex: unset;
+  }
+
+  .stream-wrapper {
+    height: 100%;
+  }
+
+  /* Sidebar becomes a fixed bottom sheet */
+  .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--bottom-bar-h);
+    min-height: var(--bottom-bar-h);
+    border-top: 1px solid var(--border);
+    border-left: none;
+    z-index: 80;
+    transition: height 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .sidebar.expanded {
+    height: min(55dvh, 55vh);
+  }
+
+  .sidebar-tabs {
+    flex-shrink: 0;
+    height: var(--bottom-bar-h);
+  }
+
+  .tab-content {
+    padding: 12px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  :root {
+    --cw-top:  8px;
+    --cw-left: 8px;
+  }
+
+  .tab-content {
+    padding: 8px;
+  }
+}

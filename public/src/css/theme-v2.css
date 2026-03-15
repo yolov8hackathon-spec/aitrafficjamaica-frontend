@@ -114,15 +114,10 @@ body.dark {
   box-shadow: 0 0 12px rgba(0,212,255,0.15);
 }
 
-/* ── Stream panel ─────────────────────────────────────────────── */
+/* ── Stream panel — visual tokens (layout in layout.css) ─────── */
 .stream-panel {
   border-right: 1px solid rgba(245,166,35,0.1);
   background: #020508;
-  position: relative;
-}
-
-.stream-wrapper {
-  position: relative;
 }
 
 /* Gold corner brackets on stream */

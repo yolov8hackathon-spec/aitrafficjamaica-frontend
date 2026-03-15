@@ -492,18 +492,14 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* â”€â”€ Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* â”€â”€ Sidebar / Tab system — structural layout canonical in layout.css ─────── */
+/* Color/border tokens only here */
 .sidebar {
   background: var(--bg2);
   border-left: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  position: relative;
 }
 
-/* â”€â”€ Sidebar tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-/* .sidebar-tabs — canonical in theme-v2.css */
+/* ── Sidebar tabs ─────────────────────────────────────────────── */
 
 .tab-btn:hover { color: rgba(190,220,240,0.9); background: rgba(0,212,255,0.04); }
 
@@ -546,9 +542,7 @@
   50% { box-shadow: 0 0 0 7px rgba(0,188,212,0); }
 }
 
-/* â”€â”€ Tab content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-/* .tab-content — canonical in theme-v2.css */
-.tab-content.active { display: flex; flex-direction: column; }
+/* ── Tab content — canonical in layout.css ────────────────────── */
 
 
 /* ── Vision HUD — overflow guard (real fix is in _applyLayout clamping) ─────── */

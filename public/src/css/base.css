@@ -742,39 +742,11 @@ button { cursor: pointer; border: none; font-family: inherit; font-size: 0.9rem;
 
 .btn-full { width: 100%; padding: 10px; }
 
-/* â”€â”€ Main grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-.main-grid {
-  display: grid;
-  grid-template-columns: 1fr var(--sidebar-w);
-  height: calc(100vh - var(--header-h));
-  overflow: hidden;
-}
-
-@media (max-width: 900px) {
-  .main-grid { grid-template-columns: 1fr; height: auto; overflow: visible; }
-}
-
-/* â”€â”€ Stream panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-.stream-panel {
-  display: flex;
-  flex-direction: column;
-  background: #000;
-  overflow: hidden;
-}
-
-.stream-wrapper {
-  position: relative;
-  flex: 1;
-  background: #000;
-  overflow: hidden;
-}
-
-.stream-wrapper video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+/* ── Main grid / Stream panel — canonical in layout.css ────────────────────── */
+/* Structural rules (display, flex, grid) live in layout.css. */
+/* These set only the background/color tokens. */
+.stream-panel  { background: #000; }
+.stream-wrapper { background: #000; }
 
 
 /* ── Sponsor bar ─────────────────────────────────────────────── */
