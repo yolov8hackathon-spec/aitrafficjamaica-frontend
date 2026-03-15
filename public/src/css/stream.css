@@ -318,10 +318,11 @@
   padding: 1px 4px;
 }
 
-/* ── AI Pulse widget (replaces Vision HUD) ───────────────────────────────── */
+/* ── AI Pulse widget (Vision HUD) — position canonical in layout.css ──────── */
 .ml-hud {
   position: absolute;
-  top: 12px; right: 12px;
+  bottom: 10px; right: 10px;
+  top: auto; left: auto;
   width: 194px;
   background: rgba(8, 12, 20, 0.82);
   backdrop-filter: blur(12px);
