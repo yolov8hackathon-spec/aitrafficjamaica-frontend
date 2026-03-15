@@ -10,13 +10,18 @@ import { sb } from '../core/supabase.js';
 export const AdminZones = (() => {
   // ── Zone type config ───────────────────────────────────────────────────────
   const ZONE_CONFIG = {
-    queue:   { color: "#FF9800", label: "Queue / Stop-line",  desc: "Polygon covering the queue area near the stop line. Measures how many vehicles are waiting at any given moment." },
-    entry:   { color: "#4CAF50", label: "Entry Approach",      desc: "Polygon over an approach road. Records when a vehicle enters this leg (combined with an Exit zone to form turning movements)." },
-    exit:    { color: "#F44336", label: "Exit Lane",            desc: "Polygon over an exit road. When a vehicle leaves through this zone after entering a different zone, a turning movement is recorded." },
-    speed_a: { color: "#00BCD4", label: "Speed Trap — Line A", desc: "First speed measurement line. Draw near the start of the measurement distance. Set the real-world distance to Line B in metres." },
-    speed_b: { color: "#009688", label: "Speed Trap — Line B", desc: "Second speed measurement line. Vehicle speed is computed as distance ÷ time between Line A and Line B crossings." },
-    roi:     { color: "#AB47BC", label: "Region of Interest",  desc: "General occupancy zone. Counts how many vehicles are inside this area at each snapshot interval." },
+    queue:   { color: "#FF9800", label: "Queue / Stop-line",  geom: "polygon", desc: "Polygon covering the queue area near the stop line. Measures how many vehicles are waiting at any given moment." },
+    entry:   { color: "#4CAF50", label: "Entry Line",          geom: "line",    desc: "2-point count line across an approach road. Click to place first endpoint, click again to complete. Records vehicles crossing into the scene." },
+    exit:    { color: "#F44336", label: "Exit Line",            geom: "line",    desc: "2-point count line across an exit road. Click to place first endpoint, click again to complete. Records vehicles leaving the scene." },
+    speed_a: { color: "#00BCD4", label: "Speed Trap — Line A", geom: "line",    desc: "First speed measurement line (2 points). Click to place, click again to complete. Set the real-world distance to Line B in metres." },
+    speed_b: { color: "#009688", label: "Speed Trap — Line B", geom: "line",    desc: "Second speed measurement line (2 points). Vehicle speed = distance ÷ time between Line A and Line B crossings." },
+    roi:     { color: "#AB47BC", label: "Region of Interest",  geom: "polygon", desc: "General occupancy zone. Counts how many vehicles are inside this area at each snapshot interval." },
   };
+
+  // Zone types that are 2-point lines (auto-complete after 2nd click)
+  function isLineZone(type) {
+    return (ZONE_CONFIG[type || getZoneType()]?.geom === "line");
+  }
 
   // ── State ──────────────────────────────────────────────────────────────────
   let bgCanvas, drawCanvas, bgCtx, drawCtx;
@@ -88,7 +93,8 @@ export const AdminZones = (() => {
     // Keyboard
     document.addEventListener("keydown", e => {
       if (document.getElementById("panel-analytics-zones")?.classList.contains("active")) {
-        if (e.key === "Enter" && drawing && draftPts.length >= 3) closePoly();
+        const minPts = isLineZone() ? 2 : 3;
+        if (e.key === "Enter" && drawing && draftPts.length >= minPts) closePoly();
         if (e.key === "Escape") cancelDraw();
         if ((e.key === "z" || e.key === "Z") && e.ctrlKey) undoPoint();
       }
@@ -239,36 +245,52 @@ export const AdminZones = (() => {
       drawZonePoly(z.points, ZONE_CONFIG[z.zone_type]?.color || "#FFB800", z.name, 0.28, true);
     }
 
-    // 4. In-progress polygon + placed vertices
+    // 4. In-progress polygon/line + placed vertices
     if (drawing && draftPts.length > 0) {
-      const color = ZONE_CONFIG[getZoneType()]?.color || "#FFB800";
+      const color    = ZONE_CONFIG[getZoneType()]?.color || "#FFB800";
+      const lineMode = isLineZone();
       drawCtx.save();
-      drawCtx.strokeStyle = color;
-      drawCtx.lineWidth = 2;
-      drawCtx.setLineDash([6, 3]);
-      drawCtx.beginPath();
-      draftPts.forEach((p, i) => {
-        const [x, y] = toPixel(p.rx, p.ry);
-        if (i === 0) drawCtx.moveTo(x, y); else drawCtx.lineTo(x, y);
-      });
-      drawCtx.stroke();
-      drawCtx.setLineDash([]);
-      // Vertices
-      draftPts.forEach((p, i) => {
-        const [x, y] = toPixel(p.rx, p.ry);
+
+      // Draw placed segments so far
+      if (draftPts.length >= 2) {
+        drawCtx.strokeStyle = color;
+        drawCtx.lineWidth   = 2;
+        drawCtx.setLineDash([6, 3]);
         drawCtx.beginPath();
-        drawCtx.arc(x, y, i === 0 ? 7 : 5, 0, Math.PI * 2);
-        drawCtx.fillStyle = i === 0 ? "#fff" : color;
+        draftPts.forEach((p, i) => {
+          const [x, y] = toPixel(p.rx, p.ry);
+          if (i === 0) drawCtx.moveTo(x, y); else drawCtx.lineTo(x, y);
+        });
+        drawCtx.stroke();
+        drawCtx.setLineDash([]);
+      }
+
+      // Endpoint / vertex dots
+      draftPts.forEach((p, i) => {
+        const [x, y] = toPixel(p.rx, p.ry);
+        const r      = lineMode ? 5 : (i === 0 ? 7 : 5);
+        drawCtx.beginPath();
+        drawCtx.arc(x, y, r, 0, Math.PI * 2);
+        drawCtx.fillStyle   = lineMode ? color : (i === 0 ? "#fff" : color);
         drawCtx.fill();
         drawCtx.strokeStyle = color;
-        drawCtx.lineWidth = 1.5;
+        drawCtx.lineWidth   = 1.5;
         drawCtx.stroke();
-        // Vertex index label
-        drawCtx.fillStyle = "#fff";
-        drawCtx.font = "bold 9px 'JetBrains Mono', monospace";
-        drawCtx.textAlign = "center";
-        drawCtx.textBaseline = "middle";
-        drawCtx.fillText(i + 1, x, y);
+        if (!lineMode) {
+          // Vertex index label for polygon mode
+          drawCtx.fillStyle       = "#fff";
+          drawCtx.font            = "bold 9px 'JetBrains Mono', monospace";
+          drawCtx.textAlign       = "center";
+          drawCtx.textBaseline    = "middle";
+          drawCtx.fillText(i + 1, x, y);
+        } else {
+          // A/B label for line mode
+          drawCtx.fillStyle       = "#080C14";
+          drawCtx.font            = "bold 8px 'JetBrains Mono', monospace";
+          drawCtx.textAlign       = "center";
+          drawCtx.textBaseline    = "middle";
+          drawCtx.fillText(i === 0 ? "A" : "B", x, y);
+        }
       });
       drawCtx.restore();
     }
@@ -281,7 +303,9 @@ export const AdminZones = (() => {
   }
 
   function drawZonePoly(points, color, label, alpha, isDraft) {
-    if (!points || points.length < 3) return;
+    if (!points || points.length < 2) return;
+    // 2-point zones are lines, not polygons
+    if (points.length === 2) { drawZoneLine(points, color, label, isDraft); return; }
     const W = drawCanvas.width, H = drawCanvas.height;
     drawCtx.save();
     drawCtx.beginPath();
@@ -313,6 +337,68 @@ export const AdminZones = (() => {
     drawCtx.restore();
   }
 
+  function drawZoneLine(points, color, label, isDraft) {
+    const W = drawCanvas.width, H = drawCanvas.height;
+    const x1 = points[0].x * W, y1 = points[0].y * H;
+    const x2 = points[1].x * W, y2 = points[1].y * H;
+    const mx = (x1 + x2) / 2,   my = (y1 + y2) / 2;
+
+    drawCtx.save();
+
+    // Glow / shadow for visibility
+    drawCtx.shadowColor = color;
+    drawCtx.shadowBlur  = isDraft ? 6 : 4;
+
+    // Line body
+    drawCtx.strokeStyle = color;
+    drawCtx.lineWidth   = isDraft ? 2.5 : 2;
+    if (isDraft) drawCtx.setLineDash([6, 3]);
+    drawCtx.beginPath();
+    drawCtx.moveTo(x1, y1);
+    drawCtx.lineTo(x2, y2);
+    drawCtx.stroke();
+    drawCtx.setLineDash([]);
+    drawCtx.shadowBlur = 0;
+
+    // Endpoint dots
+    [[x1, y1], [x2, y2]].forEach(([px, py]) => {
+      drawCtx.beginPath();
+      drawCtx.arc(px, py, 5, 0, Math.PI * 2);
+      drawCtx.fillStyle   = color;
+      drawCtx.fill();
+      drawCtx.strokeStyle = "#080C14";
+      drawCtx.lineWidth   = 1.5;
+      drawCtx.stroke();
+    });
+
+    // Perpendicular tick marks at each endpoint (shows line direction)
+    const dx = x2 - x1, dy = y2 - y1;
+    const len = Math.hypot(dx, dy) || 1;
+    const nx = -dy / len * 7, ny = dx / len * 7;  // normal vector, 7px
+    [[x1, y1], [x2, y2]].forEach(([px, py]) => {
+      drawCtx.beginPath();
+      drawCtx.moveTo(px + nx, py + ny);
+      drawCtx.lineTo(px - nx, py - ny);
+      drawCtx.strokeStyle = hexAlpha(color, 0.7);
+      drawCtx.lineWidth   = 1.5;
+      drawCtx.stroke();
+    });
+
+    // Midpoint label
+    if (label) {
+      drawCtx.font = "bold 11px 'JetBrains Mono', monospace";
+      drawCtx.textAlign    = "center";
+      drawCtx.textBaseline = "middle";
+      const tw = drawCtx.measureText(label).width;
+      drawCtx.fillStyle = "rgba(0,0,0,0.7)";
+      drawCtx.fillRect(mx - tw / 2 - 5, my - 9, tw + 10, 18);
+      drawCtx.fillStyle = color;
+      drawCtx.fillText(label, mx, my);
+    }
+
+    drawCtx.restore();
+  }
+
   // ── Drawing interaction ────────────────────────────────────────────────────
   function startDraw() {
     if (!cameraId) return;
@@ -324,7 +410,10 @@ export const AdminZones = (() => {
     document.getElementById("az-undo-btn").removeAttribute("disabled");
     document.getElementById("az-cancel-btn").removeAttribute("disabled");
     document.getElementById("az-draw-btn").setAttribute("disabled", "");
-    setHint("Click to place vertices — click near first point (or press Enter) to close polygon");
+    const hint = isLineZone()
+      ? "Click to place first endpoint of the line"
+      : "Click to place vertices — click near first point (or press Enter) to close polygon";
+    setHint(hint);
     updateDraftInfo();
   }
 
@@ -334,7 +423,16 @@ export const AdminZones = (() => {
     const rawRx = (e.clientX - rect.left) / drawCanvas.width;
     const rawRy = (e.clientY - rect.top)  / drawCanvas.height;
     const { rx, ry } = snapPoint(rawRx, rawRy);
-    // Check if click is near first point (close polygon)
+
+    if (isLineZone()) {
+      // Line mode: 2 points → auto-complete on 2nd click
+      draftPts.push({ rx, ry });
+      updateDraftInfo();
+      if (draftPts.length === 2) closePoly();
+      return;
+    }
+
+    // Polygon mode: check if click is near first point (close polygon)
     if (draftPts.length >= 3) {
       const [fx, fy] = toPixel(draftPts[0].rx, draftPts[0].ry);
       const dist = Math.hypot(e.clientX - rect.left - fx, e.clientY - rect.top - fy);
@@ -368,7 +466,8 @@ export const AdminZones = (() => {
   }
 
   function closePoly() {
-    if (draftPts.length < 3) { setStatus("Need at least 3 points.", true); return; }
+    const minPts = isLineZone() ? 2 : 3;
+    if (draftPts.length < minPts) { setStatus(`Need at least ${minPts} point${minPts > 1 ? "s" : ""}.`, true); return; }
     const type = getZoneType();
     const name = document.getElementById("az-zone-name")?.value.trim() || `Zone ${draftZones.length + 1}`;
     const distM = type === "speed_a" ? parseFloat(document.getElementById("az-speed-dist")?.value || "0") : null;
@@ -504,15 +603,35 @@ export const AdminZones = (() => {
     const cfg  = ZONE_CONFIG[type] || {};
     const dot  = document.getElementById("az-type-dot");
     const desc = document.getElementById("az-type-desc");
+    const geomBadge = document.getElementById("az-geom-badge");
     const distRow = document.getElementById("az-speed-dist-row");
-    if (dot)  dot.style.background  = cfg.color || "#FFB800";
-    if (desc) desc.textContent       = cfg.desc  || "";
+    if (dot)  dot.style.background = cfg.color || "#FFB800";
+    if (desc) desc.textContent     = cfg.desc  || "";
+    if (geomBadge) {
+      const isLine = cfg.geom === "line";
+      geomBadge.textContent     = isLine ? "LINE (2 pts)" : "POLYGON";
+      geomBadge.style.color     = isLine ? (cfg.color || "#4CAF50") : "#FFB800";
+      geomBadge.style.border    = `1px solid ${isLine ? (cfg.color || "#4CAF50") : "#FFB800"}44`;
+    }
     if (distRow) distRow.style.display = type === "speed_a" ? "" : "none";
+    // Refresh hint text if actively drawing
+    if (drawing) updateDraftInfo();
   }
 
   function updateDraftInfo() {
     const el = document.getElementById("az-draft-pts");
     if (el) el.textContent = `${draftPts.length} point${draftPts.length !== 1 ? "s" : ""} placed`;
+    if (!drawing) return;
+    if (isLineZone()) {
+      setHint(draftPts.length === 0
+        ? "Click to place first endpoint of the line"
+        : "Click to place second endpoint — line will auto-complete");
+    } else {
+      const need = Math.max(0, 3 - draftPts.length);
+      setHint(need > 0
+        ? `Click to place vertices — ${need} more point${need > 1 ? "s" : ""} needed`
+        : "Click near first point (or press Enter) to close polygon");
+    }
   }
 
   function updateZoneCount() {
@@ -659,8 +778,8 @@ export const AdminZones = (() => {
         drawCtx.setLineDash([5, 3]);
         drawCtx.beginPath(); drawCtx.moveTo(lx, ly); drawCtx.lineTo(sx, sy); drawCtx.stroke();
         drawCtx.setLineDash([]);
-        // Also draw closing line preview back to first point
-        if (draftPts.length >= 2) {
+        // Draw closing line preview back to first point (polygon mode only)
+        if (!isLineZone() && draftPts.length >= 2) {
           const [fx, fy] = toPixel(draftPts[0].rx, draftPts[0].ry);
           drawCtx.strokeStyle = hexAlpha(color, 0.22);
           drawCtx.lineWidth   = 1;
