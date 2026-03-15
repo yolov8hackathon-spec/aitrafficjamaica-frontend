@@ -295,6 +295,35 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
     g.moveTo(x + c, y + h); g.lineTo(x, y + h); g.lineTo(x, y + h - c);
   }
 
+  // ── Shared label renderer ─────────────────────────────────────
+  // Draws "#ID · Class · color conf%" pill above (or inside) a bounding box.
+  // accentColor = border/highlight color; bgAlpha = background opacity (0–1)
+  function _drawDetectionLabel(ctx2, det, p1, accentColor, fs = 10, bgAlpha = 0.82) {
+    const CLS_NAME = { car: 'Car', truck: 'Truck', bus: 'Bus', motorcycle: 'Moto' };
+    const clsStr  = CLS_NAME[String(det?.cls || '').toLowerCase()] || String(det?.cls || 'Vehicle');
+    const tidStr  = (det?.tracker_id != null && det.tracker_id >= 0) ? `#${det.tracker_id} ` : '';
+    const colStr  = (det?.color && det.color !== 'unknown') ? ` · ${det.color}` : '';
+    const confStr = (det?.conf != null) ? ` ${Math.round(Number(det.conf) * 100)}%` : '';
+    const label   = `${tidStr}${clsStr}${colStr}${confStr}`;
+    const px = 4, py = 2;
+    ctx2.font = `700 ${fs}px "JetBrains Mono", monospace`;
+    ctx2.textAlign    = 'left';
+    ctx2.textBaseline = 'top';
+    const tw   = ctx2.measureText(label).width;
+    const tagW = tw + px * 2;
+    const tagH = fs + py * 2;
+    const tx   = p1.x;
+    const ty   = (p1.y - tagH >= 0) ? p1.y - tagH : p1.y;
+    // Dark semi-transparent background pill with accent left border
+    ctx2.fillStyle = `rgba(8,12,20,${bgAlpha})`;
+    ctx2.fillRect(tx, ty, tagW, tagH);
+    ctx2.fillStyle = accentColor;
+    ctx2.fillRect(tx, ty, 2, tagH);           // accent left stripe
+    // White text
+    ctx2.fillStyle = '#ffffff';
+    ctx2.fillText(label, tx + px, ty + py);
+  }
+
   // ── Outside-scan reticle (unvalidated vehicles) ───────────────
   // Thin pulsing cyan crosshair corners — "I see you but not counting yet"
   function _drawScanReticle(det, bounds) {
@@ -320,24 +349,8 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
     // BL
     ctx.moveTo(p1.x + tc, p2.y); ctx.lineTo(p1.x, p2.y); ctx.lineTo(p1.x, p2.y - tc);
     ctx.stroke();
-    // Label: cls + conf, same pulsing cyan, smaller font
-    const CLS_NAME_S = { car: 'Car', truck: 'Truck', bus: 'Bus', motorcycle: 'Moto' };
-    const clsS = CLS_NAME_S[String(det?.cls || '').toLowerCase()] || 'Vehicle';
-    const colorSS = det.color && det.color !== 'unknown' ? ` · ${det.color}` : '';
-    const confS = det.conf != null ? ` ${Math.round(Number(det.conf) * 100)}%` : '';
-    const labelS = clsS + colorSS + confS;
-    const fsS = isMobileClient ? 8 : 9;
-    ctx.font = `600 ${fsS}px "JetBrains Mono", monospace`;
-    const twS = ctx.measureText(labelS).width;
-    const pxS = 3, pyS = 1;
-    const txS = p1.x, tyS = p1.y - (fsS + pyS * 2);
-    const tyS2 = tyS >= 0 ? tyS : p1.y;
-    ctx.fillStyle = `rgba(0,212,255,${pulse})`;
-    ctx.fillRect(txS, tyS2, twS + pxS * 2, fsS + pyS * 2);
-    ctx.fillStyle = '#000';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'top';
-    ctx.fillText(labelS, txS + pxS, tyS2 + pyS);
+    // Label with shared renderer — dimmer background for unconfirmed vehicles
+    _drawDetectionLabel(ctx, det, p1, `rgba(0,212,255,${pulse})`, isMobileClient ? 8 : 9, 0.60);
     ctx.restore();
   }
 
@@ -360,24 +373,8 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
     ctx.setLineDash([]);
     drawCornerBox(p1.x, p1.y, bw, bh, color, lw);
     ctx.shadowBlur = 0;
-    // Label: "Car · blue 73%"
-    const CLS_NAME = { car: 'Car', truck: 'Truck', bus: 'Bus', motorcycle: 'Moto' };
-    const clsStr = CLS_NAME[String(det?.cls || '').toLowerCase()] || 'Vehicle';
-    const colorStr = det.color && det.color !== 'unknown' ? ` · ${det.color}` : '';
-    const confStr = det.conf != null ? ` ${Math.round(Number(det.conf) * 100)}%` : '';
-    const label = clsStr + colorStr + confStr;
-    const fs = isMobileClient ? 9 : 10;
-    ctx.font = `700 ${fs}px "JetBrains Mono", monospace`;
-    const tw = ctx.measureText(label).width;
-    const px = 4, py = 2;
-    const tx = p1.x, ty = p1.y - (fs + py * 2);
-    const ty2 = ty >= 0 ? ty : p1.y;
-    ctx.fillStyle = color;
-    ctx.fillRect(tx, ty2, tw + px * 2, fs + py * 2);
-    ctx.fillStyle = '#000';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'top';
-    ctx.fillText(label, tx + px, ty2 + py);
+    // Label: "#ID · Car · blue 73%"
+    _drawDetectionLabel(ctx, det, p1, color, isMobileClient ? 9 : 10);
     ctx.restore();
   }
 
@@ -625,25 +622,10 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
     else ctx.strokeRect(p1.x, p1.y, bw, bh);
 
     if (showLabels) {
-      const CLS_NAME = { car: 'Car', truck: 'Truck', bus: 'Bus', motorcycle: 'Moto' };
-      const clsStr = labelText || CLS_NAME[String(det?.cls || '').toLowerCase()] || String(det?.cls || 'Vehicle');
-      const confStr = (det.conf != null && !labelText) ? ` ${Math.round(Number(det.conf) * 100)}%` : '';
-      const txt = clsStr + confStr;
       ctx.setLineDash([]);
-      const fs = isMobileClient ? 9 : 10;
-      ctx.font = `700 ${fs}px "JetBrains Mono", monospace`;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      const tw = ctx.measureText(txt).width;
-      const px = 4, py = 2;
-      const tagW = tw + px * 2;
-      const tagH = fs + py * 2;
-      const tx = p1.x;
-      const ty = (p1.y - tagH >= 0) ? p1.y - tagH : p1.y;
-      ctx.fillStyle = hexToRgba(color, 0.88);
-      ctx.fillRect(tx, ty, tagW, tagH);
-      ctx.fillStyle = '#000000';
-      ctx.fillText(txt, tx + px, ty + py);
+      // Use labelText override if provided (skips tracker_id/conf)
+      const detForLabel = labelText ? { ...det, tracker_id: null, conf: null, color: null, cls: labelText } : det;
+      _drawDetectionLabel(ctx, detForLabel, p1, color, isMobileClient ? 9 : 10);
     }
   }
 
@@ -684,33 +666,37 @@ import { contentToPixel, getContentBounds } from '../utils/coord-utils.js'; // e
     if (!showLabels) return;
 
     const CLS_NAME = { car: 'Car', truck: 'Truck', bus: 'Bus', motorcycle: 'Moto' };
-    const clsStr = labelText || CLS_NAME[String(det?.cls || '').toLowerCase()] || String(det?.cls || 'Vehicle');
-    const confStr = (det.conf != null && !labelText) ? ` ${Math.round(Number(det.conf) * 100)}%` : '';
-    const labelStr = clsStr + confStr;
+    const clsBase  = labelText || CLS_NAME[String(det?.cls || '').toLowerCase()] || String(det?.cls || 'Vehicle');
+    const tidStr   = (!labelText && det?.tracker_id != null && det.tracker_id >= 0) ? `#${det.tracker_id} ` : '';
+    const colStr   = (!labelText && det?.color && det.color !== 'unknown') ? ` · ${det.color}` : '';
+    const confStr  = (!labelText && det?.conf != null) ? ` ${Math.round(Number(det.conf) * 100)}%` : '';
+    const labelStr = `${tidStr}${clsBase}${colStr}${confStr}`;
 
-    // background pill via Graphics
+    const fs = 10;
+    const px = 4, py = 2;
+    const tagH = fs + py * 2;
+    const ty = (p1.y - tagH >= 0) ? p1.y - tagH : p1.y;
+
+    // Dark background pill
     const bg = getPixiGraphic();
     if (bg) {
-      const fs = 10;
-      const px = 4, py = 2;
       const approxCharW = fs * 0.62;
       const tagW = labelStr.length * approxCharW + px * 2;
-      const tagH = fs + py * 2;
-      const ty = (p1.y - tagH >= 0) ? p1.y - tagH : p1.y;
-      bg.beginFill(colorNum, 0.88);
+      bg.beginFill(0x080c14, 0.82);
       bg.drawRect(p1.x, ty, tagW, tagH);
+      bg.endFill();
+      // Accent left stripe
+      bg.beginFill(colorNum, 1);
+      bg.drawRect(p1.x, ty, 2, tagH);
       bg.endFill();
     }
 
     const txt = getPixiText();
     if (!txt) return;
-    const fs = 10;
-    const py = 2;
-    const ty = (p1.y - (fs + py * 2) >= 0) ? p1.y - (fs + py * 2) : p1.y;
     txt.text = labelStr;
-    txt.style.fill = 0x000000;
+    txt.style.fill = 0xffffff;
     txt.style.fontWeight = '700';
-    txt.x = p1.x + 4;
+    txt.x = p1.x + px;
     txt.y = ty + py;
   }
 
