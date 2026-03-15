@@ -3,8 +3,6 @@
  * Edit component files in this directory; do not edit public/css/main.css.
  * ────────────────────────────────────────────────────────────────────────── */
 
-@tailwind base;
-@tailwind components;
 @tailwind utilities;
 
 /* 1. Foundation — vars, reset, body, header, logo */
